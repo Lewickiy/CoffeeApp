@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.login.LoginController">
+   <left>
+      <AnchorPane prefHeight="407.0" prefWidth="228.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="228.0" fitWidth="286.0" layoutX="22.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/CoffeeBoard_logo.jpeg" />
+               </image></ImageView>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="331.0" text="тел. поддержки:" textAlignment="CENTER">
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="137.0" layoutY="332.0" text="+7 (999) 535-42-50" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="72.0" layoutY="348.0" text="e-mail:" textAlignment="CENTER">
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="115.0" layoutY="348.0" text="lewickiy@gmail.com" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </left>
+   <right>
+      <AnchorPane prefHeight="400.0" prefWidth="351.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="145.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/loginIco.png" />
+               </image></ImageView>
+            <Label fx:id="usernameLabel" layoutX="67.0" layoutY="135.0" text="Имя пользователя">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="usernameTextField" layoutX="67.0" layoutY="156.0" onKeyPressed="#escapeKeyPressed" prefHeight="27.0" prefWidth="212.0" promptText="введите имя пользователя">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="passwordField" layoutX="67.0" layoutY="219.0" onKeyPressed="#loginPasswordEnterKey" prefHeight="27.0" prefWidth="212.0" promptText="введите пароль">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </PasswordField>
+            <Button fx:id="loginButton" layoutX="77.0" layoutY="279.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="25.0" prefWidth="77.0" text="Войти">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Button>
+            <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="52.0" layoutY="328.0" prefHeight="52.0" prefWidth="235.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Button fx:id="cancelButton" layoutX="186.0" layoutY="279.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="25.0" prefWidth="77.0" text="Отмена">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Button>
+            <Label fx:id="passwordLabel" layoutX="67.0" layoutY="198.0" text="Пароль">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="outletChoiceBox" layoutX="67.0" layoutY="188.0" prefHeight="27.0" prefWidth="212.0" visible="false" />
+            <Label fx:id="choiceLabel" layoutX="67.0" layoutY="161.0" text="Выберите расположение" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="acceptOutletChoice" layoutX="131.0" layoutY="279.0" mnemonicParsing="false" onAction="#acceptOutletChoiceOnAction" prefHeight="25.0" prefWidth="77.0" text="ok" visible="false">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </right>
+</BorderPane>
