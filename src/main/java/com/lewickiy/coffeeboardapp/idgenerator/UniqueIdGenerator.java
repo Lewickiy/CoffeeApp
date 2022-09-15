@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp;
+package com.lewickiy.coffeeboardapp.idgenerator;
 
 import java.util.UUID;
 
