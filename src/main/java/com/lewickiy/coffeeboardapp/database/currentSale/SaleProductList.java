@@ -7,31 +7,31 @@ public class SaleProductList {
     public static void addSaleProductsList(int saleProdId, int prodSaleId, String prodName, double priceProdSale, int amountProdSale, double sumProdSale) {
         currentSaleProducts.add(new SaleProduct(saleProdId, prodSaleId, prodName, priceProdSale, amountProdSale, sumProdSale));
     }
-    public static void addProductToArray(int positionsCount, SaleProduct currentProduct, int saleId) {
+    public static void addProductToArray(int positionsCount,CurrentSale currentSale, SaleProduct currentProduct, int saleId) {
         if (positionsCount == 0) {
-            addSaleProductsList(currentProduct.getSaleProdId()
-                    , currentProduct.getProdSaleId()
-                    , currentProduct.getProdName()
-                    , currentProduct.getPriceProdSale()
-                    , currentProduct.getAmountProdSale()
-                    , currentProduct.getSumProdSale());
+            addSaleProductsList(currentSale.getSaleId()
+                    , currentProduct.getProductId()
+                    , currentProduct.getProduct()
+                    , currentProduct.getPrice()
+                    , currentProduct.getAmount()
+                    , currentProduct.getSum());
         } else {
             boolean b = true;
             for (int i = 0; i < currentSaleProducts.size(); i++) {
-                if (currentProduct.getProdSaleId() == currentSaleProducts.get(i).getProdSaleId()) {
-                    currentSaleProducts.get(i).setAmountProdSale(currentSaleProducts.get(i).getAmountProdSale() + currentProduct.getAmountProdSale());
-                    currentSaleProducts.get(i).setSumProdSale(currentSaleProducts.get(i).getPriceProdSale() * currentSaleProducts.get(i).getAmountProdSale());
+                if (currentProduct.getProductId() == currentSaleProducts.get(i).getProductId()) {
+                    currentSaleProducts.get(i).setAmount(currentSaleProducts.get(i).getAmount() + currentProduct.getAmount());
+                    currentSaleProducts.get(i).setSum(currentSaleProducts.get(i).getPrice() * currentSaleProducts.get(i).getAmount());
                     b = false;
                     break;
                 }
             }
             if (b == true) {
-                addSaleProductsList(currentProduct.getSaleProdId()
-                        , currentProduct.getProdSaleId()
-                        , currentProduct.getProdName()
-                        , currentProduct.getPriceProdSale()
-                        , currentProduct.getAmountProdSale()
-                        , currentProduct.getSumProdSale());
+                addSaleProductsList(currentProduct.getSaleId()
+                        , currentProduct.getProductId()
+                        , currentProduct.getProduct()
+                        , currentProduct.getPrice()
+                        , currentProduct.getAmount()
+                        , currentProduct.getSum());
             }
         }
     }
