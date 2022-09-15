@@ -34,6 +34,8 @@ import java.sql.Time;
 
 import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
 import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.createNewSale;
+import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addProductsToSale;
+import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
 
 public class SellerController {
     private boolean newSale = true; //boolean значение необходимости создания нового чека
@@ -41,7 +43,7 @@ public class SellerController {
     private int positionsCount;
     private CurrentSale currentSale; //объект - текущая продажа.
     private SaleProduct currentProduct; //объект - зона сбора данных.
-    static ObservableList<SaleProduct> saleProductsObservableList = FXCollections.observableList(SaleProductList.currentSaleProducts);
+    static ObservableList<SaleProduct> saleProductsObservableList = FXCollections.observableList(currentSaleProducts);
 
 
     /*____________________________________start___________________________________________
@@ -169,10 +171,6 @@ public class SellerController {
                     productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
                     currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
                     break;
-                } else {
-                    System.out.println("Информационное сообщение: Кнопка Продукта не соответствует ни одному Продукту в базе данных.");
-                    System.out.println("Пожалуйста, проверьте соединение и обратитесь в службу поддержки");
-                    //TODO в случае если произошла какая-то ошибка и продукт в кнопке не соответствует ни одному продукту в ArrayList products
                 }
             }
         }
@@ -323,7 +321,7 @@ public class SellerController {
     //Логика при нажатии на кнопку "+" добавления продукта в текущий чек.
     @FXML
     void addProductOnAction() {
-        SaleProductList.addProductToArray(positionsCount, currentProduct, saleId);
+        SaleProductList.addProductToArray(positionsCount,currentSale, currentProduct, saleId);
         positionsCount++;
         saleTable.setItems(saleProductsObservableList); //Установка значений в таблицу.
         saleTable.refresh(); //Обновление таблицы. Без этого отображается только первая строка.
@@ -331,7 +329,7 @@ public class SellerController {
         //Подсчёт суммы продажи под таблицей текущей продажи.
         double total = 0.0;
         for (SaleProduct saleProduct : saleTable.getItems()) {
-            total = total + saleProduct.getSumProdSale();
+            total = total + saleProduct.getSum();
         }
         sumLabel.setText(String.valueOf(total)); //Сумма устанавливается в sumLabel
         productCategoryIco.setVisible(false); //Картинка Продукта перестаёт быть видимой
@@ -442,10 +440,10 @@ public class SellerController {
          * В неё добавляются позиции Продуктов.
          * setCellValueFactory определяет что добавляется и в какой столбец.
          ____________________________________________________________________________________*/
-        productColumn.setCellValueFactory(new PropertyValueFactory<>("prodName"));
-        priceColumn.setCellValueFactory(new PropertyValueFactory<>("priceProdSale"));
-        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amountProdSale"));
-        sumColumn.setCellValueFactory(new PropertyValueFactory<>("sumProdSale"));
+        productColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
     }
 
     /*____________________________________˄˄˄_____________________________________________
