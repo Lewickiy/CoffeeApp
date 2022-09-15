@@ -82,7 +82,25 @@ public class SaleProduct {
         return sum;
     }
 
-    public void setSumProdSale(double sumProdSale) {
-        this.sumProdSale = sumProdSale;
+    public void setSum(double sum) {
+        this.sum = sum;
+    }
+    public static void addProductsToSale(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) throws SQLException {
+        Statement statement = DatabaseConnector.getConnection().createStatement();
+        for (SaleProduct currentSaleProduct : currentSaleProducts) {
+            statement.executeUpdate("INSERT sale_product("
+                + "sale_id, "
+                + "product_id, "
+                + "discount_id, "
+                + "price, "
+                + "amount, "
+                + "sum) VALUES ('"
+                + currentSale.getSaleId() + "', '"
+                + currentSaleProduct.getProductId() + "', '"
+                + 10 + "', '"
+                + currentSaleProduct.getPrice() + "', '"
+                + currentSaleProduct.getAmount() + "', '"
+                + currentSaleProduct.getSum()  + "')");
+        }
     }
 }
