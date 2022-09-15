@@ -342,6 +342,17 @@ public class SellerController {
         productOperationButtonsIsDisable(true);
         productButtonsIsDisable(false); //Кнопки с Продуктами становятся активными.
     }
+    @FXML
+    void endThisTaleOnAction() throws SQLException {
+        addProductsToSale(currentSaleProducts, currentSale);
+        endThisTale.setDisable(true);
+        newSale = true;
+        currentSale = null;
+        positionsCount = 0;
+        currentSaleProducts.clear();
+        sumLabel.setText("0.0");
+        saleTable.refresh();
+    }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
 
