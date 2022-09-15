@@ -224,8 +224,8 @@ public class SellerController {
         Button button = (Button) event.getSource();
         amountLabel.setText(button.getAccessibleText()); //Label количества берёт данные из AccessibleText цифровой кнопки.
         amountLabel.setVisible(true);
-        currentProduct.setAmountProdSale(Integer.parseInt(button.getAccessibleText())); //для currentProduct устанавливается количество продукта.
-        currentProduct.setSumProdSale(currentProduct.getPriceProdSale() * currentProduct.getAmountProdSale()); //сумма стоимости продукта исходя из выбранного количества.
+        currentProduct.setAmount(Integer.parseInt(button.getAccessibleText())); //для currentProduct устанавливается количество продукта.
+        currentProduct.setSum(currentProduct.getPrice() * currentProduct.getAmount()); //сумма стоимости продукта исходя из выбранного количества.
         numberButtonsIsDisable(true);
         productOperationButtonsIsDisable(false);
     }
