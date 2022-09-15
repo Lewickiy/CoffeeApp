@@ -134,6 +134,8 @@ public class SellerController {
     @FXML
     void productOnAction(ActionEvent event) throws SQLException {
         Button button = (Button) event.getSource();
+        endThisTale.setDisable(false); //Кнопка Чек становится доступна
+        System.out.println(button.getAccessibleText());
         if (newSale) {
             saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи.
             long nowDate = System.currentTimeMillis(); //Дата сейчас.
