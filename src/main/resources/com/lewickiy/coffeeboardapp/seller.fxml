@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minWidth="1380.0" prefHeight="600.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.seller.SellerController">
+<VBox minWidth="1380.0" prefHeight="600.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.seller.SellerController">
   <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
@@ -248,7 +248,7 @@
                               <Font size="74.0" />
                            </font>
                         </Label>
-                        <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" style="-fx-background-color: GREEN;" text="+" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#12ae27" wrapText="true">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
@@ -271,12 +271,12 @@
                               <Font name="System Bold" size="35.0" />
                            </font>
                         </Button>
-                        <Button fx:id="endThisTale" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="13.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="136.0" style="-fx-background-color: GREEN;" text="Чек" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <Button fx:id="endThisTale" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="13.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#endThisTaleOnAction" prefHeight="75.0" prefWidth="136.0" text="Чек" textAlignment="CENTER" textFill="#12ae27" wrapText="true">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
                         </Button>
-                        <Button fx:id="endThisTaleAnother" alignment="CENTER" contentDisplay="CENTER" layoutX="279.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" style="-fx-background-color: RED;" text="X" textAlignment="CENTER" textFill="WHITE">
+                        <Button fx:id="endThisTaleAnother" alignment="CENTER" contentDisplay="CENTER" layoutX="279.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
