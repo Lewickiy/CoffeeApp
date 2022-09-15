@@ -1,7 +1,7 @@
 package com.lewickiy.coffeeboardapp.controllers.seller;
 
 import com.lewickiy.coffeeboardapp.CoffeeBoardApp;
-import com.lewickiy.coffeeboardapp.UniqueIdGenerator;
+import com.lewickiy.coffeeboardapp.idgenerator.UniqueIdGenerator;
 import com.lewickiy.coffeeboardapp.controllers.login.LoginController;
 import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
