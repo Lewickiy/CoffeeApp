@@ -14,16 +14,15 @@ public class CurrentSale {
     private int outletId;
     private Date currentDate;
     private Time currentTime;
-
     private int paymentTypeId;
+    private int clientId;
 
-    public CurrentSale(int saleId, int userId, int outletId, Date currentDate, Time currentTime) {
+    public CurrentSale(int saleId, int userId, int outletId) {
         this.saleId = saleId;
         this.userId = userId;
         this.outletId = outletId;
-        this.currentDate = currentDate;
-        this.currentTime = currentTime;
     }
+
     public int getSaleId() {
         return saleId;
     }
@@ -66,6 +65,14 @@ public class CurrentSale {
         this.paymentTypeId = paymentTypeId;
     }
 
+    public int getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
+    }
+
     public static void createNewSale(CurrentSale currentSale) throws SQLException {
         Statement statement = DatabaseConnector.getConnection().createStatement();
         //TODO try-catch для createStatement();
@@ -74,11 +81,15 @@ public class CurrentSale {
                 + "user_id, "
                 + "outlet_id, "
                 + "date, "
-                + "time) VALUES ('"
+                + "time, "
+                + "paymenttype_id, "
+                + "client_id) VALUES ('"
                 + currentSale.getSaleId() + "', '"
-                + UserList.currentUser.getUserId() + "', '"
+                + currentSale.getUserId() + "', '"
                 + currentSale.getSaleOutletId() + "', '"
                 + currentSale.getCurrentDate() + "', '"
-                + currentSale.getCurrentTime() + "')");
+                + currentSale.getCurrentTime() + "', '"
+                + currentSale.getPaymentTypeId() + "', '"
+                + currentSale.getClientId() + "')");
     }
 }
