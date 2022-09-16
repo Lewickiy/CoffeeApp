@@ -26,6 +26,7 @@ import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createD
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.createOutletList;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
+import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeAL;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
 import static com.lewickiy.coffeeboardapp.database.user.UserList.*;
 
@@ -62,6 +63,7 @@ public class LoginController {
         createProductsList(); //Загрузка объектов из базы в список продуктов.
         createOutletList(); //Загрузка объектов из базы в список торговых точек.
         createDiscountList();
+        createPaymentTypeAL();
         outletChoiceBox.setItems(outletsObservableList); //Устанавливаем значения в ChoiceBox из observableList
         outletChoiceBox.setAccessibleText("Выберете рабочее место"); //Выбор отмеченной по умолчанию позиции из торговых точек
         /*
