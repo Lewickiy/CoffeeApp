@@ -3,10 +3,12 @@ package com.lewickiy.coffeeboardapp.database.discount;
 public class Discount {
     private int discountId;
     private int discount;
+    private boolean active;
 
-    public Discount(int discountId, int discount) {
+    public Discount(int discountId, int discount, boolean active) {
         this.discountId = discountId;
         this.discount = discount;
+        this.active = active;
     }
 
     public Discount(int discount) {
