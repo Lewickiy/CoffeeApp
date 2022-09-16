@@ -137,7 +137,7 @@ public class SellerController {
     void productOnAction(ActionEvent event) throws SQLException {
         Button button = (Button) event.getSource();
         endThisTale.setDisable(false); //Кнопка Чек становится доступна
-        System.out.println(button.getAccessibleText());
+
         if (newSale) {
             saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи.
             currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId()); //Создаётся текущая продажа в буфере.
@@ -366,6 +366,8 @@ public class SellerController {
     @FXML
     private AnchorPane discountPanel; //Непосредственно сама панель. В ней содержатся все актуальные скидки.
     @FXML
+    Button[] discountButtons = new Button[9]; //массив кнопок со скидками
+    @FXML
     private Button discount1;
     @FXML
     private Button discount2;
@@ -439,6 +441,7 @@ public class SellerController {
          * Здесь вызывается метод инициализации кнопок с Продуктами.
          ____________________________________________________________________________________*/
         initializationProductButton();
+        initializationDiscountButton(); //Пока не действует
         /*____________________________________________________________________________________
          * Здесь происходит инициализация столбцов таблицы текущей продажи.
          * В неё добавляются позиции Продуктов.
@@ -456,6 +459,20 @@ public class SellerController {
     /*____________________________________start___________________________________________
      * Прочие методы.
      _____________________________________˅˅˅____________________________________________*/
+    public void initializationDiscountButton() {
+        discountButtons = new Button[9];
+        discountButtons[0] = discount1;
+        discountButtons[1] = discount2;
+        discountButtons[2] = discount3;
+        discountButtons[3] = discount4;
+        discountButtons[4] = discount5;
+        discountButtons[5] = discount6;
+        discountButtons[6] = discount7;
+        discountButtons[7] = discount8;
+        discountButtons[8] = discount9;
+        //TODO логика назначения кнопкам процента скидки, если у объекта в ArrayList дисконта в переменной active установлено значение true.
+
+    }
     public void initializationProductButton() { //Метод инициализации кнопок продуктов.
         productButtons = new Button[20];
         productButtons[0] = product1;

@@ -75,7 +75,6 @@ public class LoginController {
             @Override
             public void changed(ObservableValue<? extends Outlet> observableValue, Outlet outlet, Outlet t1) {
                 currentOutlet = outletChoiceBox.getValue();
-                System.out.println(currentOutlet.getOutletId() + " " + currentOutlet.getOutlet());
                 acceptOutletChoice.setDisable(false);
             }
         });
