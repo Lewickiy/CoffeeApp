@@ -1,5 +1,5 @@
 package com.lewickiy.coffeeboardapp.controllers.seller;
-
+//Тестовый комментарий.
 import com.lewickiy.coffeeboardapp.CoffeeBoardApp;
 import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
