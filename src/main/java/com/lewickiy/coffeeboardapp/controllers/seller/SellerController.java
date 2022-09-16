@@ -337,6 +337,15 @@ public class SellerController {
     }
     @FXML
     void endThisTaleOnAction() throws SQLException {
+        long nowDate = System.currentTimeMillis(); //Дата сейчас.
+        Date saleDate = new Date(nowDate);
+        long nowTime = System.currentTimeMillis(); //Время сейчас.
+        Time saleTime = new Time(nowTime);
+        currentSale.setCurrentDate(saleDate);
+        currentSale.setCurrentTime(saleTime);
+        currentSale.setClientId(1); //Временное назначение клиента
+        currentSale.setPaymentTypeId(1); //Временное назначение типа платежа
+        createNewSale(currentSale); //Создаётся новая продажа в базе из currentSale.
         addProductsToSale(currentSaleProducts, currentSale);
         endThisTale.setDisable(true);
         newSale = true;
