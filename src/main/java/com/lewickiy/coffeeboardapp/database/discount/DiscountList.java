@@ -18,7 +18,8 @@ public class DiscountList {
         while(resultSet.next()) {
             int discountId = resultSet.getInt("discount_id");
             int discount = resultSet.getInt("discount");
-            discounts.add(new Discount(discountId, discount));
+            boolean active = resultSet.getBoolean("active");
+            discounts.add(new Discount(discountId, discount, active));
         }
     }
 }
