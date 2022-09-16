@@ -140,12 +140,7 @@ public class SellerController {
         System.out.println(button.getAccessibleText());
         if (newSale) {
             saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи.
-            long nowDate = System.currentTimeMillis(); //Дата сейчас.
-            Date saleDate = new Date(nowDate);
-            long nowTime = System.currentTimeMillis(); //Время сейчас.
-            Time saleTime = new Time(nowTime);
-            currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId(), saleDate, saleTime); //Создаётся текущая продажа в буфере.
-            createNewSale(currentSale); //Создаётся новая продажа в базе из currentSale.
+            currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId()); //Создаётся текущая продажа в буфере.
             newSale = false; //последующие действия уже не должны создавать новую продажу.
 
             int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
