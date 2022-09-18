@@ -1,12 +1,14 @@
 package com.lewickiy.coffeeboardapp.controllers.seller;
 //Тестовый комментарий.
+
 import com.lewickiy.coffeeboardapp.CoffeeBoardApp;
 import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList;
+import com.lewickiy.coffeeboardapp.database.discount.Discount;
 import com.lewickiy.coffeeboardapp.database.outlet.Outlet;
+import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
 import com.lewickiy.coffeeboardapp.database.product.Product;
-import com.lewickiy.coffeeboardapp.database.product.ProductList;
 import com.lewickiy.coffeeboardapp.database.user.UserList;
 import com.lewickiy.coffeeboardapp.idgenerator.UniqueIdGenerator;
 import javafx.collections.FXCollections;
@@ -36,6 +38,12 @@ import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.p
 import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.createNewSale;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addProductsToSale;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
+import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
+import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
+import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
+import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeAL;
+import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
+import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 
 public class SellerController {
     private boolean newSale = true; //boolean значение необходимости создания нового чека
@@ -150,7 +158,7 @@ public class SellerController {
 
             int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
             // Здесь мы будем вставлять позицию в SaleProductList ПРИ СОЗДАНИИ НОВОГО ЧЕКА. Пока без загрузки в базу.
-            for (Product product : ProductList.products) { //Циклом перебираются все продукты из products ArrayList
+            for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
                 if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                     productButtonsIsDisable(true); //Спрятать кнопки продукта.
                     numberButtonsIsDisable(false); //Показать цифровые кнопки.
@@ -163,7 +171,7 @@ public class SellerController {
             }
         } else {
             int idProductButton = Integer.parseInt(button.getAccessibleText());
-            for (Product product : ProductList.products) { //Циклом перебираются все продукты из products ArrayList
+            for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
                 if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                     productButtonsIsDisable(true); //Спрятать кнопки продукта.
                     numberButtonsIsDisable(false); //Показать цифровые кнопки.
@@ -311,7 +319,6 @@ public class SellerController {
     //Логика нажатия на кнопку со Скидкой
     @FXML
     void discountButtonActivateOnAction(ActionEvent event) {
-        System.out.println("Делаем скидку");
         discountPanel.setVisible(true);
     }
 
@@ -382,9 +389,18 @@ public class SellerController {
      * @param event - принимается параметр ActionEvent
      */
     @FXML
-    void discountOnAction(ActionEvent event) {
-        //TODO
-        System.out.println("discount button pressed");
+    void discountOnAction(ActionEvent event) { //Нажимаем на кнопку с конкретной скидкой
+        Button button = (Button) event.getSource(); // определяем кнопка с какой скидкой нажата
+        discountPanel.setVisible(false); // Скрываем панель скидок
+        currentProduct.setDiscountId(Integer.parseInt(button.getAccessibleText())); //устанавливаем текущему продукту id скидки
+        for (Discount discount : discounts) {
+            if (currentProduct.getDiscountId() == discount.getDiscountId()) {
+                currentProduct.setDiscount(discount.getDiscount());
+            }
+        }
+        currentProduct.setSum((currentProduct.getPrice() //Устанавливаем текущему продукту сумму исходя из количества и скидки
+                - (currentProduct.getPrice() * currentProduct.getDiscount() / 100))
+                * currentProduct.getAmount());
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
@@ -487,6 +503,7 @@ public class SellerController {
         productColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        discountColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
     }
 
@@ -507,6 +524,16 @@ public class SellerController {
         discountButtons[6] = discount7;
         discountButtons[7] = discount8;
         discountButtons[8] = discount9;
+
+        int discountCount = 0;
+        for (Discount discount : discounts) {
+            if (discount.isActive() == true) {
+                discountButtons[discountCount].setAccessibleText(String.valueOf(discount.getDiscountId())); //Id позиции скидки назначается getaccessibletext кнопки.
+                discountButtons[discountCount].setText(discount.getDiscount() + "%");
+                discountButtons[discountCount].setVisible(true);
+                discountCount++;
+            }
+        }
         //TODO логика назначения кнопкам процента скидки, если у объекта в ArrayList дисконта в переменной active установлено значение true.
 
     }
