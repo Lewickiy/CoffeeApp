@@ -22,11 +22,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.createOutletList;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
-import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeAL;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
 import static com.lewickiy.coffeeboardapp.database.user.UserList.*;
 
@@ -77,9 +75,6 @@ public class LoginController {
                 acceptOutletChoice.setDisable(false);
             }
         });
-        //_____________________________________________________________________________________________
-
-
 
         assert cancelButton != null : "fx:id=\"cancelButton\" was not injected: check your FXML file 'login.fxml'.";
         assert loginButton != null : "fx:id=\"loginButton\" was not injected: check your FXML file 'Untitled'.";
@@ -190,6 +185,7 @@ public class LoginController {
                 break; //И всё?! Просто break ?!
             } else {
                 loginMessageLabel.setText("Не правильный логин или имя пользователя"); //TODO В интерфейсе пользователя нужно сделать TextLabel выше чтобы не вмещающийся текст влез, может с переносом строки
+                //TODO сообщение в loginMessageLabel должно пропадать после начала ввода в поле пароля или логина. Listener
             }
         }
     }
