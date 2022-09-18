@@ -105,7 +105,6 @@ public class LoginController {
         } else {
             //Это уходит в кнопку Ok после выбора Торговой точки.
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            stage.close(); //закрытие первой сцены
             Stage stageSeller = new Stage(); //запуск второй сцены
             FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("seller.fxml")); //запуск seller.fxml
             Scene scene = new Scene(fxmlLoader.load());
@@ -116,6 +115,7 @@ public class LoginController {
             //TODO проверку на наличие организационной структуры My SQL базы. Если это первый запуск, вся структура должна создаваться
 //      sqlCheckTable(); //проверяется наличие таблицы sale. Это надо сделать ранее. При запуске программы.
             stageSeller.show();
+            stage.close(); //закрытие первой сцены
         }
     }
     /**
