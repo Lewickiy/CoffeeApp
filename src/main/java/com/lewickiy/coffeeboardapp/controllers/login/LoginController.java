@@ -62,10 +62,9 @@ public class LoginController {
         createUsersList(); //Загрузка объектов из базы в список пользователей.
         createProductsList(); //Загрузка объектов из базы в список продуктов.
         createOutletList(); //Загрузка объектов из базы в список торговых точек.
-        createDiscountList();
-        createPaymentTypeAL();
+        outletChoiceBox.setAccessibleHelp("Hello!"); //Выбор отмеченной по умолчанию позиции из торговых точек
+        outletChoiceBox.setAccessibleText("Hi!");
         outletChoiceBox.setItems(outletsObservableList); //Устанавливаем значения в ChoiceBox из observableList
-        outletChoiceBox.setAccessibleText("Выберете рабочее место"); //Выбор отмеченной по умолчанию позиции из торговых точек
         /*
          *Это Listener для outletChoiceBox. Он следит за изменениями в выборе и создаёт из них объект
          * currentOutlet класса Outlet. Дальше я буду с ним работать для фильтрации администратором продаж

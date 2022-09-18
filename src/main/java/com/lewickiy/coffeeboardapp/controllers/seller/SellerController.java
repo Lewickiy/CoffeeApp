@@ -402,7 +402,19 @@ public class SellerController {
      * Инициализация
      _____________________________________˅˅˅____________________________________________*/
     @FXML
-    void initialize() {
+    void initialize() throws SQLException {
+        createDiscountList();
+        createPaymentTypeAL();
+        paymentTypePanel.setVisible(false);
+        paymentTypeButtons[0] = paymentType1;
+        paymentTypeButtons[1] = paymentType2;
+        int count = 0;
+        for (PaymentType paymentType : paymentTypes) {
+            paymentTypeButtons[count].setAccessibleText(String.valueOf(paymentType.getPaymentTypeId()));
+            paymentTypeButtons[count].setText(paymentType.getPaymentType());
+            count++;
+        }
+
         //Изменения в currentSaleProducts происходят также в saleProductsObservableList благодаря Listener.
         saleProductsObservableList.addListener(new ListChangeListener<SaleProduct>() {
             @Override
