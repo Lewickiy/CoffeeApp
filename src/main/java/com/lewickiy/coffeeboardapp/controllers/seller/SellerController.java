@@ -343,24 +343,8 @@ public class SellerController {
         productButtonsIsDisable(false); //Кнопки с Продуктами становятся активными.
     }
     @FXML
-    void endThisTaleOnAction() throws SQLException {
-        long nowDate = System.currentTimeMillis(); //Дата сейчас.
-        Date saleDate = new Date(nowDate);
-        long nowTime = System.currentTimeMillis(); //Время сейчас.
-        Time saleTime = new Time(nowTime);
-        currentSale.setCurrentDate(saleDate);
-        currentSale.setCurrentTime(saleTime);
-        currentSale.setClientId(1); //Временное назначение клиента
-        currentSale.setPaymentTypeId(1); //Временное назначение типа платежа
-        createNewSale(currentSale); //Создаётся новая продажа в базе из currentSale.
-        addProductsToSale(currentSaleProducts, currentSale);
-        endThisTale.setDisable(true);
-        newSale = true;
-        currentSale = null;
-        positionsCount = 0;
-        currentSaleProducts.clear();
-        sumLabel.setText("0.0");
-        saleTable.refresh();
+    void endThisTaleOnAction(ActionEvent event) throws SQLException {
+        paymentTypePanel.setVisible(true);
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
@@ -404,6 +388,40 @@ public class SellerController {
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
+
+    @FXML
+    private AnchorPane paymentTypePanel;
+
+    @FXML
+    Button[] paymentTypeButtons = new Button[2]; //массив кнопок продуктов
+    @FXML
+    private Button paymentType1;
+
+    @FXML
+    private Button paymentType2;
+
+    @FXML
+    void paymentTypeOnAction(ActionEvent event) throws SQLException {
+        Button button = (Button) event.getSource();
+        currentSale.setPaymentTypeId(Integer.parseInt(button.getAccessibleText()));
+        paymentTypePanel.setVisible(false);
+        endThisTale.setDisable(true);
+        long nowDate = System.currentTimeMillis(); //Дата сейчас.
+        Date saleDate = new Date(nowDate);
+        long nowTime = System.currentTimeMillis(); //Время сейчас.
+        Time saleTime = new Time(nowTime);
+        currentSale.setCurrentDate(saleDate);
+        currentSale.setCurrentTime(saleTime);
+        currentSale.setClientId(1); //Временное назначение клиента
+        createNewSale(currentSale); //Создаётся новая продажа в базе из currentSale.
+        addProductsToSale(currentSaleProducts, currentSale);
+        currentSale = null;
+        newSale = true;
+        positionsCount = 0;
+        currentSaleProducts.clear();
+        sumLabel.setText("0.0");
+        saleTable.refresh();
+    }
 
     /*____________________________________start___________________________________________
      * Инициализация
