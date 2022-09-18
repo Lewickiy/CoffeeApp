@@ -59,6 +59,11 @@ public class SellerController {
     //Действие при нажатии на кнопку Закрытия смены.
     @FXML
     void closeShiftButtonOnAction() throws IOException {
+        currentSaleProducts.clear();
+        products.clear();
+        discounts.clear();
+        paymentTypes.clear();
+        outlets.clear();
         Stage stage = (Stage) closeShiftButton.getScene().getWindow();
         stage.close();
         FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("login.fxml"));
