@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 
 public class DiscountList {
-    static ArrayList<Discount> discounts = new ArrayList<>();
+    public static ArrayList<Discount> discounts = new ArrayList<>();
 
     public static void createDiscountList() throws SQLException {
         Statement statement = getConnection().createStatement(); //создаётся подключение
@@ -20,6 +20,13 @@ public class DiscountList {
             int discount = resultSet.getInt("discount");
             boolean active = resultSet.getBoolean("active");
             discounts.add(new Discount(discountId, discount, active));
+        }
+
+        int activeCount = 0;
+        for (Discount discount : discounts) {
+            if (discount.isActive() == true) {
+                activeCount++;
+            }
         }
     }
 }
