@@ -30,4 +30,12 @@ public class Discount {
     public void setDiscount(int discount) {
         this.discount = discount;
     }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }
