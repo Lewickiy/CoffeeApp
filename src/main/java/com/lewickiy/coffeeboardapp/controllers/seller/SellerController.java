@@ -270,6 +270,8 @@ public class SellerController {
     @FXML
     private TableColumn<SaleProduct, Integer> amountColumn; //количество продукта
     @FXML
+    private TableColumn<SaleProduct, Integer> discountColumn;
+    @FXML
     private TableColumn<SaleProduct, Double> sumColumn; //сумма стоимости продукта исходя из количества
     @FXML
     private Label sumLabel; //Сумма стоимости товара
