@@ -2,18 +2,15 @@ package com.lewickiy.coffeeboardapp.database.product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.Query.selectFromSql;
 
 public class ProductList {
     public static ArrayList<Product> products = new ArrayList<>();
 
     public static void createProductsList() throws SQLException {
-        Statement statement = getConnection().createStatement(); //создаётся подключение
-        String query = "SELECT * FROM product"; //создаётся запрос к базе данных
-        ResultSet resultSet = statement.executeQuery(query);
+        ResultSet resultSet = selectFromSql("product");
 
         while(resultSet.next()) {
             int productId = resultSet.getInt("product_id");

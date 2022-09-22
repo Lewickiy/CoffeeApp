@@ -2,11 +2,10 @@ package com.lewickiy.coffeeboardapp.database.user;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.Query.selectFromSql;
 
 public class UserList {
     public static ArrayList<User> users = new ArrayList<>();
@@ -29,9 +28,7 @@ public class UserList {
             , false);
 
     public static void createUsersList() throws SQLException {
-        Statement statement = getConnection().createStatement(); //создаётся подключение
-        String query = "SELECT * FROM user"; //создаётся запрос к базе данных
-        ResultSet resultSet = statement.executeQuery(query);
+        ResultSet resultSet = selectFromSql("user");
 
         while(resultSet.next()) {
             int userId = resultSet.getInt("user_id");

@@ -1,5 +1,4 @@
 package com.lewickiy.coffeeboardapp.controllers.seller;
-//Тестовый комментарий.
 
 import com.lewickiy.coffeeboardapp.CoffeeBoardApp;
 import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
@@ -16,11 +15,13 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -45,10 +46,15 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 
 public class SellerController {
     private boolean newSale = true; //boolean значение необходимости создания нового чека
+
     private int saleId; //Идентификатор текущей продажи. Создаётся в классе UniqueIdGenerator
+
     private int positionsCount;
+
     private CurrentSale currentSale; //объект - текущая продажа.
+
     private SaleProduct currentProduct; //объект - зона сбора данных.
+
     static ObservableList<SaleProduct> saleProductsObservableList = FXCollections.observableList(currentSaleProducts);
 
     /*____________________________________start___________________________________________
@@ -62,7 +68,7 @@ public class SellerController {
     private Button closeShiftButton; //кнопка закрытия смены
 
     @FXML
-    private Label userEarnings;
+    private Label userEarnings; //Не действует. Должно помещаться на отдельном окне при закрытии смены.
 
     //Действие при нажатии на кнопку Закрытия смены.
     @FXML
@@ -96,6 +102,7 @@ public class SellerController {
      * TODO найти решение упрощения системы создания кнопок с продуктами. Наверняка можно сделать это без вписывания их в FXML
      * TODO добавить ещё кнопки с продуктами.
      _____________________________________˅˅˅____________________________________________*/
+
     @FXML
     Button[] productButtons = new Button[20]; //массив кнопок продуктов
 
@@ -368,6 +375,10 @@ public class SellerController {
     @FXML
     void delProductOnAction() {
         //TODO кнопка отмены ButtonOnAction
+    }
+    @FXML
+    void oupsOnAction() {
+
     }
     //Логика при нажатии на кнопку "+" добавления продукта в текущий чек.
     @FXML

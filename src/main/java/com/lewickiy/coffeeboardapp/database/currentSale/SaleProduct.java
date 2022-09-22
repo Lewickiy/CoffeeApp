@@ -17,7 +17,14 @@ public class SaleProduct {
     private int amount;
     private double sum;
 
-    public SaleProduct(int saleProdId, int prodSaleId, String prodName, double priceProdSale, int discountId, int discount, int amountProdSale, double sumProdSale) {
+    public SaleProduct(int saleProdId
+            , int prodSaleId
+            , String prodName
+            , double priceProdSale
+            , int discountId
+            , int discount
+            , int amountProdSale
+            , double sumProdSale) {
         this.saleId = saleProdId;
         this.productId = prodSaleId;
         this.product = prodName;

@@ -3,6 +3,7 @@ package com.lewickiy.coffeeboardapp.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DatabaseConnector {
     private static final String DB_DRIVER = "jdbc:mysql:";
@@ -21,6 +22,7 @@ public class DatabaseConnector {
     public static Connection getConnection() { // метод подключения к базе данных
         try {
             connectNow = DriverManager.getConnection(URL, USER, PASSWORD);
+//            Statement statement = getConnection().createStatement();
         } catch (SQLException sqlEx) {
             System.out.println(sqlEx);
             //TODO при отсутствии подключения вывести на экран сообщение о необходимости подключения

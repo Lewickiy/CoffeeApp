@@ -1,7 +1,6 @@
 package com.lewickiy.coffeeboardapp.database.currentSale;
 
 import com.lewickiy.coffeeboardapp.database.DatabaseConnector;
-import com.lewickiy.coffeeboardapp.database.user.UserList;
 
 import java.sql.Date;
 import java.sql.SQLException;

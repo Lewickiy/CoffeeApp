@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.Query.selectFromSql;
 
 public class OutletList {
     public static ArrayList<Outlet> outlets = new ArrayList<>();
@@ -15,11 +16,9 @@ public class OutletList {
      * при формировании чеков и различных отчётов.
      * @throws SQLException - не обработано
      */
-    public static void createOutletList() throws SQLException {
-        Statement statement = getConnection().createStatement(); //создаётся подключение
-        String query = "SELECT * FROM outlet"; //создаётся запрос к базе данных
-        ResultSet resultSet = statement.executeQuery(query);
 
+    public static void createOutletList() throws SQLException {
+        ResultSet resultSet = selectFromSql("outlet");
         while(resultSet.next()) {
             int outletId = resultSet.getInt("outlet_id");
             String outlet = resultSet.getString("outlet");
