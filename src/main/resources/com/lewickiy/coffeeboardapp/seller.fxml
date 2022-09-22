@@ -4,7 +4,6 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
@@ -181,6 +180,26 @@
                               <Font size="13.0" />
                            </font>
                         </Button>
+                        <AnchorPane minWidth="580.0" prefHeight="710.0" prefWidth="1012.0" style="-fx-background-color: LIGHTGREY;" visible="false">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" layoutX="425.0" layoutY="256.0" prefHeight="27.0" prefWidth="214.0" snapToPixel="false" text="Сегодня вы заработали:">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="userEarnings" alignment="CENTER_RIGHT" layoutX="478.0" layoutY="302.0" prefHeight="27.0" prefWidth="72.0" snapToPixel="false" text="0.00" textAlignment="RIGHT">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="559.0" layoutY="301.0" prefHeight="27.0" prefWidth="73.0" snapToPixel="false" text="руб.">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button layoutX="502.0" layoutY="359.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="OK" />
+                           </children>
+                        </AnchorPane>
                      </children>
                 </AnchorPane>
                </left>
@@ -195,7 +214,6 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                      <MenuBar />
                     </items>
                   </ToolBar>
                </top>
@@ -249,7 +267,7 @@
                               <Font size="74.0" />
                            </font>
                         </Label>
-                        <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#12ae27" wrapText="true">
+                        <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#12ae27" wrapText="true">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
@@ -272,7 +290,7 @@
                               <Font name="System Bold" size="35.0" />
                            </font>
                         </Button>
-                        <Button fx:id="endThisTale" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="13.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#endThisTaleOnAction" prefHeight="75.0" prefWidth="136.0" text="Чек" textAlignment="CENTER" textFill="#12ae27" wrapText="true">
+                        <Button fx:id="endThisTale" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="13.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#endThisTaleOnAction" prefHeight="75.0" prefWidth="136.0" text="Чек" textAlignment="CENTER" textFill="#12ae27" wrapText="true">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
@@ -291,7 +309,7 @@
                               </Label>
                               <Button fx:id="discount5" alignment="CENTER" contentDisplay="CENTER" layoutX="147.0" layoutY="170.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="22.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />
@@ -299,7 +317,7 @@
                               </Button>
                               <Button fx:id="discount6" alignment="CENTER" contentDisplay="CENTER" layoutX="241.0" layoutY="170.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="22.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />
@@ -307,7 +325,7 @@
                               </Button>
                               <Button fx:id="discount4" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="170.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="22.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />
@@ -315,7 +333,7 @@
                               </Button>
                               <Button fx:id="discount2" alignment="CENTER" contentDisplay="CENTER" layoutX="147.0" layoutY="79.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="22.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />
@@ -323,7 +341,7 @@
                               </Button>
                               <Button fx:id="discount3" alignment="CENTER" contentDisplay="CENTER" layoutX="241.0" layoutY="79.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="22.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />
@@ -331,7 +349,7 @@
                               </Button>
                               <Button fx:id="discount1" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="79.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="22.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />
@@ -339,7 +357,7 @@
                               </Button>
                               <Button fx:id="discount8" alignment="CENTER" contentDisplay="CENTER" layoutX="147.0" layoutY="262.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="22.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />
@@ -347,7 +365,7 @@
                               </Button>
                               <Button fx:id="discount9" alignment="CENTER" contentDisplay="CENTER" layoutX="241.0" layoutY="262.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="22.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />
@@ -355,7 +373,7 @@
                               </Button>
                               <Button fx:id="discount7" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="262.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="22.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />
@@ -365,19 +383,29 @@
                         </AnchorPane>
                         <AnchorPane fx:id="paymentTypePanel" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;">
                            <children>
-                              <Label prefHeight="27.0" prefWidth="207.0" text="Выберете  тип оплаты">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Button fx:id="paymentType1" alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="123.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" prefWidth="242.0" text="0" textAlignment="CENTER" wrapText="true">
+                              <Button fx:id="endThisTaleAnother1" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
                                  <font>
                                     <Font name="System Bold" size="35.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="paymentType2" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="218.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" prefWidth="242.0" text="0" textAlignment="CENTER" wrapText="true">
+                              <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="207.0" text="Выберете  тип оплаты">
                                  <font>
-                                    <Font name="System Bold" size="35.0" />
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="paymentType1" alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="99.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" prefWidth="242.0" text="Наличные" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="22.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="paymentType2" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" prefWidth="242.0" text="Карта" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="22.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="oups" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#oupsOnAction" prefHeight="75.0" prefWidth="149.0" text="Oups" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="22.0" />
                                  </font>
                               </Button>
                            </children>

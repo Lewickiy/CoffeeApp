@@ -7,6 +7,7 @@ public class SaleProductList {
     public static void addSaleProductsList(int saleProdId, int prodSaleId, String prodName, double priceProdSale, int discountId, int discount, int amountProdSale, double sumProdSale) {
         currentSaleProducts.add(new SaleProduct(saleProdId, prodSaleId, prodName, priceProdSale, discountId, discount, amountProdSale, sumProdSale));
     }
+
     public static void addProductToArray(int positionsCount
             , CurrentSale currentSale
             , SaleProduct currentProduct
@@ -14,6 +15,7 @@ public class SaleProductList {
         currentProduct.setSum((currentProduct.getPrice()
                 - (currentProduct.getPrice() * currentProduct.getDiscountId() / 100))
                 * currentProduct.getAmount());
+
         if (positionsCount == 0) {
             addSaleProductsList(currentSale.getSaleId()
                     , currentProduct.getProductId()
@@ -25,7 +27,9 @@ public class SaleProductList {
                     , currentProduct.getSum());
         } else {
             boolean b = true;
+
             for (int i = 0; i < currentSaleProducts.size(); i++) {
+
                 if (currentProduct.getProductId() == currentSaleProducts.get(i).getProductId()
                         && currentProduct.getDiscountId() == currentSaleProducts.get(i).getDiscountId()) {
                     currentSaleProducts.get(i).setAmount(
@@ -40,6 +44,7 @@ public class SaleProductList {
                     break;
                 }
             }
+
             if (b == true) {
                 addSaleProductsList(currentProduct.getSaleId()
                         , currentProduct.getProductId()

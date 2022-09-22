@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SaleProduct {
+
     private int saleId;
     private int productId;
     private String product;
@@ -96,9 +97,12 @@ public class SaleProduct {
     public void setSum(double sum) {
         this.sum = sum;
     }
+
     public static void addProductsToSale(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) throws SQLException {
         Statement statement = DatabaseConnector.getConnection().createStatement();
+
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
+
             if (currentSaleProduct.getDiscountId() == 0) {
                 currentSaleProduct.setDiscountId(1);
             }

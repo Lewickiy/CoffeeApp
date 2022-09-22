@@ -16,13 +16,11 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -53,7 +51,6 @@ public class SellerController {
     private SaleProduct currentProduct; //объект - зона сбора данных.
     static ObservableList<SaleProduct> saleProductsObservableList = FXCollections.observableList(currentSaleProducts);
 
-
     /*____________________________________start___________________________________________
      * Панель информации в верхней части экрана.
      * Здесь присутствуют кнопки:
@@ -63,6 +60,9 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     private Button closeShiftButton; //кнопка закрытия смены
+
+    @FXML
+    private Label userEarnings;
 
     //Действие при нажатии на кнопку Закрытия смены.
     @FXML
@@ -98,44 +98,64 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     Button[] productButtons = new Button[20]; //массив кнопок продуктов
+
     @FXML
     private Button product1;
+
     @FXML
     private Button product2;
+
     @FXML
     private Button product3;
+
     @FXML
     private Button product4;
+
     @FXML
     private Button product5;
+
     @FXML
     private Button product6;
+
     @FXML
     private Button product7;
+
     @FXML
     private Button product8;
+
     @FXML
     private Button product9;
+
     @FXML
     private Button product10;
+
     @FXML
     private Button product11;
+
     @FXML
     private Button product12;
+
     @FXML
     private Button product13;
+
     @FXML
     private Button product14;
+
     @FXML
     private Button product15;
+
     @FXML
     private Button product16;
+
     @FXML
     private Button product17;
+
     @FXML
     private Button product18;
+
     @FXML
     private Button product19;
+
     @FXML
     private Button product20;
 
@@ -146,6 +166,7 @@ public class SellerController {
     * В конце процесса создания новой продажи значение newSale меняется на false. <br>
     * Теперь, последующие нажатия на кнопку product будут добавлять позиции в текущую продажу.
     ____________________________________________________________________________________*/
+
     @FXML
     void productOnAction(ActionEvent event) throws SQLException {
         Button button = (Button) event.getSource();
@@ -158,7 +179,9 @@ public class SellerController {
 
             int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
             // Здесь мы будем вставлять позицию в SaleProductList ПРИ СОЗДАНИИ НОВОГО ЧЕКА. Пока без загрузки в базу.
+
             for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
+
                 if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                     productButtonsIsDisable(true); //Спрятать кнопки продукта.
                     numberButtonsIsDisable(false); //Показать цифровые кнопки.
@@ -171,7 +194,9 @@ public class SellerController {
             }
         } else {
             int idProductButton = Integer.parseInt(button.getAccessibleText());
+
             for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
+
                 if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                     productButtonsIsDisable(true); //Спрятать кнопки продукта.
                     numberButtonsIsDisable(false); //Показать цифровые кнопки.
@@ -197,26 +222,37 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     Button[] numberButtons = new Button[10]; //массив цифровых кнопок
+
     @FXML
     private Button oneButton;
+
     @FXML
     private Button twoButton;
+
     @FXML
     private Button threeButton;
+
     @FXML
     private Button fourButton;
+
     @FXML
     private Button fiveButton;
+
     @FXML
     private Button sixButton;
+
     @FXML
     private Button sevenButton;
+
     @FXML
     private Button eightButton;
+
     @FXML
     private Button nineButton;
+
     @FXML
     private Button zeroButton;
+
     /**
      * Действие при нажатии на цифровую кнопку.
      * Количество выбранного продукта устанавливается исходя из AccessibleText цифровой кнопки.
@@ -271,16 +307,22 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     private TableView<SaleProduct> saleTable; //таблица продаж
+
     @FXML
     private TableColumn<SaleProduct, String> productColumn; //колонка с наименованием продукта
+
     @FXML
     private TableColumn<SaleProduct, Double> priceColumn; //колонка со стоимостью продукта
+
     @FXML
     private TableColumn<SaleProduct, Integer> amountColumn; //количество продукта
+
     @FXML
     private TableColumn<SaleProduct, Integer> discountColumn;
+
     @FXML
     private TableColumn<SaleProduct, Double> sumColumn; //сумма стоимости продукта исходя из количества
+
     @FXML
     private Label sumLabel; //Сумма стоимости товара
     /*____________________________________˄˄˄_____________________________________________
@@ -337,6 +379,7 @@ public class SellerController {
 
         //Подсчёт суммы продажи под таблицей текущей продажи.
         double total = 0.0;
+
         for (SaleProduct saleProduct : saleTable.getItems()) {
             total = total + saleProduct.getSum();
         }
@@ -393,7 +436,9 @@ public class SellerController {
         Button button = (Button) event.getSource(); // определяем кнопка с какой скидкой нажата
         discountPanel.setVisible(false); // Скрываем панель скидок
         currentProduct.setDiscountId(Integer.parseInt(button.getAccessibleText())); //устанавливаем текущему продукту id скидки
+
         for (Discount discount : discounts) {
+
             if (currentProduct.getDiscountId() == discount.getDiscountId()) {
                 currentProduct.setDiscount(discount.getDiscount());
             }
@@ -410,6 +455,7 @@ public class SellerController {
 
     @FXML
     Button[] paymentTypeButtons = new Button[2]; //массив кнопок продуктов
+
     @FXML
     private Button paymentType1;
 
@@ -435,7 +481,8 @@ public class SellerController {
         newSale = true;
         positionsCount = 0;
         currentSaleProducts.clear();
-        sumLabel.setText("0.0");
+        sumLabel.setText("0.00");
+    //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
         saleTable.refresh();
     }
 
@@ -450,6 +497,7 @@ public class SellerController {
         paymentTypeButtons[0] = paymentType1;
         paymentTypeButtons[1] = paymentType2;
         int count = 0;
+
         for (PaymentType paymentType : paymentTypes) {
             paymentTypeButtons[count].setAccessibleText(String.valueOf(paymentType.getPaymentTypeId()));
             paymentTypeButtons[count].setText(paymentType.getPaymentType());
@@ -472,6 +520,7 @@ public class SellerController {
         numberButtons[7] = sevenButton;
         numberButtons[8] = eightButton;
         numberButtons[9] = nineButton;
+
         for (int i = 0; i < numberButtons.length; i++) {
             numberButtons[i].setAccessibleText(String.valueOf(i));
         }
@@ -500,11 +549,19 @@ public class SellerController {
          * В неё добавляются позиции Продуктов.
          * setCellValueFactory определяет что добавляется и в какой столбец.
          ____________________________________________________________________________________*/
+        saleTable.setEditable(true);
+        productColumn.setEditable(true);
         productColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
+        priceColumn.setEditable(true);
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        amountColumn.setEditable(true);
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        saleTable.setItems(saleProductsObservableList);
+        discountColumn.setEditable(true);
         discountColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
+        sumColumn.setEditable(true);
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
+
     }
 
     /*____________________________________˄˄˄_____________________________________________
@@ -526,7 +583,9 @@ public class SellerController {
         discountButtons[8] = discount9;
 
         int discountCount = 0;
+
         for (Discount discount : discounts) {
+
             if (discount.isActive() == true) {
                 discountButtons[discountCount].setAccessibleText(String.valueOf(discount.getDiscountId())); //Id позиции скидки назначается getaccessibletext кнопки.
                 discountButtons[discountCount].setText(discount.getDiscount() + "%");
@@ -573,6 +632,7 @@ public class SellerController {
      * @param res - типа boolean является переключателем для метода.
      */
     public void productButtonsIsDisable(boolean res) {
+
         for (Button buttonP : productButtons) { //Если Продукт есть и всё нормально, делаем недоступными кнопки с Продуктами.
             buttonP.setDisable(res); //теперь кнопки должны быть скрытыми пока я не выберу количество или не отменю позицию Продукта
         }
@@ -584,6 +644,7 @@ public class SellerController {
      * @param res - тип boolean, который работает как переключатель
      */
     public void numberButtonsIsDisable(boolean res) {
+
         for (Button buttonN : numberButtons) {
             buttonN.setDisable(res);
         }
