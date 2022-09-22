@@ -372,7 +372,7 @@ public class SellerController {
     //Логика при нажатии на кнопку "+" добавления продукта в текущий чек.
     @FXML
     void addProductOnAction() {
-        SaleProductList.addProductToArray(positionsCount,currentSale, currentProduct, saleId);
+        SaleProductList.addProductToArray(positionsCount, currentProduct);
         positionsCount++;
         saleTable.setItems(saleProductsObservableList); //Установка значений в таблицу.
         saleTable.refresh(); //Обновление таблицы. Без этого отображается только первая строка.

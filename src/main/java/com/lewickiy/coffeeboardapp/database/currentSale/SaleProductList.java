@@ -8,23 +8,13 @@ public class SaleProductList {
         currentSaleProducts.add(new SaleProduct(saleProdId, prodSaleId, prodName, priceProdSale, discountId, discount, amountProdSale, sumProdSale));
     }
 
-    public static void addProductToArray(int positionsCount
-            , CurrentSale currentSale
-            , SaleProduct currentProduct
-            , int saleId) {
+    public static void addProductToArray(int positionsCount, SaleProduct currentProduct) {
         currentProduct.setSum((currentProduct.getPrice()
                 - (currentProduct.getPrice() * currentProduct.getDiscountId() / 100))
                 * currentProduct.getAmount());
 
         if (positionsCount == 0) {
-            addSaleProductsList(currentSale.getSaleId()
-                    , currentProduct.getProductId()
-                    , currentProduct.getProduct()
-                    , currentProduct.getPrice()
-                    , currentProduct.getDiscountId()
-                    , currentProduct.getDiscount()
-                    , currentProduct.getAmount()
-                    , currentProduct.getSum());
+            addProductIf(currentProduct);
         } else {
             boolean b = true;
 
@@ -46,15 +36,18 @@ public class SaleProductList {
             }
 
             if (b == true) {
-                addSaleProductsList(currentProduct.getSaleId()
-                        , currentProduct.getProductId()
-                        , currentProduct.getProduct()
-                        , currentProduct.getPrice()
-                        , currentProduct.getDiscountId()
-                        , currentProduct.getDiscount()
-                        , currentProduct.getAmount()
-                        , currentProduct.getSum());
+                addProductIf(currentProduct);
             }
         }
+    }
+    static void addProductIf(SaleProduct currentProduct) {
+        addSaleProductsList(currentProduct.getSaleId()
+                , currentProduct.getProductId()
+                , currentProduct.getProduct()
+                , currentProduct.getPrice()
+                , currentProduct.getDiscountId()
+                , currentProduct.getDiscount()
+                , currentProduct.getAmount()
+                , currentProduct.getSum());
     }
 }
