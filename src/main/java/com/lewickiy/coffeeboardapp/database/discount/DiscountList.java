@@ -18,13 +18,5 @@ public class DiscountList {
             boolean active = resultSet.getBoolean("active");
             discounts.add(new Discount(discountId, discount, active));
         }
-
-        int activeCount = 0;
-
-        for (Discount discount : discounts) {
-            if (discount.isActive() == true) {
-                activeCount++;
-            }
-        }
     }
 }

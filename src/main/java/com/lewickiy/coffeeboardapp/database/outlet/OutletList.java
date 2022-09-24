@@ -2,10 +2,8 @@ package com.lewickiy.coffeeboardapp.database.outlet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.selectFromSql;
 
 public class OutletList {

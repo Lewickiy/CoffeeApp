@@ -107,9 +107,9 @@ public class SellerController {
     @FXML
     private GridPane mainGridPane;
 
-    private ArrayList <Button> productButtons  = new ArrayList<>();
+    private ArrayList <Button> productButtons = new ArrayList<>();
 
-    EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+    EventHandler<ActionEvent> event = new EventHandler<>() {
         @Override
         public void handle(ActionEvent event) {
             Button button = (Button) event.getSource();
@@ -132,6 +132,20 @@ public class SellerController {
                         productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
                         currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
                         //Добавляем данные в currentProduct
+                        break;
+                    }
+                }
+            } else {
+                int idProductButton = Integer.parseInt(button.getAccessibleText());
+
+                for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
+
+                    if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
+                        buttonsIsDisable(productButtons, true); //Спрятать кнопки продукта.
+//                        numberButtonsIsDisable(false); //Показать цифровые кнопки.
+                        productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
+                        productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
+                        currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
                         break;
                     }
                 }
@@ -328,7 +342,7 @@ public class SellerController {
         buttonsIsDisable(productButtons, false); //Кнопки с Продуктами становятся активными.
     }
     @FXML
-    void endThisTaleOnAction(ActionEvent event) throws SQLException {
+    void endThisTaleOnAction(ActionEvent event) {
         paymentTypePanel.setVisible(true);
     }
     /*____________________________________˄˄˄_____________________________________________
@@ -440,10 +454,7 @@ public class SellerController {
         }
 
         //Изменения в currentSaleProducts происходят также в saleProductsObservableList благодаря Listener.
-        saleProductsObservableList.addListener(new ListChangeListener<SaleProduct>() {
-            @Override
-            public void onChanged(Change<? extends SaleProduct> change) {
-            }
+        saleProductsObservableList.addListener((ListChangeListener<SaleProduct>) change -> {
         });
         numberButtons[0] = zeroButton;
         numberButtons[1] = oneButton;
@@ -496,25 +507,25 @@ public class SellerController {
         sumColumn.setEditable(true);
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
 
-        int countButtons = 0;
+        int countP = 0;
         
         for (int l = 0; l < mainGridPane.getColumnCount(); l++) {
 
             for (int h = 0; h < mainGridPane.getRowCount(); h++) {
                 Button productButton = new Button();
-                productButtons.add(countButtons, productButton);
-                int finalProdButtonsCount = countButtons;
-                productButtons.get(countButtons).layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
-                            productButtons.get(finalProdButtonsCount).setFont(Font.font(Math.sqrt(newValue.getHeight() * 1.5)));
-                        });
-                productButtons.get(countButtons).setWrapText(true);
-                productButtons.get(countButtons).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
-                productButtons.get(countButtons).setPrefSize(85.0, 85.0);
-                productButtons.get(countButtons).setVisible(false);
-                GridPane.setConstraints(productButtons.get(countButtons), l, h);
-                mainGridPane.getChildren().add(productButtons.get(countButtons));
-                productButtons.get(countButtons).setOnAction(event);
-                countButtons++;
+                productButtons.add(countP, productButton);
+                int finalProdButtonsCount = countP;
+                productButtons.get(countP).layoutBoundsProperty().addListener((observable, oldValue, newValue) ->
+                        productButtons.get(finalProdButtonsCount).setFont(
+                                Font.font(Math.sqrt(newValue.getHeight() * 1.5))));
+                productButtons.get(countP).setWrapText(true);
+                productButtons.get(countP).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
+                productButtons.get(countP).setPrefSize(85.0, 85.0);
+                productButtons.get(countP).setVisible(false);
+                GridPane.setConstraints(productButtons.get(countP), l, h);
+                mainGridPane.getChildren().add(productButtons.get(countP));
+                productButtons.get(countP).setOnAction(event);
+                countP++;
             }
         }
         productNameButton(productButtons);
@@ -542,7 +553,7 @@ public class SellerController {
 
         for (Discount discount : discounts) {
 
-            if (discount.isActive() == true) {
+            if (discount.isActive()) {
                 discountButtons[discountCount].setAccessibleText(String.valueOf(discount.getDiscountId())); //Id позиции скидки назначается getAccessibleText кнопки.
                 discountButtons[discountCount].setText(discount.getDiscount() + "%");
                 discountButtons[discountCount].setVisible(true);
@@ -567,7 +578,7 @@ public class SellerController {
     /**
      * Данный метод делает кнопки с действиями с Добавляемым продуктом активными/неактивными
      * Например: кнопки Работы с Выбранным продуктом недоступны пока не выбран продукт.
-     * @param res - тип boolean, который работает как переключатель
+     * @param res - тип boolean, который работает как переключатель доступности.
      */
     public void productOperationButtonsIsDisable(boolean res) {
         addProduct.setDisable(res);

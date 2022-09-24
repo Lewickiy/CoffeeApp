@@ -11,13 +11,12 @@ public class Query {
      * Запрос SELECT FROM к таблице sql.
      * @param tableName - принимаемый параметр типа String - Имя таблицы, к которой обращаемся.
      * @return - метод возвращает объект resultSet класса ResultSet.
-     * @throws SQLException
+     * @throws SQLException - TODO проработать, описать.
      */
     public static ResultSet selectFromSql(String tableName) throws SQLException {
         Statement statement = getConnection().createStatement(); //создаётся подключение
         String query = "SELECT * FROM " + tableName; //создаётся запрос к базе данных
-        ResultSet resultSet = statement.executeQuery(query);
-        return resultSet;
+        return statement.executeQuery(query);
     }
 
     public static Statement insertToSql(String tableName, String sql) throws SQLException {

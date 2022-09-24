@@ -3,11 +3,8 @@ package com.lewickiy.coffeeboardapp.controllers.login;
 import com.lewickiy.coffeeboardapp.CoffeeBoardApp;
 import com.lewickiy.coffeeboardapp.database.outlet.Outlet;
 import com.lewickiy.coffeeboardapp.database.user.User;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,9 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.createOutletList;
@@ -30,10 +25,7 @@ import static com.lewickiy.coffeeboardapp.database.user.UserList.*;
 
 public class LoginController {
     static ObservableList<Outlet> outletsObservableList = FXCollections.observableList(outlets);
-    @FXML
-    private ResourceBundle resources;
-    @FXML
-    private URL location;
+
     @FXML
     private Label usernameLabel;
     @FXML
@@ -60,20 +52,15 @@ public class LoginController {
         createUsersList(); //Загрузка объектов из базы в список пользователей.
         createProductsList(); //Загрузка объектов из базы в список продуктов.
         createOutletList(); //Загрузка объектов из базы в список торговых точек.
-        outletChoiceBox.setAccessibleHelp("Hello!"); //Выбор отмеченной по умолчанию позиции из торговых точек
-        outletChoiceBox.setAccessibleText("Hi!");
         outletChoiceBox.setItems(outletsObservableList); //Устанавливаем значения в ChoiceBox из observableList
         /*
          *Это Listener для outletChoiceBox. Он следит за изменениями в выборе и создаёт из них объект
          * currentOutlet класса Outlet. Дальше я буду с ним работать для фильтрации администратором продаж
          * для дополнения приветствия пользователя и прочего.
          */
-        outletChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Outlet>() {
-            @Override
-            public void changed(ObservableValue<? extends Outlet> observableValue, Outlet outlet, Outlet t1) {
-                currentOutlet = outletChoiceBox.getValue();
-                acceptOutletChoice.setDisable(false);
-            }
+        outletChoiceBox.getSelectionModel().selectedItemProperty().addListener((observableValue, outlet, t1) -> {
+            currentOutlet = outletChoiceBox.getValue();
+            acceptOutletChoice.setDisable(false);
         });
 
         assert cancelButton != null : "fx:id=\"cancelButton\" was not injected: check your FXML file 'login.fxml'.";
@@ -94,7 +81,7 @@ public class LoginController {
         }
     }
     @FXML
-    private void acceptOutletChoiceOnAction (ActionEvent event) throws IOException {
+    private void acceptOutletChoiceOnAction() throws IOException {
         if (currentOutlet == null) {
             System.out.println("Проверьте подключение к интернету и перезапустите систему, или свяжитесь с службой поддержки");
         } else {
@@ -118,7 +105,7 @@ public class LoginController {
      * TODO перенести код входа в отдельный метод чтобы не дублировать его при нажатии на клавишу и нажатии на кнопку "Войти"
      */
     @FXML
-    void loginPasswordEnterKey(KeyEvent event) throws IOException {
+    void loginPasswordEnterKey(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER)  {
             if(!usernameTextField.getText().isBlank()
                     && !passwordField.getText().isBlank()) {
@@ -131,9 +118,8 @@ public class LoginController {
     /**
      * Действие, выполняемое при нажатии пользователем кнопки "Отмена". <br>
      * Происходит закрытие сцены. Программа завершает работу. <br>
-     * @param event - IDE пишет что параметр не используется.
      */
-    public void cancelButtonOnAction(ActionEvent event) {
+    public void cancelButtonOnAction() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
@@ -142,9 +128,8 @@ public class LoginController {
      * Если поля с логином и паролем не пустые, происходит запуск метода validateLogin();<br>
      * В противном случае пользователь через loginMessageLabel получает сообщение<br>
      * о необходимости ввода имени пользователя и пароля.<br>
-     * @param event - не используется, но должен быть. Что здесь я не понимаю?
      */
-    public void loginButtonOnAction(ActionEvent event) throws IOException { //Login Button Action
+    public void loginButtonOnAction() { //Login Button Action
         if(!usernameTextField.getText().isBlank()
                 && !passwordField.getText().isBlank()) {
             validateLogin();
@@ -155,7 +140,7 @@ public class LoginController {
     /**
      * Данный метод производит валидацию пользователя по логину и паролю. <br>
      */
-    private void validateLogin() throws IOException {
+    private void validateLogin() {
         String login = usernameTextField.getText();
         String password = passwordField.getText();
         for (User user : users) {

@@ -40,6 +40,7 @@ public class SaleProductList {
             }
         }
     }
+
     static void addProductIf(SaleProduct currentProduct) {
         addSaleProductsList(currentProduct.getSaleId()
                 , currentProduct.getProductId()

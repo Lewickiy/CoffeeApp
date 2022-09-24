@@ -1,10 +1,7 @@
 package com.lewickiy.coffeeboardapp.database.currentSale;
 
-import com.lewickiy.coffeeboardapp.database.DatabaseConnector;
-
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Time;
 
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
