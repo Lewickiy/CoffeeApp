@@ -151,8 +151,7 @@ public class SellerController {
     @FXML
     private GridPane mainGridPane;
 
-    @FXML
-    private Button product17;
+    private ArrayList <Button> productButtons  = new ArrayList<>();
 
     @FXML
     private Button product18;
