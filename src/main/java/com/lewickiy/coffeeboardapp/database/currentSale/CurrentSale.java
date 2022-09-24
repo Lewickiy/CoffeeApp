@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 
+import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
+
 public class CurrentSale {
     private int saleId;
     private int userId;
@@ -73,10 +75,7 @@ public class CurrentSale {
     }
 
     public static void createNewSale(CurrentSale currentSale) throws SQLException {
-        Statement statement = DatabaseConnector.getConnection().createStatement();
-        //TODO try-catch для createStatement();
-        statement.executeUpdate("INSERT sale("
-                + "sale_id, "
+        insertToSql("sale","sale_id, "
                 + "user_id, "
                 + "outlet_id, "
                 + "date, "
@@ -89,6 +88,6 @@ public class CurrentSale {
                 + currentSale.getCurrentDate() + "', '"
                 + currentSale.getCurrentTime() + "', '"
                 + currentSale.getPaymentTypeId() + "', '"
-                + currentSale.getClientId() + "')");
+                + currentSale.getClientId());
     }
 }

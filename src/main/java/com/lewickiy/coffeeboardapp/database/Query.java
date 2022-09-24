@@ -13,4 +13,10 @@ public class Query {
         ResultSet resultSet = statement.executeQuery(query);
         return resultSet;
     }
+
+    public static Statement insertToSql(String tableName, String sql) throws SQLException {
+        Statement statement = getConnection().createStatement();
+        statement.executeUpdate("INSERT " + tableName + "(" + sql + "')");
+        return statement;
+    }
 }
