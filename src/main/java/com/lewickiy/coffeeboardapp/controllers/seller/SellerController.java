@@ -15,6 +15,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,6 +26,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -32,6 +35,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.ArrayList;
 
 import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
 import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.createNewSale;
@@ -45,6 +49,8 @@ import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.p
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 
 public class SellerController {
+//    private ArrayList <Button> productButtons  = new ArrayList<>();
+
     private boolean newSale = true; //boolean значение необходимости создания нового чека
 
     private int saleId; //Идентификатор текущей продажи. Создаётся в классе UniqueIdGenerator
@@ -109,46 +115,34 @@ public class SellerController {
             Button button = (Button) event.getSource();
             endThisTale.setDisable(false); //Кнопка Чек становится доступна
 
-        if (newSale) {
-            saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи.
-            currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId()); //Создаётся текущая продажа в буфере.
-            newSale = false; //последующие действия уже не должны создавать новую продажу.
+            if (newSale) {
+                saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи.
+                currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId()); //Создаётся текущая продажа в буфере.
+                newSale = false; //последующие действия уже не должны создавать новую продажу.
 
-            int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
-            // Здесь мы будем вставлять позицию в SaleProductList ПРИ СОЗДАНИИ НОВОГО ЧЕКА. Пока без загрузки в базу.
+                int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
+                // Здесь мы будем вставлять позицию в SaleProductList ПРИ СОЗДАНИИ НОВОГО ЧЕКА. Пока без загрузки в базу.
 
-            for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
+                for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
 
-                if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
-                    productButtonsIsDisable(true); //Спрятать кнопки продукта.
-                    numberButtonsIsDisable(false); //Показать цифровые кнопки.
-                    productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
-                    productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
-                    currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
-                    //Добавляем данные в currentProduct
-                    break;
+                    if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
+                        buttonsIsDisable(productButtons, true); //Спрятать кнопки продукта.
+//                    buttonsIsDisable(numberButtons, false); //Показать цифровые кнопки.
+                        productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
+                        productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
+                        currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
+                        //Добавляем данные в currentProduct
+                        break;
+                    }
                 }
             }
-        } else {
-            int idProductButton = Integer.parseInt(button.getAccessibleText());
-
-            for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
-
-                if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
-                    productButtonsIsDisable(true); //Спрятать кнопки продукта.
-                    numberButtonsIsDisable(false); //Показать цифровые кнопки.
-                    productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
-                    productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
-                    currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
-                    break;
-                }
-            }
+            xLabel.setVisible(true);
+            productNameLabel.setVisible(true);
+            addProduct.setVisible(true);
+            discountButtonActivate.setVisible(true);
         }
-        xLabel.setVisible(true);
-        productNameLabel.setVisible(true);
-        addProduct.setVisible(true);
-        discountButtonActivate.setVisible(true);
-    }
+    };
+
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
 
@@ -205,7 +199,7 @@ public class SellerController {
         amountLabel.setVisible(true);
         currentProduct.setAmount(Integer.parseInt(button.getAccessibleText())); //для currentProduct устанавливается количество продукта.
         currentProduct.setSum(currentProduct.getPrice() * currentProduct.getAmount()); //сумма стоимости продукта исходя из выбранного количества.
-        numberButtonsIsDisable(true);
+//        buttonsIsDisable(numberButtons, true);
         productOperationButtonsIsDisable(false);
     }
 
@@ -225,8 +219,8 @@ public class SellerController {
         amountLabel.setVisible(false); //Количество продукта перестаёт отображаться
         addProduct.setDisable(true); //Кнопка добавления продукта становится неактивной
         productOperationButtonsIsDisable(true); //Кнопки с операциями по текущему продукту становятся недоступными.
-        numberButtonsIsDisable(true); //Цифровые кнопки становятся недоступными.
-        productButtonsIsDisable(false); //Кнопки с Продуктами становятся активными.
+//        buttonsIsDisable(numberButtons, true); //Цифровые кнопки становятся недоступными.
+        buttonsIsDisable(productButtons,false); //Кнопки с Продуктами становятся активными.
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
@@ -308,7 +302,7 @@ public class SellerController {
     }
     @FXML
     void oupsOnAction() {
-
+        //TODO
     }
     //Логика при нажатии на кнопку "+" добавления продукта в текущий чек.
     @FXML
@@ -331,7 +325,7 @@ public class SellerController {
         amountLabel.setVisible(false); //Количество продукта перестаёт отображаться
         addProduct.setDisable(true); //Кнопка добавления продукта становится неактивной
         productOperationButtonsIsDisable(true);
-        productButtonsIsDisable(false); //Кнопки с Продуктами становятся активными.
+        buttonsIsDisable(productButtons, false); //Кнопки с Продуктами становятся активными.
     }
     @FXML
     void endThisTaleOnAction(ActionEvent event) throws SQLException {
@@ -477,14 +471,13 @@ public class SellerController {
         amountLabel.setVisible(false);
         productNameLabel.setVisible(false);
         productOperationButtonsIsDisable(true);
-        numberButtonsIsDisable(true);
+//        buttonsIsDisable(numberButtons, true);
         endThisTale.setDisable(true);
         endThisTaleAnother.setDisable(true);
         /*____________________________________________________________________________________
          * Здесь вызывается метод инициализации кнопок с Продуктами.
          ____________________________________________________________________________________*/
-        initializationProductButton();
-        initializationDiscountButton(); //Пока не действует
+        initializationDiscountButton();
         /*____________________________________________________________________________________
          * Здесь происходит инициализация столбцов таблицы текущей продажи.
          * В неё добавляются позиции Продуктов.
@@ -550,7 +543,7 @@ public class SellerController {
         for (Discount discount : discounts) {
 
             if (discount.isActive() == true) {
-                discountButtons[discountCount].setAccessibleText(String.valueOf(discount.getDiscountId())); //Id позиции скидки назначается getaccessibletext кнопки.
+                discountButtons[discountCount].setAccessibleText(String.valueOf(discount.getDiscountId())); //Id позиции скидки назначается getAccessibleText кнопки.
                 discountButtons[discountCount].setText(discount.getDiscount() + "%");
                 discountButtons[discountCount].setVisible(true);
                 discountCount++;
@@ -561,14 +554,13 @@ public class SellerController {
     }
 
     /**
-     * Данный метод делает Цифровые кнопки активными/неактивными.
-     * Например: Цифровые кнопки недоступны пока не выбран продукт.
-     * @param res - тип boolean, который работает как переключатель
+     * Данный метод делает кнопки с Продуктами/Цифровые кнопки доступными/недоступными.
+     * @param buttons - принимаемый параметр - массив кнопок.
+     * @param res - значение boolean отражающее действие, которое необходимо совершить с кнопками.
      */
-    public void numberButtonsIsDisable(boolean res) {
-
-        for (Button buttonN : numberButtons) {
-            buttonN.setDisable(res);
+    public void buttonsIsDisable(ArrayList<Button> buttons, boolean res) {
+        for (Button button : buttons) {
+            button.setDisable(res);
         }
     }
 
