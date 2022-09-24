@@ -503,6 +503,28 @@ public class SellerController {
         sumColumn.setEditable(true);
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
 
+        int countButtons = 0;
+        
+        for (int l = 0; l < mainGridPane.getColumnCount(); l++) {
+
+            for (int h = 0; h < mainGridPane.getRowCount(); h++) {
+                Button productButton = new Button();
+                productButtons.add(countButtons, productButton);
+                int finalProdButtonsCount = countButtons;
+                productButtons.get(countButtons).layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
+                            productButtons.get(finalProdButtonsCount).setFont(Font.font(Math.sqrt(newValue.getHeight() * 1.5)));
+                        });
+                productButtons.get(countButtons).setWrapText(true);
+                productButtons.get(countButtons).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
+                productButtons.get(countButtons).setPrefSize(85.0, 85.0);
+                productButtons.get(countButtons).setVisible(false);
+                GridPane.setConstraints(productButtons.get(countButtons), l, h);
+                mainGridPane.getChildren().add(productButtons.get(countButtons));
+                productButtons.get(countButtons).setOnAction(event);
+                countButtons++;
+            }
+        }
+        productNameButton(productButtons);
     }
 
     /*____________________________________˄˄˄_____________________________________________
