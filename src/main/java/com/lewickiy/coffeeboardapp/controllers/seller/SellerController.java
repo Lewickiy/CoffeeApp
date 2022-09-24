@@ -96,58 +96,8 @@ public class SellerController {
      * Здесь присутствуют кнопки продуктов
      * Кнопки одинаковые, несут один и тот же функционал,
      * только вписываются в них разные заголовки и идентификаторы товара.
-     * Очень сложная система создания кнопок и их инициализации. Она упрощена массивом объектов Button,
-     * но это так или иначе очень громоздко.
      * Также здесь прописана логика при нажатии на кнопку с Продуктом.
-     * TODO найти решение упрощения системы создания кнопок с продуктами. Наверняка можно сделать это без вписывания их в FXML
-     * TODO добавить ещё кнопки с продуктами.
      _____________________________________˅˅˅____________________________________________*/
-
-    @FXML
-    Button[] productButtons = new Button[20]; //массив кнопок продуктов
-
-    @FXML
-    private Button product1;
-
-    @FXML
-    private Button product2;
-
-    @FXML
-    private Button product3;
-
-    @FXML
-    private Button product4;
-
-    @FXML
-    private Button product5;
-
-    @FXML
-    private Button product6;
-
-    @FXML
-    private Button product7;
-
-    @FXML
-    private Button product8;
-
-    @FXML
-    private Button product9;
-
-    @FXML
-    private Button product10;
-
-    @FXML
-    private Button product11;
-
-    @FXML
-    private Button product12;
-
-    @FXML
-    private Button product13;
-
-    @FXML
-    private Button product14;
-
     @FXML
     private GridPane mainGridPane;
 
