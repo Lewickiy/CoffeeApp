@@ -46,6 +46,7 @@ public class LoginController {
     private TextField usernameTextField;
     @FXML
     private Label choiceLabel;
+
     @FXML
     void initialize() throws SQLException {
         acceptOutletChoice.setDisable(true);

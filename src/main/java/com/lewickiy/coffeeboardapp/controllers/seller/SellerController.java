@@ -49,7 +49,6 @@ import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.p
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 
 public class SellerController {
-//    private ArrayList <Button> productButtons  = new ArrayList<>();
 
     private boolean newSale = true; //boolean значение необходимости создания нового чека
 
@@ -109,7 +108,7 @@ public class SellerController {
 
     private ArrayList <Button> productButtons = new ArrayList<>();
 
-    EventHandler<ActionEvent> event = new EventHandler<>() {
+    EventHandler<ActionEvent> eventProductButtons = new EventHandler<>() {
         @Override
         public void handle(ActionEvent event) {
             Button button = (Button) event.getSource();
@@ -127,7 +126,7 @@ public class SellerController {
 
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                         buttonsIsDisable(productButtons, true); //Спрятать кнопки продукта.
-//                    buttonsIsDisable(numberButtons, false); //Показать цифровые кнопки.
+                        buttonsIsDisable(numberButtonsTemp, false); //Показать цифровые кнопки.
                         productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
                         productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
                         currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
@@ -142,7 +141,7 @@ public class SellerController {
 
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                         buttonsIsDisable(productButtons, true); //Спрятать кнопки продукта.
-//                        numberButtonsIsDisable(false); //Показать цифровые кнопки.
+                        buttonsIsDisable(numberButtonsTemp, false); //Показать цифровые кнопки.
                         productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
                         productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
                         currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
@@ -165,79 +164,36 @@ public class SellerController {
      * Набор кнопок от 0 до 9 для использования при выборе количества продуктов.
      * Также содержит логику при нажатии на Цифровую кнопку.
      _____________________________________˅˅˅____________________________________________*/
-    @FXML
-    Button[] numberButtons = new Button[10]; //массив цифровых кнопок
 
     @FXML
-    private Button oneButton;
+    private GridPane numbersGridPane;
 
-    @FXML
-    private Button twoButton;
+    private ArrayList <Button> numberButtonsTemp = new ArrayList<>();
 
-    @FXML
-    private Button threeButton;
-
-    @FXML
-    private Button fourButton;
-
-    @FXML
-    private Button fiveButton;
-
-    @FXML
-    private Button sixButton;
-
-    @FXML
-    private Button sevenButton;
-
-    @FXML
-    private Button eightButton;
-
-    @FXML
-    private Button nineButton;
-
-    @FXML
-    private Button zeroButton;
-
-    /**
-     * Действие при нажатии на цифровую кнопку.
-     * Количество выбранного продукта устанавливается исходя из AccessibleText цифровой кнопки.
-     * В amountProdSale currentProduct устанавливается значение количества Продукта
-     * А также суммы исходя из стоимости Продукта.
-     * После чего цифровые кнопки становятся недоступными, а кнопки с дальнейшими операциями - доступными.
-     * @param event - получает кнопку, которая сейчас была нажата для дальнейшей работы с ней.
-     */
-    @FXML
-    void numberButtonOnAction(ActionEvent event) {
-        Button button = (Button) event.getSource();
-        amountLabel.setText(button.getAccessibleText()); //Label количества берёт данные из AccessibleText цифровой кнопки.
-        amountLabel.setVisible(true);
-        currentProduct.setAmount(Integer.parseInt(button.getAccessibleText())); //для currentProduct устанавливается количество продукта.
-        currentProduct.setSum(currentProduct.getPrice() * currentProduct.getAmount()); //сумма стоимости продукта исходя из выбранного количества.
-//        buttonsIsDisable(numberButtons, true);
-        productOperationButtonsIsDisable(false);
-    }
-
-    /**
-     * Действие при нажатии на кнопку "0" в панели Цифровых кнопок.<br>
-     * Нажатие на эту кнопку отличается от нажатия на прочие Цифровые кнопки.<br>
-     * При нажатии на кнопку "0" происходит присвоение null для объекта currentProduct.<br>
-     * После этого становятся активны кнопки с выбором Продукта (мы возвращаемся в изначальное состояние Продажи).<br>
-     * @param event - ... .
-     */
-    @FXML
-    void zeroButtonOnAction(Event event) {
-        currentProduct = null; //Текущий продукт становится null.
-        productCategoryIco.setVisible(false); //Картинка Продукта перестаёт быть видимой
-        xLabel.setVisible(false); //Символ количества перестаёт отображаться
-        productNameLabel.setVisible(false); //Название продукта перестаёт отображаться
-        amountLabel.setVisible(false); //Количество продукта перестаёт отображаться
-        addProduct.setDisable(true); //Кнопка добавления продукта становится неактивной
-        productOperationButtonsIsDisable(true); //Кнопки с операциями по текущему продукту становятся недоступными.
-//        buttonsIsDisable(numberButtons, true); //Цифровые кнопки становятся недоступными.
-        buttonsIsDisable(productButtons,false); //Кнопки с Продуктами становятся активными.
-    }
-    /*____________________________________˄˄˄_____________________________________________
-     ___________________________________the end__________________________________________*/
+    EventHandler<ActionEvent> eventNumberButtons = new EventHandler<>() {
+        @Override
+        public void handle(ActionEvent event) {
+            Button button = (Button) event.getSource();
+            if (Integer.parseInt(button.getAccessibleText()) != 0) {
+                amountLabel.setText(button.getAccessibleText()); //Label количества берёт данные из AccessibleText цифровой кнопки.
+                amountLabel.setVisible(true);
+                currentProduct.setAmount(Integer.parseInt(button.getAccessibleText())); //для currentProduct устанавливается количество продукта.
+                currentProduct.setSum(currentProduct.getPrice() * currentProduct.getAmount()); //сумма стоимости продукта исходя из выбранного количества.
+                buttonsIsDisable(numberButtonsTemp, true);
+                productOperationButtonsIsDisable(false);
+            } else {
+                currentProduct = null; //Текущий продукт становится null.
+                productCategoryIco.setVisible(false); //Картинка Продукта перестаёт быть видимой
+                xLabel.setVisible(false); //Символ количества перестаёт отображаться
+                productNameLabel.setVisible(false); //Название продукта перестаёт отображаться
+                amountLabel.setVisible(false); //Количество продукта перестаёт отображаться
+                addProduct.setDisable(true); //Кнопка добавления продукта становится неактивной
+                productOperationButtonsIsDisable(true); //Кнопки с операциями по текущему продукту становятся недоступными.
+                buttonsIsDisable(numberButtonsTemp, true); //Цифровые кнопки становятся недоступными.
+                buttonsIsDisable(productButtons,false); //Кнопки с Продуктами становятся активными.
+            }
+        }
+    };
 
     /*____________________________________start___________________________________________
      * Панель таблицы текущего чека
@@ -456,20 +412,30 @@ public class SellerController {
         //Изменения в currentSaleProducts происходят также в saleProductsObservableList благодаря Listener.
         saleProductsObservableList.addListener((ListChangeListener<SaleProduct>) change -> {
         });
-        numberButtons[0] = zeroButton;
-        numberButtons[1] = oneButton;
-        numberButtons[2] = twoButton;
-        numberButtons[3] = threeButton;
-        numberButtons[4] = fourButton;
-        numberButtons[5] = fiveButton;
-        numberButtons[6] = sixButton;
-        numberButtons[7] = sevenButton;
-        numberButtons[8] = eightButton;
-        numberButtons[9] = nineButton;
 
-        for (int i = 0; i < numberButtons.length; i++) {
-            numberButtons[i].setAccessibleText(String.valueOf(i));
+        for (int i = 0; i < numbersGridPane.getColumnCount(); i++) {
+            Button numberButton = new Button();
+            numberButtonsTemp.add(i, numberButton);
+            int finalI = i;
+            numberButtonsTemp.get(i).layoutBoundsProperty().addListener((observable, oldValue, newValue) -> numberButtonsTemp.get(finalI).setFont(Font.font(Math.sqrt(newValue.getHeight() * 10))));
+            numberButtonsTemp.get(i).setWrapText(true);
+            numberButtonsTemp.get(i).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
+            numberButtonsTemp.get(i).setPrefSize(85.0, 85.0);
+            numberButtonsTemp.get(i).setVisible(true);
+            GridPane.setConstraints(numberButtonsTemp.get(i), i, 0);
+            numbersGridPane.getChildren().add(numberButtonsTemp.get(i));
+            numberButtonsTemp.get(i).setOnAction(eventNumberButtons);
+
+            if (i < 9) {
+                numberButtonsTemp.get(i).setText(String.valueOf(i + 1));
+                numberButtonsTemp.get(i).setAccessibleText(String.valueOf(i + 1));
+            } else {
+                numberButtonsTemp.get(i).setText("0");
+                numberButtonsTemp.get(i).setAccessibleText("0");
+            }
+
         }
+
         /*____________________________________________________________________________________
          * Блок текущего Продукта при добавлении его в Текущую продажу
          * Изначально, до создания текущей продажи, данное графическое представление не отображается.
@@ -482,7 +448,7 @@ public class SellerController {
         amountLabel.setVisible(false);
         productNameLabel.setVisible(false);
         productOperationButtonsIsDisable(true);
-//        buttonsIsDisable(numberButtons, true);
+        buttonsIsDisable(numberButtonsTemp, true);
         endThisTale.setDisable(true);
         endThisTaleAnother.setDisable(true);
         /*____________________________________________________________________________________
@@ -524,13 +490,12 @@ public class SellerController {
                 productButtons.get(countP).setVisible(false);
                 GridPane.setConstraints(productButtons.get(countP), l, h);
                 mainGridPane.getChildren().add(productButtons.get(countP));
-                productButtons.get(countP).setOnAction(event);
+                productButtons.get(countP).setOnAction(eventProductButtons);
                 countP++;
             }
         }
         productNameButton(productButtons);
     }
-
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
 
@@ -561,7 +526,6 @@ public class SellerController {
             }
         }
         //TODO логика назначения кнопкам процента скидки, если у объекта в ArrayList дисконта в переменной active установлено значение true.
-
     }
 
     /**

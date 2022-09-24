@@ -7,7 +7,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -70,63 +69,23 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="115.0" prefWidth="1012.0">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="116.0" prefWidth="1012.0" spacing="15.0">
-                                 <children>
-                                    <Button fx:id="oneButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#numberButtonOnAction" prefHeight="85.0" prefWidth="85.0" text="1" textAlignment="CENTER" textFill="#2600ff" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="36.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="twoButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#numberButtonOnAction" prefHeight="85.0" prefWidth="85.0" text="2" textAlignment="CENTER" textFill="#27c91f" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="36.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="threeButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#numberButtonOnAction" prefHeight="85.0" prefWidth="85.0" text="3" textAlignment="CENTER" textFill="#a6a837" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="36.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="fourButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#numberButtonOnAction" prefHeight="85.0" prefWidth="85.0" text="4" textAlignment="CENTER" textFill="#e81e1e" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="36.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="fiveButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#numberButtonOnAction" prefHeight="85.0" prefWidth="85.0" text="5" textAlignment="CENTER" textFill="#cd19a3" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="36.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="sixButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#numberButtonOnAction" prefHeight="85.0" prefWidth="85.0" text="6" textAlignment="CENTER" textFill="#a6a837" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="36.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="sevenButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#numberButtonOnAction" prefHeight="85.0" prefWidth="85.0" text="7" textAlignment="CENTER" textFill="#e81e1e" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="36.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="eightButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#numberButtonOnAction" prefHeight="85.0" prefWidth="85.0" text="8" textAlignment="CENTER" textFill="#cd19a3" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="36.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="nineButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#numberButtonOnAction" prefHeight="85.0" prefWidth="85.0" text="9" textAlignment="CENTER" textFill="#e81e1e" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="36.0" />
-                                       </font>
-                                    </Button>
-                                    <Button fx:id="zeroButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#zeroButtonOnAction" prefHeight="85.0" prefWidth="85.0" style="-fx-background-color: RED;" text="0" textAlignment="CENTER" textFill="WHITE" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="36.0" />
-                                       </font>
-                                       <effect>
-                                          <Blend />
-                                       </effect>
-                                    </Button>
-                                 </children>
-                              </HBox>
+                              <GridPane fx:id="numbersGridPane" hgap="15.0" vgap="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="85.0" minHeight="85.0" prefHeight="85.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
                            </children>
                         </AnchorPane>
                      </children>
