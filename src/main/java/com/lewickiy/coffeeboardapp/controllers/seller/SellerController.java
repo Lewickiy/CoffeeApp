@@ -149,10 +149,7 @@ public class SellerController {
     private Button product14;
 
     @FXML
-    private Button product15;
-
-    @FXML
-    private Button product16;
+    private GridPane mainGridPane;
 
     @FXML
     private Button product17;
