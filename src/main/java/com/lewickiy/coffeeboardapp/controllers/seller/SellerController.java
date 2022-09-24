@@ -559,47 +559,6 @@ public class SellerController {
         //TODO логика назначения кнопкам процента скидки, если у объекта в ArrayList дисконта в переменной active установлено значение true.
 
     }
-    public void initializationProductButton() { //Метод инициализации кнопок продуктов.
-        productButtons = new Button[20];
-        productButtons[0] = product1;
-        productButtons[1] = product2;
-        productButtons[2] = product3;
-        productButtons[3] = product4;
-        productButtons[4] = product5;
-        productButtons[5] = product6;
-        productButtons[6] = product7;
-        productButtons[7] = product8;
-        productButtons[8] = product9;
-        productButtons[9] = product10;
-        productButtons[10] = product11;
-        productButtons[11] = product12;
-        productButtons[12] = product13;
-        productButtons[13] = product14;
-        productButtons[14] = product15;
-        productButtons[15] = product16;
-        productButtons[16] = product17;
-        productButtons[17] = product18;
-        productButtons[18] = product19;
-        productButtons[19] = product20;
-
-        for (int i = 0; i < productButtons.length; i++) { //привязывание объектов кнопок происходит через цикл
-            String initProducts = "fx:id=\"product" + (i + 1) + "\" was not injected: check your FXML file 'seller.fxml'.";
-            assert productButtons[i] != null : initProducts;
-        }
-        productNameButton(productButtons);
-    }
-
-    /**
-     * Данный метод делает кнопки с Продуктами активными/неактивными.
-     * Например: при выборе Цифровыми кнопками количества, Кнопки с Продуктами неактивны.
-     * @param res - типа boolean является переключателем для метода.
-     */
-    public void productButtonsIsDisable(boolean res) {
-
-        for (Button buttonP : productButtons) { //Если Продукт есть и всё нормально, делаем недоступными кнопки с Продуктами.
-            buttonP.setDisable(res); //теперь кнопки должны быть скрытыми пока я не выберу количество или не отменю позицию Продукта
-        }
-    }
 
     /**
      * Данный метод делает Цифровые кнопки активными/неактивными.
