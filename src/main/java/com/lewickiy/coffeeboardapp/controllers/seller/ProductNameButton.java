@@ -3,6 +3,9 @@ package com.lewickiy.coffeeboardapp.controllers.seller;
 import com.lewickiy.coffeeboardapp.database.product.Product;
 import com.lewickiy.coffeeboardapp.database.product.ProductList;
 import javafx.scene.control.Button;
+
+import java.util.ArrayList;
+
 /**
  * Данный класс занимается именованием кнопок с продукцией. Если появится такая необходимость, <br>
  * существует возможность добавлять данные к именам кнопок, например: стоимость товара или любые <br>
@@ -17,13 +20,13 @@ public class ProductNameButton {
      * при нажатии на кнопку.
      * Этим предполагается будет заниматься класс
      * Также данный метод делает кнопки доступными (productButtons[].setDisable())
-     * @param buttons - это массив кнопок, созданных в SellerController.
+     * @param productButtons - это массив кнопок, созданных в SellerController.
      */
-    static void productNameButton(Button[] buttons) {
+    static void productNameButton(ArrayList<Button> productButtons) {
         int count = 0;
         for (Product product : ProductList.products) {
-            buttons[count].setAccessibleText(String.valueOf(product.getProductId()));
-            buttons[count].setText(product.getProduct()
+            productButtons.get(count).setAccessibleText(String.valueOf(product.getProductId()));
+            productButtons.get(count).setText(product.getProduct()
                     + "\n"
                     + product.getNumberOfUnit()
                     + " "
@@ -31,8 +34,8 @@ public class ProductNameButton {
                     + "\n"
                     + product.getPrice()
                     + "руб.");
-            buttons[count].setVisible(true);
-            buttons[count].setDisable(false);
+            productButtons.get(count).setVisible(true);
+            productButtons.get(count).setDisable(false);
             count++;
         }
     }
