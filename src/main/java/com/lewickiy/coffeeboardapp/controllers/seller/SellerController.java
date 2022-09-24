@@ -153,27 +153,11 @@ public class SellerController {
 
     private ArrayList <Button> productButtons  = new ArrayList<>();
 
-    @FXML
-    private Button product18;
-
-    @FXML
-    private Button product19;
-
-    @FXML
-    private Button product20;
-
-    /**___________________________________________________________________________________
-    * Данный метод определяет действие при нажатии на кнопку product. <br>
-    * В случае, если значение переменной newSale типа boolean == true, создаётся новая продажа currentSale,
-    * в неё добавляется текущий продукт. <br>
-    * В конце процесса создания новой продажи значение newSale меняется на false. <br>
-    * Теперь, последующие нажатия на кнопку product будут добавлять позиции в текущую продажу.
-    ____________________________________________________________________________________*/
-
-    @FXML
-    void productOnAction(ActionEvent event) throws SQLException {
-        Button button = (Button) event.getSource();
-        endThisTale.setDisable(false); //Кнопка Чек становится доступна
+    EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            Button button = (Button) event.getSource();
+            endThisTale.setDisable(false); //Кнопка Чек становится доступна
 
         if (newSale) {
             saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи.
