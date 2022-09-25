@@ -14,7 +14,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -126,7 +125,7 @@ public class SellerController {
 
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                         buttonsIsDisable(productButtons, true); //Спрятать кнопки продукта.
-                        buttonsIsDisable(numberButtonsTemp, false); //Показать цифровые кнопки.
+                        buttonsIsDisable(numberButtons, false); //Показать цифровые кнопки.
                         productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
                         productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
                         currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
@@ -141,7 +140,7 @@ public class SellerController {
 
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                         buttonsIsDisable(productButtons, true); //Спрятать кнопки продукта.
-                        buttonsIsDisable(numberButtonsTemp, false); //Показать цифровые кнопки.
+                        buttonsIsDisable(numberButtons, false); //Показать цифровые кнопки.
                         productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
                         productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
                         currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
@@ -155,20 +154,19 @@ public class SellerController {
             discountButtonActivate.setVisible(true);
         }
     };
-
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
+
 
     /*____________________________________start___________________________________________
      * Панель цифровых кнопок
      * Набор кнопок от 0 до 9 для использования при выборе количества продуктов.
      * Также содержит логику при нажатии на Цифровую кнопку.
      _____________________________________˅˅˅____________________________________________*/
-
     @FXML
     private GridPane numbersGridPane;
 
-    private ArrayList <Button> numberButtonsTemp = new ArrayList<>();
+    private ArrayList <Button> numberButtons = new ArrayList<>();
 
     EventHandler<ActionEvent> eventNumberButtons = new EventHandler<>() {
         @Override
@@ -179,7 +177,7 @@ public class SellerController {
                 amountLabel.setVisible(true);
                 currentProduct.setAmount(Integer.parseInt(button.getAccessibleText())); //для currentProduct устанавливается количество продукта.
                 currentProduct.setSum(currentProduct.getPrice() * currentProduct.getAmount()); //сумма стоимости продукта исходя из выбранного количества.
-                buttonsIsDisable(numberButtonsTemp, true);
+                buttonsIsDisable(numberButtons, true);
                 productOperationButtonsIsDisable(false);
             } else {
                 currentProduct = null; //Текущий продукт становится null.
@@ -189,11 +187,13 @@ public class SellerController {
                 amountLabel.setVisible(false); //Количество продукта перестаёт отображаться
                 addProduct.setDisable(true); //Кнопка добавления продукта становится неактивной
                 productOperationButtonsIsDisable(true); //Кнопки с операциями по текущему продукту становятся недоступными.
-                buttonsIsDisable(numberButtonsTemp, true); //Цифровые кнопки становятся недоступными.
+                buttonsIsDisable(numberButtons, true); //Цифровые кнопки становятся недоступными.
                 buttonsIsDisable(productButtons,false); //Кнопки с Продуктами становятся активными.
             }
         }
     };
+    /*____________________________________˄˄˄_____________________________________________
+     ___________________________________the end__________________________________________*/
 
     /*____________________________________start___________________________________________
      * Панель таблицы текущего чека
@@ -311,47 +311,28 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     private AnchorPane discountPanel; //Непосредственно сама панель. В ней содержатся все актуальные скидки.
-    @FXML
-    Button[] discountButtons = new Button[9]; //массив кнопок со скидками
-    @FXML
-    private Button discount1;
-    @FXML
-    private Button discount2;
-    @FXML
-    private Button discount3;
-    @FXML
-    private Button discount4;
-    @FXML
-    private Button discount5;
-    @FXML
-    private Button discount6;
-    @FXML
-    private Button discount7;
-    @FXML
-    private Button discount8;
-    @FXML
-    private Button discount9;
 
-    /**
-     * Логика нажатия на кнопку "%".
-     * @param event - принимается параметр ActionEvent
-     */
     @FXML
-    void discountOnAction(ActionEvent event) { //Нажимаем на кнопку с конкретной скидкой
-        Button button = (Button) event.getSource(); // определяем кнопка с какой скидкой нажата
-        discountPanel.setVisible(false); // Скрываем панель скидок
-        currentProduct.setDiscountId(Integer.parseInt(button.getAccessibleText())); //устанавливаем текущему продукту id скидки
+    private GridPane discountGridPane;
 
-        for (Discount discount : discounts) {
+    private ArrayList<Button> discountButtons = new ArrayList<>();
 
-            if (currentProduct.getDiscountId() == discount.getDiscountId()) {
-                currentProduct.setDiscount(discount.getDiscount());
+    EventHandler<ActionEvent> eventDiscountButtons = new EventHandler<>() {
+        @Override
+        public void handle(ActionEvent event) {
+            Button button = (Button) event.getSource();
+            discountPanel.setVisible(false); // Скрываем панель скидок
+            currentProduct.setDiscountId(Integer.parseInt(button.getAccessibleText()));
+            for (Discount discount : discounts) {
+                if (currentProduct.getDiscountId() == discount.getDiscountId()) {
+                    currentProduct.setDiscount(discount.getDiscount());
+                }
             }
+            currentProduct.setSum((currentProduct.getPrice() //Устанавливаем текущему продукту сумму исходя из количества и скидки
+                    - (currentProduct.getPrice() * currentProduct.getDiscount() / 100))
+                    * currentProduct.getAmount());
         }
-        currentProduct.setSum((currentProduct.getPrice() //Устанавливаем текущему продукту сумму исходя из количества и скидки
-                - (currentProduct.getPrice() * currentProduct.getDiscount() / 100))
-                * currentProduct.getAmount());
-    }
+    };
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
 
@@ -402,36 +383,34 @@ public class SellerController {
         paymentTypeButtons[0] = paymentType1;
         paymentTypeButtons[1] = paymentType2;
         int count = 0;
-
         for (PaymentType paymentType : paymentTypes) {
             paymentTypeButtons[count].setAccessibleText(String.valueOf(paymentType.getPaymentTypeId()));
             paymentTypeButtons[count].setText(paymentType.getPaymentType());
             count++;
         }
-
         //Изменения в currentSaleProducts происходят также в saleProductsObservableList благодаря Listener.
         saleProductsObservableList.addListener((ListChangeListener<SaleProduct>) change -> {
         });
 
         for (int i = 0; i < numbersGridPane.getColumnCount(); i++) {
             Button numberButton = new Button();
-            numberButtonsTemp.add(i, numberButton);
+            numberButtons.add(i, numberButton);
             int finalI = i;
-            numberButtonsTemp.get(i).layoutBoundsProperty().addListener((observable, oldValue, newValue) -> numberButtonsTemp.get(finalI).setFont(Font.font(Math.sqrt(newValue.getHeight() * 10))));
-            numberButtonsTemp.get(i).setWrapText(true);
-            numberButtonsTemp.get(i).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
-            numberButtonsTemp.get(i).setPrefSize(85.0, 85.0);
-            numberButtonsTemp.get(i).setVisible(true);
-            GridPane.setConstraints(numberButtonsTemp.get(i), i, 0);
-            numbersGridPane.getChildren().add(numberButtonsTemp.get(i));
-            numberButtonsTemp.get(i).setOnAction(eventNumberButtons);
+            numberButtons.get(i).layoutBoundsProperty().addListener((observable, oldValue, newValue) -> numberButtons.get(finalI).setFont(Font.font(Math.sqrt(newValue.getHeight() * 10))));
+            numberButtons.get(i).setWrapText(true);
+            numberButtons.get(i).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
+            numberButtons.get(i).setPrefSize(85.0, 85.0);
+            numberButtons.get(i).setVisible(true);
+            GridPane.setConstraints(numberButtons.get(i), i, 0);
+            numbersGridPane.getChildren().add(numberButtons.get(i));
+            numberButtons.get(i).setOnAction(eventNumberButtons);
 
             if (i < 9) {
-                numberButtonsTemp.get(i).setText(String.valueOf(i + 1));
-                numberButtonsTemp.get(i).setAccessibleText(String.valueOf(i + 1));
+                numberButtons.get(i).setText(String.valueOf(i + 1));
+                numberButtons.get(i).setAccessibleText(String.valueOf(i + 1));
             } else {
-                numberButtonsTemp.get(i).setText("0");
-                numberButtonsTemp.get(i).setAccessibleText("0");
+                numberButtons.get(i).setText("0");
+                numberButtons.get(i).setAccessibleText("0");
             }
 
         }
@@ -448,13 +427,31 @@ public class SellerController {
         amountLabel.setVisible(false);
         productNameLabel.setVisible(false);
         productOperationButtonsIsDisable(true);
-        buttonsIsDisable(numberButtonsTemp, true);
+        buttonsIsDisable(numberButtons, true);
         endThisTale.setDisable(true);
         endThisTaleAnother.setDisable(true);
-        /*____________________________________________________________________________________
-         * Здесь вызывается метод инициализации кнопок с Продуктами.
-         ____________________________________________________________________________________*/
+
+        int countD = 0;
+        for (int l = 0; l < discountGridPane.getColumnCount(); l++) {
+            for (int h = 0; h < discountGridPane.getRowCount(); h++) {
+                Button discountButton = new Button();
+                discountButtons.add(countD, discountButton);
+                int finalDiscountButtonsCount = countD;
+                discountButtons.get(countD).layoutBoundsProperty().addListener((observable, oldValue, newValue) ->
+                        discountButtons.get(finalDiscountButtonsCount).setFont(
+                                Font.font(Math.sqrt(newValue.getHeight() * 1.5))));
+                discountButtons.get(countD).setWrapText(true);
+                discountButtons.get(countD).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
+                discountButtons.get(countD).setPrefSize(75.0, 75.0);
+                discountButtons.get(countD).setVisible(false);
+                GridPane.setConstraints(discountButtons.get(countD), l, h);
+                discountGridPane.getChildren().add(discountButtons.get(countD));
+                discountButtons.get(countD).setOnAction(eventDiscountButtons);
+                countD++;
+            }
+        }
         initializationDiscountButton();
+
         /*____________________________________________________________________________________
          * Здесь происходит инициализация столбцов таблицы текущей продажи.
          * В неё добавляются позиции Продуктов.
@@ -474,7 +471,6 @@ public class SellerController {
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
 
         int countP = 0;
-        
         for (int l = 0; l < mainGridPane.getColumnCount(); l++) {
 
             for (int h = 0; h < mainGridPane.getRowCount(); h++) {
@@ -503,26 +499,13 @@ public class SellerController {
      * Прочие методы.
      _____________________________________˅˅˅____________________________________________*/
     public void initializationDiscountButton() {
-        discountButtons = new Button[9];
-        discountButtons[0] = discount1;
-        discountButtons[1] = discount2;
-        discountButtons[2] = discount3;
-        discountButtons[3] = discount4;
-        discountButtons[4] = discount5;
-        discountButtons[5] = discount6;
-        discountButtons[6] = discount7;
-        discountButtons[7] = discount8;
-        discountButtons[8] = discount9;
-
-        int discountCount = 0;
-
+        int countD = 0;
         for (Discount discount : discounts) {
-
             if (discount.isActive()) {
-                discountButtons[discountCount].setAccessibleText(String.valueOf(discount.getDiscountId())); //Id позиции скидки назначается getAccessibleText кнопки.
-                discountButtons[discountCount].setText(discount.getDiscount() + "%");
-                discountButtons[discountCount].setVisible(true);
-                discountCount++;
+                discountButtons.get(countD).setAccessibleText(String.valueOf(discount.getDiscountId())); //Id позиции скидки назначается getAccessibleText кнопки.
+                discountButtons.get(countD).setText(discount.getDiscount() + "%");
+                discountButtons.get(countD).setVisible(true);
+                countD++;
             }
         }
         //TODO логика назначения кнопкам процента скидки, если у объекта в ArrayList дисконта в переменной active установлено значение true.

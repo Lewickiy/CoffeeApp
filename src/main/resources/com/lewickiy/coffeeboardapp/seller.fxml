@@ -190,86 +190,28 @@
                         </Button>
                         <AnchorPane fx:id="discountPanel" layoutY="3.0" minWidth="334.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false">
                            <children>
+                              <GridPane fx:id="discountGridPane" alignment="CENTER" hgap="13.2" layoutX="13.0" layoutY="39.0" maxHeight="342.0" maxWidth="342.0" minHeight="342.0" minWidth="342.0" prefHeight="342.0" prefWidth="342.0" vgap="13.2" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="39.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
                               <Label layoutX="12.0" layoutY="4.0" text="Скидка">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="discount5" alignment="CENTER" contentDisplay="CENTER" layoutX="147.0" layoutY="170.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
-                              <Button fx:id="discount6" alignment="CENTER" contentDisplay="CENTER" layoutX="241.0" layoutY="170.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
-                              <Button fx:id="discount4" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="170.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
-                              <Button fx:id="discount2" alignment="CENTER" contentDisplay="CENTER" layoutX="147.0" layoutY="79.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
-                              <Button fx:id="discount3" alignment="CENTER" contentDisplay="CENTER" layoutX="241.0" layoutY="79.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
-                              <Button fx:id="discount1" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="79.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
-                              <Button fx:id="discount8" alignment="CENTER" contentDisplay="CENTER" layoutX="147.0" layoutY="262.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
-                              <Button fx:id="discount9" alignment="CENTER" contentDisplay="CENTER" layoutX="241.0" layoutY="262.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
-                              <Button fx:id="discount7" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="262.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountOnAction" prefHeight="75.0" prefWidth="75.0" text="0" textAlignment="CENTER" visible="false" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="paymentTypePanel" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;">
+                        <AnchorPane fx:id="paymentTypePanel" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false">
                            <children>
                               <Button fx:id="endThisTaleAnother1" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
                                  <font>
