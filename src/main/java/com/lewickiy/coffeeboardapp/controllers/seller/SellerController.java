@@ -108,16 +108,13 @@ public class SellerController {
         public void handle(ActionEvent event) {
             Button button = (Button) event.getSource(); //Получить данные от нажатой кнопки
             int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
-            endThisTale.setDisable(false); //Кнопка Чек становится доступна
 
             if (newSale) { //Если данный продукт в Чеке первый, то...
                 saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи (Создаётся уникальный идентификатор нового чека)
                 currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId()); //Создаётся текущий Чек.
-                newSale = false; //Значение boolean true меняется на false. Последующие действия уже не создают новую продажу.
-
-
-                // Здесь мы будем вставлять позицию в SaleProductList ПРИ СОЗДАНИИ НОВОГО ЧЕКА. Пока без загрузки в базу.
-                /**
+                newSale = false; //Значение boolean true меняется на false. Последующие действия уже не создают новую продажу до момента нажатия на "+" в Панели Текущего продукта.
+                /*
+                 * Здесь мы будем вставлять позицию в SaleProductList ПРИ СОЗДАНИИ НОВОГО ЧЕКА. Пока без загрузки в базу.
                  * Циклом перебираются все продукты из products ArrayList, соответствующий условию (совпадение по id) передаётся currentProduct
                  */
                 for (Product product : products) {
@@ -125,32 +122,26 @@ public class SellerController {
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                         createCurrentProduct(product);
                         break;
-                    } else {
-                        System.out.println("Ошибка в products Array или в работе объекта Button");
-                        //Так как products перебираются, многие Продукты не соответствуют условию if, соответственно множество раз,
-                        // в зависимости от позиции, происходит исполнение else
-                        //TODO отображение ошибки user friendly для конечного пользователя.
-                        //В зависимости от того чем может быть вызвана ошибка, система должна предлагать пользователю перезапустить систему,
-                        // проверить подключение к интернету и т.д.
                     }
                 }
             } else { //если же продукт в чеке не первый, чек создавать не надо
                 for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
 
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
-                        createCurrentProduct(product);
+                        createCurrentProduct(product); //Берём product и делаем ссылку на него в currentProduct
                         break;
                     }
                 }
             }
-            xLabel.setVisible(true);
-            productNameLabel.setVisible(true);
-            addProduct.setVisible(true);
-            discountButtonActivate.setVisible(true);
+            xLabel.setVisible(true); //После чего делаем видимым значок "X" - количество
+            productNameLabel.setVisible(true); //Делаем видимым Наименование продукта
+            addProduct.setVisible(true); //Делаем видимой кнопку добавления продукта
+            //TODO заменить видимость кнопки добавления продукта на доступность кнопки добавления продукта
+            discountButtonActivate.setVisible(true);//То же, что и с кнопкой добавления продукта.
         }
         public void createCurrentProduct(Product product) {
-            buttonsIsDisable(productButtons, true); //Спрятать кнопки продукта.
-            buttonsIsDisable(numberButtons, false); //Показать цифровые кнопки.
+            buttonsIsDisable(productButtons, true); //Сделать кнопки продукта недоступными.
+            buttonsIsDisable(numberButtons, false); //Сделать цифровые кнопки доступными.
             productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
             //TODO в зависимости от категории продукта или от продукта (это сложнее поддерживать в случае смены ассортимента),
             // иконка Продукта при выборе должна меняться.
@@ -191,6 +182,7 @@ public class SellerController {
              *  который добавляет позицию в текущий Чек.
              */
             if (Integer.parseInt(button.getAccessibleText()) != 0) {
+                endThisTale.setDisable(false); //Кнопка Чек становится доступна
                 amountLabel.setText(button.getAccessibleText()); //Label количества берёт данные из AccessibleText цифровой кнопки.
                 amountLabel.setVisible(true);
                 currentProduct.setAmount(Integer.parseInt(button.getAccessibleText())); //для currentProduct устанавливается количество продукта.
@@ -299,10 +291,6 @@ public class SellerController {
     void delProductOnAction() {
         //TODO кнопка отмены ButtonOnAction
     }
-    @FXML
-    void oupsOnAction() {
-        //TODO
-    }
     //Логика при нажатии на кнопку "+" добавления продукта в текущий чек.
     @FXML
     void addProductOnAction() {
@@ -365,6 +353,11 @@ public class SellerController {
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
 
+    /*____________________________________start___________________________________________
+     * Панель Чека (Выбор типа оплаты).
+     * Данная панель открывается поверх панели Текущего товара нажатием на кнопку "Чек" находящуюся в панели
+     * текущего товара.
+     _____________________________________˅˅˅____________________________________________*/
     @FXML
     private AnchorPane paymentTypePanel;
 
@@ -376,6 +369,15 @@ public class SellerController {
 
     @FXML
     private Button paymentType2;
+
+    @FXML
+    private Button oups; //Данная кнопка отвечает за произвольную сумму чека.
+    // В случае, если Клиенту не хватает какой-то суммы, то можно ввести сколько есть. Дальше в действии разница делится на все позиции и отражается в Чеке. После этого нужно снова выбрать тип оплаты (наличные/карта).
+
+    @FXML
+    void oupsOnAction() {
+        //TODO - При нажатии на кнопку появляется окошко, в котором Пользователь должен ввести необходимую сумму чека.
+    }
 
     @FXML
     void paymentTypeOnAction(ActionEvent event) throws SQLException {
@@ -400,6 +402,8 @@ public class SellerController {
     //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
         saleTable.refresh();
     }
+    /*____________________________________˄˄˄_____________________________________________
+     ___________________________________the end__________________________________________*/
 
     /*____________________________________start___________________________________________
      * Инициализация
