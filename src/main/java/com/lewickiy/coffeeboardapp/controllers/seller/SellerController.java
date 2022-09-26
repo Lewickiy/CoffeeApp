@@ -97,53 +97,46 @@ public class SellerController {
 
     /*____________________________________start___________________________________________
      * Панель кнопок продуктов
-     * Здесь присутствуют кнопки продуктов
-     * Кнопки одинаковые, несут один и тот же функционал,
-     * только вписываются в них разные заголовки и идентификаторы товара.
-     * Также здесь прописана логика при нажатии на кнопку с Продуктом.
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     private GridPane mainGridPane;
 
-    private ArrayList <Button> productButtons = new ArrayList<>();
+    private ArrayList <Button> productButtons = new ArrayList<>(); //ArrayList объектов Button
 
-    EventHandler<ActionEvent> eventProductButtons = new EventHandler<>() {
+    EventHandler<ActionEvent> eventProductButtons = new EventHandler<ActionEvent>() { //Поведение по нажатию кнопки с Продуктом
         @Override
         public void handle(ActionEvent event) {
-            Button button = (Button) event.getSource();
+            Button button = (Button) event.getSource(); //Получить данные от нажатой кнопки
+            int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
             endThisTale.setDisable(false); //Кнопка Чек становится доступна
 
-            if (newSale) {
-                saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи.
-                currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId()); //Создаётся текущая продажа в буфере.
-                newSale = false; //последующие действия уже не должны создавать новую продажу.
+            if (newSale) { //Если данный продукт в Чеке первый, то...
+                saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи (Создаётся уникальный идентификатор нового чека)
+                currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId()); //Создаётся текущий Чек.
+                newSale = false; //Значение boolean true меняется на false. Последующие действия уже не создают новую продажу.
 
-                int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
+
                 // Здесь мы будем вставлять позицию в SaleProductList ПРИ СОЗДАНИИ НОВОГО ЧЕКА. Пока без загрузки в базу.
-
-                for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
+                /**
+                 * Циклом перебираются все продукты из products ArrayList, соответствующий условию (совпадение по id) передаётся currentProduct
+                 */
+                for (Product product : products) {
 
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
-                        buttonsIsDisable(productButtons, true); //Спрятать кнопки продукта.
-                        buttonsIsDisable(numberButtons, false); //Показать цифровые кнопки.
-                        productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
-                        productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
-                        currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
-                        //Добавляем данные в currentProduct
+                        createCurrentProduct(product);
                         break;
+                    } else {
+                        System.out.println("Ошибка в products Array или в работе объекта Button");
+                        //TODO отображение ошибки user friendly для конечного пользователя.
+                        //В зависимости от того чем может быть вызвана ошибка, система должна предлагать пользователю перезапустить систему,
+                        // проверить подключение к интернету и т.д.
                     }
                 }
-            } else {
-                int idProductButton = Integer.parseInt(button.getAccessibleText());
-
+            } else { //если же продукт в чеке не первый, чек создавать не надо
                 for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
 
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
-                        buttonsIsDisable(productButtons, true); //Спрятать кнопки продукта.
-                        buttonsIsDisable(numberButtons, false); //Показать цифровые кнопки.
-                        productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
-                        productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
-                        currentProduct = new SaleProduct(product.getProductId(), product.getProduct(), product.getPrice());
+                        createCurrentProduct(product);
                         break;
                     }
                 }
@@ -152,6 +145,20 @@ public class SellerController {
             productNameLabel.setVisible(true);
             addProduct.setVisible(true);
             discountButtonActivate.setVisible(true);
+        }
+        public void createCurrentProduct(Product product) {
+            buttonsIsDisable(productButtons, true); //Спрятать кнопки продукта.
+            buttonsIsDisable(numberButtons, false); //Показать цифровые кнопки.
+            productCategoryIco.setVisible(true); //Иконка продукта отображается (пока без логики).
+            //TODO в зависимости от категории продукта или от продукта (это сложнее поддерживать в случае смены ассортимента),
+            // иконка Продукта при выборе должна меняться.
+            productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
+            //TODO в пользовательском интерфейсе сделать TextLabel с суммой около информации о выбранном продукте,
+            // которая меняется при каждом совершаемом действии (выборе количества, процента скидки и т.д.)
+            //Добавляем данные в currentProduct
+            currentProduct = new SaleProduct(product.getProductId()
+                    , product.getProduct()
+                    , product.getPrice());
         }
     };
     /*____________________________________˄˄˄_____________________________________________
