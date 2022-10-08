@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static com.lewickiy.coffeeboardapp.database.Query.selectFromSql;
+import static java.util.Comparator.comparing;
 
 public class ProductList {
     public static ArrayList<Product> products = new ArrayList<>();
@@ -29,5 +30,6 @@ public class ProductList {
                     , category
                     , price));
         }
+        products.sort(comparing(Product::getCategory));
     }
 }
