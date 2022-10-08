@@ -11,6 +11,7 @@ import java.io.IOException;
 public class CoffeeBoardApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        createLocalDb();
         FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("login.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.initStyle(StageStyle.UNDECORATED);
