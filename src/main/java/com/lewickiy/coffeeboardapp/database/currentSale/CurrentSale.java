@@ -21,6 +21,16 @@ public class CurrentSale {
         this.outletId = outletId;
     }
 
+    public CurrentSale(int saleId, int userId, int outletId, Date currentDate, Time currentTime, int paymentTypeId, int clientId) {
+        this.saleId = saleId;
+        this.userId = userId;
+        this.outletId = outletId;
+        this.currentDate = currentDate;
+        this.currentTime = currentTime;
+        this.paymentTypeId = paymentTypeId;
+        this.clientId = clientId;
+    }
+
     public int getSaleId() {
         return saleId;
     }

@@ -1,10 +1,14 @@
 package com.lewickiy.coffeeboardapp.controllers.seller;
 
 import com.lewickiy.coffeeboardapp.database.product.Product;
+import com.lewickiy.coffeeboardapp.database.product.ProductCategory;
 import com.lewickiy.coffeeboardapp.database.product.ProductList;
 import javafx.scene.control.Button;
 
 import java.util.ArrayList;
+
+import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
+import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 
 /**
  * Данный класс занимается именованием кнопок с продукцией. Если появится такая необходимость, <br>
@@ -24,7 +28,38 @@ public class ProductNameButton {
      */
     static void productNameButton(ArrayList<Button> productButtons) {
         int count = 0;
+        int temp = 0;
+        for (ProductCategory productCategory : productCategories) {
+            double amountCol = Math.ceil(productCategory.getAmountProducts() / 5.0);
+            temp = temp + (int)amountCol * 5;
+            for (Product product : products) {
+                if (productCategory.getProductCategoryId() == product.getCategory()) {
+                    productButtons.get(count).setAccessibleText(String.valueOf(product.getProductId()));
+                    productButtons.get(count).setText(product.getProduct()
+                            + "\n"
+                            + product.getNumberOfUnit()
+                            + " "
+                            + product.getUnitOfMeasurement()
+                            + "\n"
+                            + product.getPrice()
+                            + "руб.");
+                    productButtons.get(count).setVisible(true);
+                    productButtons.get(count).setDisable(false);
+                    count++;
+                }
+            }
+            count = temp;
+        }
+
+
+
+
+        /*
+        int count = 0;
         for (Product product : ProductList.products) {
+
+            //double amountCell = Math.ceil(productCategory.getAmountProducts() / 5.0);
+
             productButtons.get(count).setAccessibleText(String.valueOf(product.getProductId()));
             productButtons.get(count).setText(product.getProduct()
                     + "\n"
@@ -38,5 +73,8 @@ public class ProductNameButton {
             productButtons.get(count).setDisable(false);
             count++;
         }
+    }
+
+         */
     }
 }

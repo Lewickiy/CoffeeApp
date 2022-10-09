@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Main-Class: com.lewickiy.coffeeboardapp.CoffeeBoardApp
+Class-Path: javafx-swt.jar javafx.web.jar javafx.base.jar javafx.fxml.ja
+ r javafx.media.jar javafx.swing.jar javafx.controls.jar javafx.graphics
+ .jar mysql-connector-java-8.0.28.jar
+

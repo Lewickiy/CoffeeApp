@@ -1,15 +1,14 @@
 module com.lewickiy.coffeeboardapp {
     requires javafx.controls;
     requires javafx.fxml;
-
-    requires org.controlsfx.controls;
-    requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires org.apache.poi.poi;
+    requires org.apache.poi.ooxml;
 
     opens com.lewickiy.coffeeboardapp to javafx.fxml;
     opens com.lewickiy.coffeeboardapp.controllers.login to javafx.fxml;
     opens com.lewickiy.coffeeboardapp.controllers.seller to javafx.fxml;
+    opens com.lewickiy.coffeeboardapp.idgenerator to javafx.fxml;
     exports com.lewickiy.coffeeboardapp;
     exports com.lewickiy.coffeeboardapp.database;
     exports com.lewickiy.coffeeboardapp.database.currentSale;
@@ -18,5 +17,4 @@ module com.lewickiy.coffeeboardapp {
     exports com.lewickiy.coffeeboardapp.database.product;
     exports com.lewickiy.coffeeboardapp.database.user;
     exports com.lewickiy.coffeeboardapp.idgenerator;
-    opens com.lewickiy.coffeeboardapp.idgenerator to javafx.fxml;
 }

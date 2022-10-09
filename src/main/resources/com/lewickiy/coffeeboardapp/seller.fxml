@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.effect.MotionBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,31 +25,31 @@
   <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <BorderPane minHeight="750.0" prefHeight="750.0" prefWidth="645.0">
+            <BorderPane minHeight="708.0" prefHeight="708.0" prefWidth="1012.0">
                <left>
-                <AnchorPane fx:id="productBar" maxHeight="-1.0" maxWidth="-1.0" minWidth="580.0" prefHeight="558.0" prefWidth="1012.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
+                <AnchorPane fx:id="productBar" maxHeight="-1.0" maxWidth="-1.0" minWidth="580.0" prefHeight="668.0" prefWidth="1012.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutY="112.0" minWidth="580.0" prefHeight="598.0" prefWidth="1012.0" style="-fx-background-color: LIGHTGREY;">
+                        <AnchorPane layoutY="112.0" minWidth="580.0" prefHeight="556.0" prefWidth="1012.0" style="-fx-background-color: LIGHTGREY;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <GridPane fx:id="mainGridPane" alignment="TOP_CENTER" hgap="15.0" vgap="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                              <GridPane fx:id="mainGridPane" alignment="TOP_CENTER" focusTraversable="true" hgap="15.0" vgap="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
                                 </columnConstraints>
                                 <rowConstraints>
-                                  <RowConstraints maxHeight="85.0" minHeight="85.0" prefHeight="85.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="85.0" minHeight="85.0" prefHeight="85.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="85.0" minHeight="85.0" prefHeight="85.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="85.0" minHeight="85.0" prefHeight="85.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="85.0" minHeight="85.0" prefHeight="85.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="100.0" minHeight="65.0" prefHeight="85.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="100.0" minHeight="65.0" prefHeight="85.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="65.0" percentHeight="0.0" prefHeight="85.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="100.0" minHeight="65.0" percentHeight="0.0" prefHeight="85.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="65.0" percentHeight="0.0" prefHeight="85.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                               </GridPane>
                               <Label alignment="CENTER_RIGHT" layoutX="425.0" layoutY="256.0" prefHeight="27.0" prefWidth="214.0" snapToPixel="false" text="Сегодня вы заработали:" visible="false">
@@ -65,6 +68,17 @@
                                  </font>
                               </Label>
                               <Button layoutX="502.0" layoutY="359.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="OK" visible="false" />
+                              <Label blendMode="ADD" cache="true" cacheHint="SPEED" focusTraversable="false" layoutX="386.0" layoutY="423.0" opacity="0.31" text="AUTOGRAPH" textFill="#1c2ef2" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                                 <font>
+                                    <Font name="Tahoma Bold" size="96.0" />
+                                 </font>
+                                 <effect>
+                                    <MotionBlur />
+                                 </effect>
+                                 <rotationAxis>
+                                    <Point3D z="10.0" />
+                                 </rotationAxis>
+                              </Label>
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="115.0" prefWidth="1012.0">
@@ -140,22 +154,22 @@
                <bottom>
                   <AnchorPane minWidth="334.0" prefHeight="332.0" prefWidth="368.0" BorderPane.alignment="CENTER">
                      <children>
-                        <ImageView fx:id="productCategoryIco" fitHeight="150.0" fitWidth="200.0" layoutX="50.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="productCategoryIco" fitHeight="150.0" fitWidth="200.0" layoutX="50.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@image/product/coffeeToGo_1.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="197.0" layoutY="166.0" text="X" fx:id="xLabel">
+                        <Label layoutX="197.0" layoutY="190.0" text="X" fx:id="xLabel">
                            <font>
                               <Font size="45.0" />
                            </font>
                         </Label>
-                        <Label fx:id="amountLabel" layoutX="247.0" layoutY="145.0" text="5">
+                        <Label fx:id="amountLabel" layoutX="247.0" layoutY="169.0" text="5">
                            <font>
                               <Font size="74.0" />
                            </font>
                         </Label>
-                        <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#12ae27" wrapText="true">
+                        <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#12ae27" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
@@ -163,27 +177,27 @@
                               <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </Button>
-                        <Button fx:id="discountButtonActivate" layoutX="279.0" layoutY="13.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountButtonActivateOnAction" prefHeight="75.0" prefWidth="75.0" text="\%">
+                        <Button fx:id="discountButtonActivate" layoutX="279.0" layoutY="45.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountButtonActivateOnAction" prefHeight="75.0" prefWidth="75.0" text="\%" AnchorPane.rightAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="33.0" />
                            </font>
                         </Button>
-                        <Label fx:id="productNameLabel" layoutX="210.0" layoutY="247.0" prefHeight="16.0" prefWidth="94.0" text="Американо" textAlignment="CENTER">
+                        <Label fx:id="productNameLabel" layoutX="210.0" layoutY="271.0" prefHeight="16.0" prefWidth="94.0" text="Американо" textAlignment="CENTER">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Button fx:id="delProduct" layoutX="147.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#delProductOnAction" prefHeight="75.0" prefWidth="75.0" text="C">
+                        <Button fx:id="delProduct" layoutX="147.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#delProductOnAction" prefHeight="75.0" prefWidth="75.0" text="C" AnchorPane.bottomAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
                         </Button>
-                        <Button fx:id="endThisTale" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="13.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#endThisTaleOnAction" prefHeight="75.0" prefWidth="136.0" text="Чек" textAlignment="CENTER" textFill="#12ae27" wrapText="true">
+                        <Button fx:id="endThisTale" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="45.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#endThisTaleOnAction" prefHeight="75.0" prefWidth="136.0" text="Чек" textAlignment="CENTER" textFill="#12ae27" wrapText="true" AnchorPane.leftAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
                         </Button>
-                        <Button fx:id="endThisTaleAnother" alignment="CENTER" contentDisplay="CENTER" layoutX="279.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
+                        <Button fx:id="endThisTaleAnother" alignment="CENTER" contentDisplay="CENTER" layoutX="279.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnotherOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
@@ -213,12 +227,12 @@
                         </AnchorPane>
                         <AnchorPane fx:id="paymentTypePanel" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false">
                            <children>
-                              <Button fx:id="endThisTaleAnother1" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
+                              <Button fx:id="endThisTaleAnother1" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnother1OnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
                                  <font>
                                     <Font name="System Bold" size="35.0" />
                                  </font>
                               </Button>
-                              <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="207.0" text="Выберете  тип оплаты">
+                              <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="207.0" text="Выберете  тип оплаты" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
@@ -236,6 +250,30 @@
                               <Button fx:id="oups" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#oupsOnAction" prefHeight="75.0" prefWidth="149.0" text="Oups" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="22.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="correctionPane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <TextField fx:id="correctionTextField" alignment="CENTER" layoutX="65.0" layoutY="122.0" prefHeight="86.0" prefWidth="250.0" promptText="0.00" AnchorPane.bottomAnchor="210.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="122.0">
+                                 <font>
+                                    <Font name="System Bold" size="36.0" />
+                                 </font>
+                              </TextField>
+                              <Button fx:id="correctionButton" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#correctionButtonOnAction" prefHeight="75.0" prefWidth="149.0" text="Пересчёт" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="22.0" />
+                                 </font>
+                              </Button>
+                              <Label prefHeight="27.0" prefWidth="207.0" text="Введите сумму чека" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="endThisTaleAnother11" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnother11OnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
                                  </font>
                               </Button>
                            </children>

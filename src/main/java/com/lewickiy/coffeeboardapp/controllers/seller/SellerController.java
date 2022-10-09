@@ -8,6 +8,7 @@ import com.lewickiy.coffeeboardapp.database.discount.Discount;
 import com.lewickiy.coffeeboardapp.database.outlet.Outlet;
 import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
 import com.lewickiy.coffeeboardapp.database.product.Product;
+import com.lewickiy.coffeeboardapp.database.product.ProductCategory;
 import com.lewickiy.coffeeboardapp.database.user.UserList;
 import com.lewickiy.coffeeboardapp.idgenerator.UniqueIdGenerator;
 import javafx.collections.FXCollections;
@@ -18,10 +19,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -36,15 +34,19 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 
+import static com.lewickiy.coffeeboardapp.controllers.seller.DiscountNameButton.discountNameButtons;
 import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
 import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.createNewSale;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addProductsToSale;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
+import static com.lewickiy.coffeeboardapp.database.local.LocalBase.*;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeAL;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
+import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.createProductCategoriesList;
+import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 
 public class SellerController {
@@ -76,7 +78,8 @@ public class SellerController {
 
     //Действие при нажатии на кнопку Закрытия смены.
     @FXML
-    void closeShiftButtonOnAction() throws IOException {
+    void closeShiftButtonOnAction() throws IOException, SQLException {
+        writeSqlFromLocalDb();
         currentSaleProducts.clear();
         products.clear();
         discounts.clear();
@@ -93,11 +96,11 @@ public class SellerController {
         stageLogin.show();
     }
     /*____________________________________˄˄˄_____________________________________________
-     ___________________________________the end__________________________________________*/
+     *___________________________________the end__________________________________________*/
 
     /*____________________________________start___________________________________________
      * Панель кнопок продуктов
-     _____________________________________˅˅˅____________________________________________*/
+     *_____________________________________˅˅˅____________________________________________*/
     @FXML
     private GridPane mainGridPane;
 
@@ -110,6 +113,7 @@ public class SellerController {
             int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
 
             if (newSale) { //Если данный продукт в Чеке первый, то...
+                endThisTaleAnother.setDisable(false);
                 saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи (Создаётся уникальный идентификатор нового чека)
                 currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId()); //Создаётся текущий Чек.
                 newSale = false; //Значение boolean true меняется на false. Последующие действия уже не создают новую продажу до момента нажатия на "+" в Панели Текущего продукта.
@@ -223,7 +227,7 @@ public class SellerController {
      * //TODO добавить отображение суммы чека со скидкой
      _____________________________________˅˅˅____________________________________________*/
     @FXML
-    private TableView<SaleProduct> saleTable; //таблица продаж
+    private TableView<SaleProduct> saleTable; //таблица продажи (текущий чек)
 
     @FXML
     private TableColumn<SaleProduct, String> productColumn; //колонка с наименованием продукта
@@ -243,7 +247,7 @@ public class SellerController {
     @FXML
     private Label sumLabel; //Сумма стоимости товара
 
-    //TODO добавить сумму Чека без учёта скидки и размер скидки в руб.
+    //TODO добавить сумму Чека без учёта скидки и сумму чека со скидкой (итог)
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
 
@@ -267,9 +271,9 @@ public class SellerController {
     @FXML
     private Label productNameLabel; //наименование продукта
     @FXML
-    private Button addProduct; //кнопка добавления продукта в текущий чек (Зелёный плюсик)
+    private Button addProduct; //кнопка добавления продукта в текущий чек (Зелёный плюс)
     @FXML
-    private Button discountButtonActivate; //Кнопка скидки (в настоящее время не действует). (Знак процента)
+    private Button discountButtonActivate;
     @FXML
     private Button delProduct; //"С" - удалить продукт (действует так же как и 0???)
     @FXML
@@ -277,27 +281,33 @@ public class SellerController {
     @FXML
     private Button endThisTaleAnother; //отменить чек.
 
-    /**
-     * Логика при нажатии на кнопку со скидкой ("%")
-     */
     @FXML
     void discountButtonActivateOnAction() {
         //discountPanel, на которой находятся discountGrid, discountButtons становится видимой и доступной пользователю для дальнейших действий
         discountPanel.setVisible(true);
     }
 
-    //На данный момент кнопка не имеет действия. По сути, просто зарезервированное место.
+    //На данный момент кнопка не имеет действия.
     @FXML
-    void delProductOnAction() {
+    void delProductOnAction() throws IOException, SQLException {
         //TODO кнопка отмены ButtonOnAction
     }
+
     //Логика при нажатии на кнопку "+" добавления продукта в текущий чек.
     @FXML
     void addProductOnAction() {
+        if (currentProduct.getDiscountId() == 0) {
+            for (Discount discount : discounts) {
+                if (discount.getDiscount() == 0) {
+                    currentProduct.setDiscountId(discount.getDiscountId());
+                    break;
+                }
+            }
+        }
         SaleProductList.addProductToArray(positionsCount, currentProduct);
         positionsCount++;
-        saleTable.setItems(saleProductsObservableList); //Установка значений в таблицу.
-        saleTable.refresh(); //Обновление таблицы. Без этого отображается только первая строка.
+        saleTable.setItems(saleProductsObservableList);
+        saleTable.refresh();
 
         //Подсчёт суммы продажи под таблицей текущей продажи.
         double total = 0.0;
@@ -305,9 +315,9 @@ public class SellerController {
         for (SaleProduct saleProduct : saleTable.getItems()) {
             total = total + saleProduct.getSum();
         }
-        sumLabel.setText(String.valueOf(total)); //Сумма устанавливается в sumLabel
         productCategoryIco.setVisible(false); //Картинка Продукта перестаёт быть видимой
         xLabel.setVisible(false); //Символ количества перестаёт отображаться
+        sumLabel.setText(String.valueOf(total)); //Сумма устанавливается в sumLabel
         productNameLabel.setVisible(false); //Название продукта перестаёт отображаться
         amountLabel.setVisible(false); //Количество продукта перестаёт отображаться
         addProduct.setDisable(true); //Кнопка добавления продукта становится неактивной
@@ -315,8 +325,17 @@ public class SellerController {
         buttonsIsDisable(productButtons, false); //Кнопки с Продуктами становятся активными.
     }
     @FXML
-    void endThisTaleOnAction(ActionEvent event) {
+    void endThisTaleOnAction() {
         paymentTypePanel.setVisible(true);
+    }
+    @FXML
+    void endThisTaleAnotherOnAction() {
+        currentSale = null;
+        newSale = true;
+        positionsCount = 0;
+        currentSaleProducts.clear();
+        sumLabel.setText("0.00");
+        saleTable.refresh();
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
@@ -362,7 +381,7 @@ public class SellerController {
     private AnchorPane paymentTypePanel;
 
     @FXML
-    Button[] paymentTypeButtons = new Button[2]; //массив кнопок продуктов
+    Button[] paymentTypeButtons = new Button[2];
 
     @FXML
     private Button paymentType1;
@@ -371,29 +390,40 @@ public class SellerController {
     private Button paymentType2;
 
     @FXML
-    private Button oups; //Данная кнопка отвечает за произвольную сумму чека.
-    // В случае, если Клиенту не хватает какой-то суммы, то можно ввести сколько есть. Дальше в действии разница делится на все позиции и отражается в Чеке. После этого нужно снова выбрать тип оплаты (наличные/карта).
+    private Button endThisTaleAnother1;
+
+    /* Кнопка произвольной суммы чека
+     * В случае, если Клиенту не хватает какой-то суммы, то можно ввести сколько есть.
+     * Дальше в действии разница делится на все позиции и отражается в Чеке.
+     * После этого нужно снова выбрать тип оплаты (наличные/карта).
+     */
+    @FXML
+    private Button oups;
 
     @FXML
-    void oupsOnAction() {
-        //TODO - При нажатии на кнопку появляется окошко, в котором Пользователь должен ввести необходимую сумму чека.
+    void oupsOnAction() throws IOException {
+        correctionPane.setVisible(true);
+//        clearLocalDb();
     }
 
     @FXML
-    void paymentTypeOnAction(ActionEvent event) throws SQLException {
+    void paymentTypeOnAction(ActionEvent event) throws SQLException, IOException {
         Button button = (Button) event.getSource();
         currentSale.setPaymentTypeId(Integer.parseInt(button.getAccessibleText()));
         paymentTypePanel.setVisible(false);
         endThisTale.setDisable(true);
-        long nowDate = System.currentTimeMillis(); //Дата сейчас.
+        long nowDate = System.currentTimeMillis();
         Date saleDate = new Date(nowDate);
-        long nowTime = System.currentTimeMillis(); //Время сейчас.
+        long nowTime = System.currentTimeMillis();
         Time saleTime = new Time(nowTime);
         currentSale.setCurrentDate(saleDate);
         currentSale.setCurrentTime(saleTime);
         currentSale.setClientId(1); //Временное назначение клиента
-        createNewSale(currentSale); //Создаётся новая продажа в базе из currentSale.
-        addProductsToSale(currentSaleProducts, currentSale);
+        addSaleToLocalDb(currentSale);
+//        createNewSale(currentSale);
+        addProductsToLocalDb(currentSaleProducts, currentSale);
+//        addProductsToSale(currentSaleProducts, currentSale);
+
         currentSale = null;
         newSale = true;
         positionsCount = 0;
@@ -401,6 +431,60 @@ public class SellerController {
         sumLabel.setText("0.00");
     //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
         saleTable.refresh();
+    }
+    @FXML
+    void endThisTaleAnother1OnAction() {
+        paymentTypePanel.setVisible(false);
+    }
+    /*____________________________________˄˄˄_____________________________________________
+     ___________________________________the end__________________________________________*/
+
+    /*____________________________________start___________________________________________
+     * Панель корректировки
+     _____________________________________˅˅˅____________________________________________*/
+    @FXML
+    private AnchorPane correctionPane;
+
+    @FXML
+    private Button correctionButton;
+
+    @FXML
+    private Button endThisTaleAnother11;
+
+    @FXML
+    private TextField correctionTextField;
+
+    @FXML
+    void correctionButtonOnAction() {
+        double startSum = Double.parseDouble(sumLabel.getText());
+        String endSumString = correctionTextField.getText().replace(',', '.');
+        endSumString = endSumString.replace(" ", "");
+
+        double endSum = Double.parseDouble(endSumString);
+        int productsInArray = currentSaleProducts.size();
+        double correctionDiscount = (startSum - endSum) / productsInArray;
+        for (SaleProduct currentSaleProduct : currentSaleProducts) {
+            for (Product product : products) {
+                if (currentSaleProduct.getProductId() == product.getProductId()) {
+                    currentSaleProduct.setSum(currentSaleProduct.getSum() - correctionDiscount);
+                }
+            }
+        }
+        saleTable.setItems(saleProductsObservableList);
+        saleTable.refresh();
+        correctionTextField.setText(null);
+        double total = 0.0;
+
+        for (SaleProduct saleProduct : saleTable.getItems()) {
+            total = total + saleProduct.getSum();
+        }
+        sumLabel.setText(String.valueOf(total));
+        correctionPane.setVisible(false);
+    }
+
+    @FXML
+    void endThisTaleAnother11OnAction() {
+        correctionPane.setVisible(false);
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
@@ -412,16 +496,18 @@ public class SellerController {
     void initialize() throws SQLException {
         createDiscountList();
         createPaymentTypeAL();
+        createProductCategoriesList();
+        System.out.println(productCategories.size());
         paymentTypePanel.setVisible(false);
         paymentTypeButtons[0] = paymentType1;
         paymentTypeButtons[1] = paymentType2;
+
         int count = 0;
         for (PaymentType paymentType : paymentTypes) {
             paymentTypeButtons[count].setAccessibleText(String.valueOf(paymentType.getPaymentTypeId()));
             paymentTypeButtons[count].setText(paymentType.getPaymentType());
             count++;
         }
-        //Изменения в currentSaleProducts происходят также в saleProductsObservableList благодаря Listener.
         saleProductsObservableList.addListener((ListChangeListener<SaleProduct>) change -> {
         });
 
@@ -464,6 +550,7 @@ public class SellerController {
         endThisTale.setDisable(true);
         endThisTaleAnother.setDisable(true);
 
+        //Размещаем кнопки с актуальными скидками.
         int countD = 0;
         for (int l = 0; l < discountGridPane.getColumnCount(); l++) {
             for (int h = 0; h < discountGridPane.getRowCount(); h++) {
@@ -483,8 +570,7 @@ public class SellerController {
                 countD++;
             }
         }
-        initializationDiscountButton();
-
+        discountNameButtons(discountButtons);
         /*____________________________________________________________________________________
          * Здесь происходит инициализация столбцов таблицы текущей продажи.
          * В неё добавляются позиции Продуктов.
@@ -503,6 +589,16 @@ public class SellerController {
         sumColumn.setEditable(true);
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
 
+        //Подсчитываем количество Продуктов в каждой категории.
+        for (Product product : products) {
+            for (ProductCategory productCategory : productCategories) {
+                if (product.getCategory() == productCategory.getProductCategoryId()) {
+                    productCategory.setAmountProducts(productCategory.getAmountProducts() + 1);
+                }
+            }
+        }
+
+        //Размещаем кнопки Продуктов в GridPane
         int countP = 0;
         for (int l = 0; l < mainGridPane.getColumnCount(); l++) {
 
@@ -531,19 +627,6 @@ public class SellerController {
     /*____________________________________start___________________________________________
      * Прочие методы.
      _____________________________________˅˅˅____________________________________________*/
-    public void initializationDiscountButton() {
-        int countD = 0;
-        for (Discount discount : discounts) {
-            if (discount.isActive()) {
-                discountButtons.get(countD).setAccessibleText(String.valueOf(discount.getDiscountId())); //Id позиции скидки назначается getAccessibleText кнопки.
-                discountButtons.get(countD).setText(discount.getDiscount() + "%");
-                discountButtons.get(countD).setVisible(true);
-                countD++;
-            }
-        }
-        //TODO логика назначения кнопкам процента скидки, если у объекта в ArrayList дисконта в переменной active установлено значение true.
-    }
-
     /**
      * Данный метод делает кнопки с Продуктами/Цифровые кнопки доступными/недоступными.
      * @param buttons - принимаемый параметр - массив кнопок.

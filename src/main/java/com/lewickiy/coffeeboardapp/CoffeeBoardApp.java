@@ -8,6 +8,8 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+import static com.lewickiy.coffeeboardapp.database.local.LocalBase.createLocalDb;
+
 public class CoffeeBoardApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {

@@ -1,6 +1,10 @@
 package com.lewickiy.coffeeboardapp.database.currentSale;
 
+import com.lewickiy.coffeeboardapp.database.discount.Discount;
+
 import java.util.ArrayList;
+
+import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 
 public class SaleProductList {
     public static ArrayList<SaleProduct> currentSaleProducts = new ArrayList<>();
@@ -10,7 +14,7 @@ public class SaleProductList {
 
     public static void addProductToArray(int positionsCount, SaleProduct currentProduct) {
         currentProduct.setSum((currentProduct.getPrice()
-                - (currentProduct.getPrice() * currentProduct.getDiscountId() / 100))
+                - (currentProduct.getPrice() * currentProduct.getDiscount() / 100))
                 * currentProduct.getAmount());
 
         if (positionsCount == 0) {
@@ -28,7 +32,7 @@ public class SaleProductList {
                     currentSaleProducts.get(i).setSum((
                             currentSaleProducts.get(i).getPrice()
                                     - (currentSaleProducts.get(i).getPrice()
-                                    * currentSaleProducts.get(i).getDiscountId() / 100))
+                                    * currentSaleProducts.get(i).getDiscount() / 100))
                             * currentSaleProducts.get(i).getAmount());
                     b = false;
                     break;

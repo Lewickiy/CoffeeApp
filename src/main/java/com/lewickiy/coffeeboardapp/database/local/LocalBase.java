@@ -2,18 +2,19 @@ package com.lewickiy.coffeeboardapp.database.local;
 
 import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Iterator;
+
+import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 
 public class LocalBase {
     private static File localDb;
@@ -47,7 +48,7 @@ public class LocalBase {
 
             XSSFSheet saleProduct = local_db.createSheet("sale_product");
             row = saleProduct.createRow(0);
-            cell = row.createCell(0, CellType.NUMERIC);
+            cell = row.createCell(0, CellType.STRING);
             cell.setCellValue("sale_id");
             cell = row.createCell(1, CellType.NUMERIC);
             cell.setCellValue("product_id");
@@ -142,7 +143,7 @@ public class LocalBase {
             cell.setCellValue(currentSaleProduct.getProductId());
             cell = row.createCell(2, CellType.STRING);
             cell.setCellValue(currentSaleProduct.getProduct());
-            cell = row.createCell(3, CellType.STRING);
+            cell = row.createCell(3, CellType.NUMERIC);
             cell.setCellValue(currentSaleProduct.getPrice());
             cell = row.createCell(4, CellType.NUMERIC);
             cell.setCellValue(currentSaleProduct.getDiscountId());
@@ -150,7 +151,7 @@ public class LocalBase {
             cell.setCellValue(currentSaleProduct.getDiscount());
             cell = row.createCell(6, CellType.NUMERIC);
             cell.setCellValue(currentSaleProduct.getAmount());
-            cell = row.createCell(7, CellType.STRING);
+            cell = row.createCell(7, CellType.NUMERIC);
             cell.setCellValue(currentSaleProduct.getSum());
 
             for (int i = 0; i < 8; i++) {
@@ -184,23 +185,85 @@ public class LocalBase {
         book.write(os);
     }
 
-    public static void writeSqlFromLocalDb() throws IOException {
-        XSSFRow row;
-        XSSFCell cell;
+    public static void writeSqlFromLocalDb() throws IOException, SQLException {
 
         InputStream myxlsx = new FileInputStream("local_db.xlsx");
         XSSFWorkbook book = new XSSFWorkbook(myxlsx);
+        XSSFSheet sale = book.getSheet("sale");
+
+        int lastRowS = sale.getLastRowNum();
+        for (int i = 1; i <= lastRowS; i++) {
+            int saleId = (int) sale.getRow(i).getCell(0).getNumericCellValue();
+            System.out.println("Sale id: " + saleId);
+            int userId = (int) sale.getRow(i).getCell(1).getNumericCellValue();
+            System.out.println("User id: " + userId);
+            int outletId = (int) sale.getRow(i).getCell(2).getNumericCellValue();
+            System.out.println("Outlet id: " + outletId);
+            Date currentDate = Date.valueOf(sale.getRow(i).getCell(3).getStringCellValue());
+            System.out.println("Current date: " + currentDate);
+            Time currentTime = Time.valueOf(sale.getRow(i).getCell(4).getStringCellValue());
+            System.out.println("Current time: " + currentTime);
+            int paymentTypeId = (int) sale.getRow(i).getCell(5).getNumericCellValue();
+            System.out.println("Payment type id: " + paymentTypeId);
+            int clientId = (int) sale.getRow(i).getCell(6).getNumericCellValue();
+            System.out.println("Client Id: " + clientId);
+            CurrentSale tempSale = new CurrentSale(saleId, userId, outletId, currentDate, currentTime, paymentTypeId, clientId);
+            System.out.println("__________________________________________________________________________");
+            System.out.println("");
+
+            insertToSql("sale", "sale_id, "
+                    + "user_id, "
+                    + "outlet_id, "
+                    + "date, "
+                    + "time, "
+                    + "paymenttype_id, "
+                    + "client_id) VALUES ('"
+                    + tempSale.getSaleId() + "', '"
+                    + tempSale.getUserId() + "', '"
+                    + tempSale.getSaleOutletId() + "', '"
+                    + tempSale.getCurrentDate() + "', '"
+                    + tempSale.getCurrentTime() + "', '"
+                    + tempSale.getPaymentTypeId() + "', '"
+                    + tempSale.getClientId());
+        }
+
         XSSFSheet saleProduct = book.getSheet("sale_product");
 
-        System.out.println("Sale id: " + saleProduct.getRow(1).getCell(0));
-        System.out.println("Product id: " + saleProduct.getRow(1).getCell(1).toString());
-        System.out.println("Product: " + saleProduct.getRow(1).getCell(2).toString());
-        System.out.println("Price: " + saleProduct.getRow(1).getCell(3).toString());
-        System.out.println("Discount id: " + saleProduct.getRow(1).getCell(4).toString());
-        System.out.println("Discount: " + saleProduct.getRow(1).getCell(5).toString());
-        System.out.println("Amount: " + saleProduct.getRow(1).getCell(6).toString());
-        System.out.println("Sum: " + saleProduct.getRow(1).getCell(7).toString());
-        System.out.println("__________________________________________________________________________");
-        System.out.println("");
+        int lastRowSP = saleProduct.getLastRowNum();
+        for (int i = 1; i <= lastRowSP; i++) {
+            int saleId = (int) saleProduct.getRow(i).getCell(0).getNumericCellValue();
+            System.out.println("Sale id: " + saleId);
+            int productId = (int) saleProduct.getRow(i).getCell(1).getNumericCellValue();
+            System.out.println("Product id: " + productId);
+            String product = String.valueOf(saleProduct.getRow(i).getCell(2));
+            System.out.println("Product: " + product);
+            double price = saleProduct.getRow(i).getCell(3).getNumericCellValue();
+            System.out.println("Price: " + price);
+            int discountId = (int) saleProduct.getRow(i).getCell(4).getNumericCellValue();
+            System.out.println("Discount id: " + discountId);
+            int discount = (int) saleProduct.getRow(i).getCell(5).getNumericCellValue();
+            System.out.println("Discount: " + discount);
+            int amount = (int) saleProduct.getRow(i).getCell(6).getNumericCellValue();
+            System.out.println("Amount: " + amount);
+            double sum = saleProduct.getRow(i).getCell(7).getNumericCellValue();
+            System.out.println("Sum: " + sum);
+            SaleProduct tempSaleProduct = new SaleProduct(saleId, productId, product, price, discountId, discount, amount, sum);
+            System.out.println("__________________________________________________________________________");
+            System.out.println("");
+
+            insertToSql("sale_product", "sale_id, "
+                    + "product_id, "
+                    + "discount_id, "
+                    + "price, "
+                    + "amount, "
+                    + "sum) VALUES ('"
+                    + tempSaleProduct.getSaleId() + "', '"
+                    + tempSaleProduct.getProductId() + "', '"
+                    + tempSaleProduct.getDiscountId() + "', '"
+                    + tempSaleProduct.getPrice() + "', '"
+                    + tempSaleProduct.getAmount() + "', '"
+                    + tempSaleProduct.getSum());
+        }
+        clearLocalDb();
     }
 }

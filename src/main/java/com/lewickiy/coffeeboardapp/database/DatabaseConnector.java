@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseConnector {
+
     private static final String DB_DRIVER = "jdbc:mysql:";
     private static final String HOST = "server5.hosting.reg.ru";
     private static final int PORT = 3306;
