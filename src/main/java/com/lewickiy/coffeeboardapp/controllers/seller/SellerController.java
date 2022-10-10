@@ -24,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -74,8 +75,23 @@ public class SellerController {
     private Button closeShiftButton; //кнопка закрытия смены
 
     @FXML
+    private Button allSales;
+
+    @FXML
+    private AnchorPane allSalesPane;
+
+    @FXML
     private Label userEarnings; //Не действует. Должно помещаться на отдельном окне при закрытии смены.
 
+    @FXML
+    void allSalesOnAction() {
+        if (allSalesPane.isVisible()) {
+            allSalesPane.setVisible(false);
+        } else {
+            allSalesPane.setVisible(true);
+        }
+
+    }
     //Действие при нажатии на кнопку Закрытия смены.
     @FXML
     void closeShiftButtonOnAction() throws IOException, SQLException {
@@ -376,6 +392,7 @@ public class SellerController {
      * Панель Чека (Выбор типа оплаты).
      * Данная панель открывается поверх панели Текущего товара нажатием на кнопку "Чек" находящуюся в панели
      * текущего товара.
+     * //TODO Сделать логику выбора "нал/безнал". Нал - открывается панель с выбором "со сдачей/без сдачи".
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     private AnchorPane paymentTypePanel;
@@ -419,23 +436,96 @@ public class SellerController {
         currentSale.setCurrentDate(saleDate);
         currentSale.setCurrentTime(saleTime);
         currentSale.setClientId(1); //Временное назначение клиента
-        addSaleToLocalDb(currentSale);
-//        createNewSale(currentSale);
-        addProductsToLocalDb(currentSaleProducts, currentSale);
-//        addProductsToSale(currentSaleProducts, currentSale);
 
-        currentSale = null;
-        newSale = true;
-        positionsCount = 0;
-        currentSaleProducts.clear();
-        sumLabel.setText("0.00");
-    //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
-        saleTable.refresh();
+        if (Integer.parseInt(button.getAccessibleText()) == 1) {
+            changePane.setVisible(true);
+        } else if (Integer.parseInt(button.getAccessibleText()) == 2) {
+            addSaleToLocalDb(currentSale);
+//        createNewSale(currentSale);
+            addProductsToLocalDb(currentSaleProducts, currentSale);
+//        addProductsToSale(currentSaleProducts, currentSale);
+            currentSale = null;
+            newSale = true;
+            positionsCount = 0;
+            currentSaleProducts.clear();
+            sumLabel.setText("0.00");
+            //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
+            saleTable.refresh();
+        }
     }
     @FXML
     void endThisTaleAnother1OnAction() {
         paymentTypePanel.setVisible(false);
     }
+    /*____________________________________˄˄˄_____________________________________________
+     ___________________________________the end__________________________________________*/
+
+    /*____________________________________start___________________________________________
+     * Панель вопроса о сдаче //TODO Сделать логику выбора "со сдачей/без сдачи"
+     _____________________________________˅˅˅____________________________________________*/
+    @FXML
+    private Pane changePane;
+
+    @FXML
+    private Button noChange;
+
+    @FXML
+    private Button withChangeButton;
+
+    @FXML
+    void noChangeOnAction() throws IOException {
+        addSaleToLocalDb(currentSale);
+//        createNewSale(currentSale);
+        addProductsToLocalDb(currentSaleProducts, currentSale);
+//        addProductsToSale(currentSaleProducts, currentSale);
+        currentSale = null;
+        newSale = true;
+        positionsCount = 0;
+        currentSaleProducts.clear();
+        sumLabel.setText("0.00");
+        //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
+        saleTable.refresh();
+        changePane.setVisible(false);
+    }
+
+    @FXML
+    void withChangeOnAction() {
+        changePane.setVisible(false);
+        withChangePane.setVisible(true);
+        System.out.println("With change pressed");
+    }
+    /*____________________________________˄˄˄_____________________________________________
+     ___________________________________the end__________________________________________*/
+
+    /*____________________________________start___________________________________________
+     * Считаем сдачу
+     _____________________________________˅˅˅____________________________________________*/
+    @FXML
+    private Pane withChangePane;
+
+    @FXML
+    private TextField sumChangeTextField;
+
+    @FXML
+    private Button okWithChangeButton;
+
+    @FXML
+    void okWithChangeOnAction() throws IOException {
+        addSaleToLocalDb(currentSale);
+//        createNewSale(currentSale);
+        addProductsToLocalDb(currentSaleProducts, currentSale);
+//        addProductsToSale(currentSaleProducts, currentSale);
+        currentSale = null;
+        newSale = true;
+        positionsCount = 0;
+        currentSaleProducts.clear();
+        sumLabel.setText("0.00");
+        //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
+        saleTable.refresh();
+        withChangePane.setVisible(false);
+        System.out.println("okWithChangeOnAction");
+    }
+
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
 

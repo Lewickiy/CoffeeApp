@@ -102,6 +102,16 @@
                               </GridPane>
                            </children>
                         </AnchorPane>
+                        <AnchorPane fx:id="allSalesPane" layoutX="10.0" layoutY="5.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="C1" />
+                                  <TableColumn prefWidth="75.0" text="C2" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
                      </children>
                 </AnchorPane>
                </left>
@@ -116,7 +126,66 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
+                        <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="10.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="124.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="238.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="352.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="466.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="580.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
+                        <Button fx:id="allSales" alignment="CENTER" contentDisplay="RIGHT" layoutX="694.0" layoutY="12.0" mnemonicParsing="false" onAction="#allSalesOnAction" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
                     </items>
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
                   </ToolBar>
                </top>
             </BorderPane>
@@ -276,6 +345,54 @@
                                     <Font name="System Bold" size="35.0" />
                                  </font>
                               </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="changePane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Button fx:id="endThisTaleAnother12" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnother1OnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                              </Button>
+                              <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="207.0" text="Нужна ли сдача?" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="noChange" alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="99.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#noChangeOnAction" prefHeight="75.0" prefWidth="242.0" text="Без сдачи" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="22.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="withChangeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#withChangeOnAction" prefHeight="75.0" prefWidth="242.0" text="Нужна сдача" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="22.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="withChangePane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Button fx:id="endThisTaleAnother121" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnother1OnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                              </Button>
+                              <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="262.0" text="С какой суммы нужна сдача?" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="okWithChangeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#okWithChangeOnAction" prefHeight="75.0" prefWidth="242.0" text="ОК" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="22.0" />
+                                 </font>
+                              </Button>
+                              <TextField fx:id="sumChangeTextField" layoutX="67.0" layoutY="99.0" prefHeight="75.0" prefWidth="242.0" promptText="Введите сумму">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </TextField>
                            </children>
                         </AnchorPane>
                      </children>
