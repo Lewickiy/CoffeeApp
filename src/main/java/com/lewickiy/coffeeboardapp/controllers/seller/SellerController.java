@@ -126,6 +126,7 @@ public class SellerController {
         @Override
         public void handle(ActionEvent event) {
             Button button = (Button) event.getSource(); //Получить данные от нажатой кнопки
+            endThisTale.setDisable(true);
             int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
 
             if (newSale) { //Если данный продукт в Чеке первый, то...
@@ -193,6 +194,7 @@ public class SellerController {
         @Override
         public void handle(ActionEvent event) {
             Button button = (Button) event.getSource();
+            endThisTale.setDisable(true);
             /*
              *При нажатии на Цифровую кнопку происходит обновление данных в amountLabel, отражающем выбранное количество Продукта
              * Также происходит пересчёт суммы Текущего продукта исходя из выбранного количества.
@@ -342,6 +344,7 @@ public class SellerController {
     }
     @FXML
     void endThisTaleOnAction() {
+        endThisTale.setDisable(false);
         paymentTypePanel.setVisible(true);
     }
     @FXML
@@ -507,7 +510,16 @@ public class SellerController {
     private TextField sumChangeTextField;
 
     @FXML
+    private Label changeLabel;
+
+    @FXML
     private Button okWithChangeButton;
+
+    @FXML
+    void sumChangeOnChanged() {
+        int i = Integer.parseInt(sumChangeTextField.getText());
+        changeLabel.setText(String.valueOf(i));
+    }
 
     @FXML
     void okWithChangeOnAction() throws IOException {
@@ -710,6 +722,13 @@ public class SellerController {
             }
         }
         productNameButton(productButtons);
+        sumChangeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            String changeSumString = newValue.replace(',', '.');
+            changeSumString = changeSumString.replace(" ", "");
+            double change = Double.parseDouble(changeSumString) - (Double.parseDouble(sumLabel.getText()));
+            changeLabel.setText(String.valueOf(change));
+
+        });
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/

@@ -31,7 +31,7 @@
                      <children>
                         <AnchorPane layoutY="112.0" minWidth="580.0" prefHeight="556.0" prefWidth="1012.0" style="-fx-background-color: LIGHTGREY;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <GridPane fx:id="mainGridPane" alignment="TOP_CENTER" focusTraversable="true" hgap="15.0" vgap="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                              <GridPane fx:id="mainGridPane" alignment="TOP_CENTER" focusTraversable="true" hgap="15.0" layoutX="30.0" layoutY="14.0" vgap="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="65.0" percentWidth="0.0" prefWidth="85.0" />
@@ -383,16 +383,21 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="okWithChangeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#okWithChangeOnAction" prefHeight="75.0" prefWidth="242.0" text="ОК" textAlignment="CENTER" wrapText="true">
+                              <Button fx:id="okWithChangeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="301.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#okWithChangeOnAction" prefHeight="75.0" prefWidth="145.0" text="ОК" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="22.0" />
                                  </font>
                               </Button>
-                              <TextField fx:id="sumChangeTextField" layoutX="67.0" layoutY="99.0" prefHeight="75.0" prefWidth="242.0" promptText="Введите сумму">
+                              <TextField fx:id="sumChangeTextField" layoutX="67.0" layoutY="99.0" onInputMethodTextChanged="#sumChangeOnChanged" prefHeight="75.0" prefWidth="242.0" promptText="Введите сумму">
                                  <font>
                                     <Font size="28.0" />
                                  </font>
                               </TextField>
+                              <Label fx:id="changeLabel" layoutX="169.0" layoutY="202.0" text="0.00">
+                                 <font>
+                                    <Font size="48.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                      </children>
