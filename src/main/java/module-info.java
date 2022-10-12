@@ -9,6 +9,7 @@ module com.lewickiy.coffeeboardapp {
     opens com.lewickiy.coffeeboardapp.controllers.login to javafx.fxml;
     opens com.lewickiy.coffeeboardapp.controllers.seller to javafx.fxml;
     opens com.lewickiy.coffeeboardapp.idgenerator to javafx.fxml;
+    opens com.lewickiy.coffeeboardapp.database.local.todaySales to javafx.base;
     exports com.lewickiy.coffeeboardapp;
     exports com.lewickiy.coffeeboardapp.database;
     exports com.lewickiy.coffeeboardapp.database.currentSale;

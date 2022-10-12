@@ -5,6 +5,7 @@ import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList;
 import com.lewickiy.coffeeboardapp.database.discount.Discount;
+import com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySales;
 import com.lewickiy.coffeeboardapp.database.outlet.Outlet;
 import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
 import com.lewickiy.coffeeboardapp.database.product.Product;
@@ -37,12 +38,12 @@ import java.util.ArrayList;
 
 import static com.lewickiy.coffeeboardapp.controllers.seller.DiscountNameButton.discountNameButtons;
 import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
-import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.createNewSale;
-import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addProductsToSale;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.local.LocalBase.*;
+import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.addCurrentSaleToArray;
+import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.todaySalesArrayList;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeAL;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
@@ -53,54 +54,43 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 public class SellerController {
 
     private boolean newSale = true; //boolean значение необходимости создания нового чека
-
     private int saleId; //Идентификатор текущей продажи. Создаётся в классе UniqueIdGenerator
-
     private int positionsCount;
-
     private CurrentSale currentSale; //объект - текущая продажа.
-
     private SaleProduct currentProduct; //объект - зона сбора данных.
-
     static ObservableList<SaleProduct> saleProductsObservableList = FXCollections.observableList(currentSaleProducts);
+    static ObservableList<SaleProduct> todaySalesObservableList = FXCollections.observableList(todaySalesArrayList);
 
     /*____________________________________start___________________________________________
      * Панель информации в верхней части экрана.
      * Здесь присутствуют кнопки:
      * Закрытие смены -
-     * ...
+     * Отображение продаж
      * А также метод логики нажатия на кнопку Закрытия смены
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     private Button closeShiftButton; //кнопка закрытия смены
-
     @FXML
     private Button allSales;
-
-    @FXML
-    private AnchorPane allSalesPane;
-
     @FXML
     private Label userEarnings; //Не действует. Должно помещаться на отдельном окне при закрытии смены.
 
+    /**
+     * Если панель скрыта, она открывается, если открыта - скрывается.
+     */
     @FXML
     void allSalesOnAction() {
-        if (allSalesPane.isVisible()) {
-            allSalesPane.setVisible(false);
-        } else {
-            allSalesPane.setVisible(true);
-        }
-
+        allSalesPane.setVisible(!allSalesPane.isVisible()); //если панель со всеми продажами выключена, она включается, если включена - выключается.
     }
     //Действие при нажатии на кнопку Закрытия смены.
     @FXML
     void closeShiftButtonOnAction() throws IOException, SQLException {
-        writeSqlFromLocalDb();
-        currentSaleProducts.clear();
-        products.clear();
-        discounts.clear();
-        paymentTypes.clear();
-        outlets.clear();
+        writeSqlFromLocalDb(); //Записываем данные из локальной базы данных в сетевую. Локальная база данных очищается.
+        currentSaleProducts.clear(); //Очищаем список текущих продуктов в списке
+        products.clear(); //очищаем список Продуктов
+        discounts.clear(); //очищаем список скидок
+        paymentTypes.clear(); //очищаем типы оплаты
+        outlets.clear(); //очищаем список торговых точек
         Stage stage = (Stage) closeShiftButton.getScene().getWindow();
         stage.close();
         FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("login.fxml"));
@@ -111,6 +101,29 @@ public class SellerController {
         stageLogin.setScene(sceneLogin);
         stageLogin.show();
     }
+    /*____________________________________˄˄˄_____________________________________________
+     *___________________________________the end__________________________________________*/
+
+    /*____________________________________start___________________________________________
+     * Панель сегодняшних продаж
+     *_____________________________________˅˅˅____________________________________________*/
+    @FXML
+    private AnchorPane allSalesPane;
+    @FXML
+    private TableView<SaleProduct> allSalesTable; //таблица продажи (текущий чек)
+    @FXML
+    private TableColumn<TodaySales, Time> timeSalesColumn; //колонка с наименованием продукта
+    @FXML
+    private TableColumn<TodaySales, String> productSalesColumn; //колонка со стоимостью продукта
+    @FXML
+    private TableColumn<TodaySales, Double> priceSalesColumn; //количество продукта
+    @FXML
+    private TableColumn<TodaySales, Integer> amountSalesColumn;
+    @FXML
+    private TableColumn<TodaySales, Integer> discountSalesColumn;
+    @FXML
+    private TableColumn<TodaySales, Double> sumSalesColumn; //сумма стоимости продукта исходя из количества
+
     /*____________________________________˄˄˄_____________________________________________
      *___________________________________the end__________________________________________*/
 
@@ -139,7 +152,6 @@ public class SellerController {
                  * Циклом перебираются все продукты из products ArrayList, соответствующий условию (совпадение по id) передаётся currentProduct
                  */
                 for (Product product : products) {
-
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                         createCurrentProduct(product);
                         break;
@@ -147,7 +159,6 @@ public class SellerController {
                 }
             } else { //если же продукт в чеке не первый, чек создавать не надо
                 for (Product product : products) { //Циклом перебираются все продукты из products ArrayList
-
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                         createCurrentProduct(product); //Берём product и делаем ссылку на него в currentProduct
                         break;
@@ -177,7 +188,6 @@ public class SellerController {
     };
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
-
 
     /*____________________________________start___________________________________________
      * Панель цифровых кнопок
@@ -395,7 +405,6 @@ public class SellerController {
      * Панель Чека (Выбор типа оплаты).
      * Данная панель открывается поверх панели Текущего товара нажатием на кнопку "Чек" находящуюся в панели
      * текущего товара.
-     * //TODO Сделать логику выбора "нал/безнал". Нал - открывается панель с выбором "со сдачей/без сдачи".
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     private AnchorPane paymentTypePanel;
@@ -443,6 +452,9 @@ public class SellerController {
         if (Integer.parseInt(button.getAccessibleText()) == 1) {
             changePane.setVisible(true);
         } else if (Integer.parseInt(button.getAccessibleText()) == 2) {
+            addCurrentSaleToArray(currentSaleProducts, currentSale);
+            allSalesTable.setItems(todaySalesObservableList);
+            allSalesTable.refresh();
             addSaleToLocalDb(currentSale);
 //        createNewSale(currentSale);
             addProductsToLocalDb(currentSaleProducts, currentSale);
@@ -477,6 +489,9 @@ public class SellerController {
 
     @FXML
     void noChangeOnAction() throws IOException {
+        addCurrentSaleToArray(currentSaleProducts, currentSale);
+        allSalesTable.setItems(todaySalesObservableList);
+        allSalesTable.refresh();
         addSaleToLocalDb(currentSale);
 //        createNewSale(currentSale);
         addProductsToLocalDb(currentSaleProducts, currentSale);
@@ -523,6 +538,9 @@ public class SellerController {
 
     @FXML
     void okWithChangeOnAction() throws IOException {
+        addCurrentSaleToArray(currentSaleProducts, currentSale);
+        allSalesTable.setItems(todaySalesObservableList);
+        allSalesTable.refresh();
         addSaleToLocalDb(currentSale);
 //        createNewSale(currentSale);
         addProductsToLocalDb(currentSaleProducts, currentSale);
@@ -534,6 +552,7 @@ public class SellerController {
         sumLabel.setText("0.00");
         //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
         saleTable.refresh();
+
         withChangePane.setVisible(false);
         System.out.println("okWithChangeOnAction");
     }
@@ -691,6 +710,17 @@ public class SellerController {
         sumColumn.setEditable(true);
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
 
+        /*
+        Здесь мы создаём таблицу с продажами за сегодняшний день.
+         */
+        timeSalesColumn.setCellValueFactory(new PropertyValueFactory<>("saleTime"));
+        productSalesColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
+        priceSalesColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        amountSalesColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        discountSalesColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
+        sumSalesColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
+        allSalesTable.setItems(todaySalesObservableList);
+
         //Подсчитываем количество Продуктов в каждой категории.
         for (Product product : products) {
             for (ProductCategory productCategory : productCategories) {
@@ -727,8 +757,9 @@ public class SellerController {
             changeSumString = changeSumString.replace(" ", "");
             double change = Double.parseDouble(changeSumString) - (Double.parseDouble(sumLabel.getText()));
             changeLabel.setText(String.valueOf(change));
-
         });
+        saleTable.setPlaceholder(new Label("Выберете продукт"));
+        allSalesTable.setPlaceholder(new Label("В текущей смене ещё нет продаж"));
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/

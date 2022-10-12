@@ -1,10 +1,6 @@
 package com.lewickiy.coffeeboardapp.database.currentSale;
 
-import com.lewickiy.coffeeboardapp.database.discount.Discount;
-
 import java.util.ArrayList;
-
-import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 
 public class SaleProductList {
     public static ArrayList<SaleProduct> currentSaleProducts = new ArrayList<>();

@@ -104,10 +104,14 @@
                         </AnchorPane>
                         <AnchorPane fx:id="allSalesPane" layoutX="10.0" layoutY="5.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                              <TableView fx:id="allSalesTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
+                                    <TableColumn fx:id="timeSalesColumn" maxWidth="170.0" minWidth="95.0" prefWidth="104.0" text="Время продажи" />
+                                    <TableColumn fx:id="productSalesColumn" maxWidth="201.0" minWidth="110.0" prefWidth="192.0" text="Наименование" />
+                                    <TableColumn fx:id="priceSalesColumn" maxWidth="113.0" minWidth="23.0" prefWidth="113.0" text="Цена" />
+                                    <TableColumn fx:id="amountSalesColumn" maxWidth="137.0" minWidth="50.0" prefWidth="56.0" text="Кол-во" />
+                                    <TableColumn fx:id="discountSalesColumn" maxWidth="192.0" minWidth="43.0" prefWidth="105.0" text="Скидка" />
+                                    <TableColumn fx:id="sumSalesColumn" maxWidth="222.0" minWidth="70.0" prefWidth="73.0" text="Сумма" />
                                 </columns>
                               </TableView>
                            </children>
@@ -388,7 +392,7 @@
                                     <Font name="System Bold" size="22.0" />
                                  </font>
                               </Button>
-                              <TextField fx:id="sumChangeTextField" layoutX="67.0" layoutY="99.0" onInputMethodTextChanged="#sumChangeOnChanged" prefHeight="75.0" prefWidth="242.0" promptText="Введите сумму">
+                              <TextField fx:id="sumChangeTextField" layoutX="67.0" layoutY="99.0" prefHeight="75.0" prefWidth="242.0" promptText="Введите сумму">
                                  <font>
                                     <Font size="28.0" />
                                  </font>
