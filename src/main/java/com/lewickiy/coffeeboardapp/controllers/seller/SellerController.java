@@ -531,12 +531,6 @@ public class SellerController {
     private Button okWithChangeButton;
 
     @FXML
-    void sumChangeOnChanged() {
-        int i = Integer.parseInt(sumChangeTextField.getText());
-        changeLabel.setText(String.valueOf(i));
-    }
-
-    @FXML
     void okWithChangeOnAction() throws IOException {
         addCurrentSaleToArray(currentSaleProducts, currentSale);
         allSalesTable.setItems(todaySalesObservableList);
@@ -554,7 +548,8 @@ public class SellerController {
         saleTable.refresh();
 
         withChangePane.setVisible(false);
-        System.out.println("okWithChangeOnAction");
+        sumChangeTextField.clear();
+        changeLabel.setText("0.00");
     }
 
     /*____________________________________˄˄˄_____________________________________________
@@ -752,11 +747,21 @@ public class SellerController {
             }
         }
         productNameButton(productButtons);
+
         sumChangeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             String changeSumString = newValue.replace(',', '.');
             changeSumString = changeSumString.replace(" ", "");
-            double change = Double.parseDouble(changeSumString) - (Double.parseDouble(sumLabel.getText()));
-            changeLabel.setText(String.valueOf(change));
+            double change = 0.00;
+            if (changeSumString.isEmpty()) {
+                change = 0.00;
+            } else {
+                change = Double.parseDouble(changeSumString) - (Double.parseDouble(sumLabel.getText()));
+            }
+            if (change < 0.0) {
+                changeLabel.setText("0.00");
+            } else {
+                changeLabel.setText(String.valueOf(change));
+            }
         });
         saleTable.setPlaceholder(new Label("Выберете продукт"));
         allSalesTable.setPlaceholder(new Label("В текущей смене ещё нет продаж"));
