@@ -49,6 +49,7 @@ import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.c
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.createProductCategoriesList;
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
+import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 
 public class SellerController {
@@ -107,6 +108,8 @@ public class SellerController {
     /*____________________________________start___________________________________________
      * Панель сегодняшних продаж
      *_____________________________________˅˅˅____________________________________________*/
+    @FXML
+    private Label funLabel;
     @FXML
     private AnchorPane allSalesPane;
     @FXML
@@ -610,6 +613,7 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     void initialize() throws SQLException {
+        createProductsList();
         createDiscountList();
         createPaymentTypeAL();
         createProductCategoriesList();

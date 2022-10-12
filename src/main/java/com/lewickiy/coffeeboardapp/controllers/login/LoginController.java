@@ -20,12 +20,10 @@ import java.sql.SQLException;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.createOutletList;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
-import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
 import static com.lewickiy.coffeeboardapp.database.user.UserList.*;
 
 public class LoginController {
     static ObservableList<Outlet> outletsObservableList = FXCollections.observableList(outlets);
-
     @FXML
     private Label usernameLabel;
     @FXML
@@ -46,12 +44,10 @@ public class LoginController {
     private TextField usernameTextField;
     @FXML
     private Label choiceLabel;
-
     @FXML
     void initialize() throws SQLException {
         acceptOutletChoice.setDisable(true);
         createUsersList(); //Загрузка объектов из базы в список пользователей.
-        createProductsList(); //Загрузка объектов из базы в список продуктов.
         createOutletList(); //Загрузка объектов из базы в список торговых точек.
         outletChoiceBox.setItems(outletsObservableList); //Устанавливаем значения в ChoiceBox из observableList
         /*
@@ -63,6 +59,8 @@ public class LoginController {
             currentOutlet = outletChoiceBox.getValue();
             acceptOutletChoice.setDisable(false);
         });
+        usernameTextField.textProperty().addListener((observable, oldValue, newValue) -> loginMessageLabel.setText(""));
+        passwordField.textProperty().addListener((observable, oldValue, newValue) -> loginMessageLabel.setText(""));
 
         assert cancelButton != null : "fx:id=\"cancelButton\" was not injected: check your FXML file 'login.fxml'.";
         assert loginButton != null : "fx:id=\"loginButton\" was not injected: check your FXML file 'Untitled'.";
@@ -95,8 +93,6 @@ public class LoginController {
             stageSeller.setScene(scene);
             stageSeller.setTitle("CoffeeApp. Добро пожаловать, " + currentUser.getFirstName());
             stageSeller.setMaximized(true); //сцена при запуске развёрнута на весь экран
-            //TODO проверку на наличие организационной структуры My SQL базы. Если это первый запуск, вся структура должна создаваться
-//      sqlCheckTable(); //проверяется наличие таблицы sale. Это надо сделать ранее. При запуске программы.
             stageSeller.show();
             stage.close(); //закрытие первой сцены
         }
@@ -168,11 +164,13 @@ public class LoginController {
                 choiceLabel.setVisible(true);
                 outletChoiceBox.setVisible(true);
                 acceptOutletChoice.setVisible(true);
-                break; //И всё?! Просто break ?!
-            } else {
-                loginMessageLabel.setText("Не правильный логин или имя пользователя"); //TODO В интерфейсе пользователя нужно сделать TextLabel выше чтобы не вмещающийся текст влез, может с переносом строки
-                //TODO сообщение в loginMessageLabel должно пропадать после начала ввода в поле пароля или логина. Listener
+                break;
             }
+        }
+        if (!acceptOutletChoice.isVisible()) {
+            loginMessageLabel.setText("Не правильный логин или имя пользователя");
+            //TODO В интерфейсе пользователя нужно сделать TextLabel выше чтобы не вмещающийся текст влез,
+            // может с переносом строки
         }
     }
 }

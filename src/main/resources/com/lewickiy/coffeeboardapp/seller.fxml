@@ -19,6 +19,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <VBox minWidth="1380.0" prefHeight="600.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.seller.SellerController">
@@ -104,7 +105,7 @@
                         </AnchorPane>
                         <AnchorPane fx:id="allSalesPane" layoutX="10.0" layoutY="5.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <TableView fx:id="allSalesTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                              <TableView fx:id="allSalesTable" prefHeight="568.0" prefWidth="645.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="317.0" AnchorPane.topAnchor="50.0">
                                 <columns>
                                     <TableColumn fx:id="timeSalesColumn" maxWidth="170.0" minWidth="95.0" prefWidth="104.0" text="Время продажи" />
                                     <TableColumn fx:id="productSalesColumn" maxWidth="201.0" minWidth="110.0" prefWidth="192.0" text="Наименование" />
@@ -114,6 +115,12 @@
                                     <TableColumn fx:id="sumSalesColumn" maxWidth="222.0" minWidth="70.0" prefWidth="73.0" text="Сумма" />
                                 </columns>
                               </TableView>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="758.0" layoutY="161.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                              <Label fx:id="funLabel" layoutX="768.0" layoutY="173.0" prefHeight="178.0" prefWidth="179.0" text="С момента запуска Вы продали 0.0 литров напитков" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                      </children>

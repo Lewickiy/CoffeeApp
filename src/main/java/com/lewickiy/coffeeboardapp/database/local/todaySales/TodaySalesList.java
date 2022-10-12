@@ -17,7 +17,6 @@ public class TodaySalesList {
             Time saleTime = new Time(nowTime);
             tempSale.setSaleTime(saleTime);
             todaySalesArrayList.add(tempSale);
-            tempSale = null;
         }
     }
 }
