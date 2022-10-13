@@ -6,6 +6,7 @@ module com.lewickiy.coffeeboardapp {
     requires org.apache.poi.ooxml;
 
     opens com.lewickiy.coffeeboardapp to javafx.fxml;
+    opens com.lewickiy.coffeeboardapp.controllers.administrator to javafx.fxml;
     opens com.lewickiy.coffeeboardapp.controllers.login to javafx.fxml;
     opens com.lewickiy.coffeeboardapp.controllers.seller to javafx.fxml;
     opens com.lewickiy.coffeeboardapp.idgenerator to javafx.fxml;
