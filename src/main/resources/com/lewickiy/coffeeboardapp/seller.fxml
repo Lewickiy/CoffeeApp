@@ -103,20 +103,21 @@
                               </GridPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="allSalesPane" layoutX="10.0" layoutY="5.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="allSalesPane" layoutX="10.0" layoutY="5.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <TableView fx:id="allSalesTable" prefHeight="568.0" prefWidth="645.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="317.0" AnchorPane.topAnchor="50.0">
+                              <TableView fx:id="allSalesTable" prefHeight="568.0" prefWidth="770.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                 <columns>
                                     <TableColumn fx:id="timeSalesColumn" maxWidth="170.0" minWidth="95.0" prefWidth="104.0" text="Время продажи" />
-                                    <TableColumn fx:id="productSalesColumn" maxWidth="201.0" minWidth="110.0" prefWidth="192.0" text="Наименование" />
-                                    <TableColumn fx:id="priceSalesColumn" maxWidth="113.0" minWidth="23.0" prefWidth="113.0" text="Цена" />
-                                    <TableColumn fx:id="amountSalesColumn" maxWidth="137.0" minWidth="50.0" prefWidth="56.0" text="Кол-во" />
-                                    <TableColumn fx:id="discountSalesColumn" maxWidth="192.0" minWidth="43.0" prefWidth="105.0" text="Скидка" />
-                                    <TableColumn fx:id="sumSalesColumn" maxWidth="222.0" minWidth="70.0" prefWidth="73.0" text="Сумма" />
+                                    <TableColumn fx:id="productSalesColumn" maxWidth="201.0" minWidth="110.0" prefWidth="171.0" text="Наименование" />
+                                    <TableColumn fx:id="priceSalesColumn" maxWidth="134.0" minWidth="23.0" prefWidth="79.0" text="Цена" />
+                                    <TableColumn fx:id="amountSalesColumn" maxWidth="137.0" minWidth="50.0" prefWidth="83.0" text="Кол-во" />
+                                    <TableColumn fx:id="discountSalesColumn" maxWidth="192.0" minWidth="43.0" prefWidth="54.0" text="Скидка" />
+                                    <TableColumn fx:id="sumSalesColumn" maxWidth="222.0" minWidth="70.0" prefWidth="83.0" text="Сумма" />
+                                    <TableColumn fx:id="paymentTypeColumn" maxWidth="222.0" minWidth="70.0" prefWidth="195.0" text="Тип оплаты" />
                                 </columns>
                               </TableView>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="758.0" layoutY="161.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-                              <Label fx:id="funLabel" layoutX="768.0" layoutY="173.0" prefHeight="178.0" prefWidth="179.0" text="С момента запуска Вы продали 0.0 литров напитков" textAlignment="CENTER" wrapText="true">
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="798.0" layoutY="15.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                              <Label fx:id="funLabel" layoutX="808.0" layoutY="27.0" prefHeight="178.0" prefWidth="179.0" text="С момента запуска Вы продали 0.0 литров напитков" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="16.0" />
                                  </font>

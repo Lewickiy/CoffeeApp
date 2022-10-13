@@ -9,13 +9,34 @@ public class TodaySales extends SaleProduct {
 
     private Date saleDate;
     private Time saleTime;
+    private String paymentType;
 
-    public TodaySales(int saleProdId, int prodSaleId, String prodName, double priceProdSale, int discountId, int discount, int amountProdSale, double sumProdSale) {
-        super(saleProdId, prodSaleId, prodName, priceProdSale, discountId, discount, amountProdSale, sumProdSale);
+    public TodaySales(int saleProdId
+            , int prodSaleId
+            , String prodName
+            , double priceProdSale
+            , int discountId
+            , int discount
+            , int amountProdSale
+            , double sumProdSale) {
+
+        super(saleProdId
+                , prodSaleId
+                , prodName
+                , priceProdSale
+                , discountId
+                , discount
+                , amountProdSale
+                , sumProdSale);
     }
 
-    public TodaySales(int prodSaleId, String prodName, double priceProdSale) {
-        super(prodSaleId, prodName, priceProdSale);
+    public TodaySales(int prodSaleId
+            , String prodName
+            , double priceProdSale) {
+
+        super(prodSaleId
+                , prodName
+                , priceProdSale);
     }
 
     public Date getSaleDate() {
@@ -32,5 +53,13 @@ public class TodaySales extends SaleProduct {
 
     public void setSaleTime(Time saleTime) {
         this.saleTime = saleTime;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
     }
 }

@@ -126,6 +126,8 @@ public class SellerController {
     private TableColumn<TodaySales, Integer> discountSalesColumn;
     @FXML
     private TableColumn<TodaySales, Double> sumSalesColumn; //сумма стоимости продукта исходя из количества
+    @FXML
+    private TableColumn<TodaySales, String> paymentTypeColumn;
 
     /*____________________________________˄˄˄_____________________________________________
      *___________________________________the end__________________________________________*/
@@ -718,6 +720,7 @@ public class SellerController {
         amountSalesColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         discountSalesColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
         sumSalesColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
+        paymentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("paymentType"));
         allSalesTable.setItems(todaySalesObservableList);
 
         //Подсчитываем количество Продуктов в каждой категории.
