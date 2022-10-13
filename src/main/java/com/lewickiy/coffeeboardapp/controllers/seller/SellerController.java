@@ -137,7 +137,6 @@ public class SellerController {
      *_____________________________________˅˅˅____________________________________________*/
     @FXML
     private GridPane mainGridPane;
-
     private final ArrayList <Button> PRODUCT_BUTTONS = new ArrayList<>(); //ArrayList объектов Button
 
     EventHandler<ActionEvent> eventProductButtons = new EventHandler<ActionEvent>() { //Поведение по нажатию кнопки с Продуктом
@@ -201,7 +200,6 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     private GridPane numbersGridPane; //Цифровые кнопки, как в случае с кнопками Продуктов и Скидками, помещены в GridPane
-
     private final ArrayList <Button> NUMBER_BUTTONS = new ArrayList<>(); //Для этого создан ArrayList содержащий список объектов Button.
     //Непосредственное создание кнопок и распределение их по GridPane производится в методе initialization.
 
