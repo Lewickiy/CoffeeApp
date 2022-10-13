@@ -74,8 +74,20 @@ public class SellerController {
     @FXML
     private Button allSales;
     @FXML
+    private Button adminButton;
+    @FXML
     private Label userEarnings; //Не действует. Должно помещаться на отдельном окне при закрытии смены.
 
+    @FXML
+    void adminButtonOnAction() throws IOException { //Временная кнопка для открытия админки.
+        FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("administrator.fxml"));
+        Stage stageLogin = new Stage();
+        Scene sceneLogin = new Scene(fxmlLoader.load());
+        stageLogin.initStyle(StageStyle.DECORATED);
+        stageLogin.setTitle("CoffeeApp. Admin");
+        stageLogin.setScene(sceneLogin);
+        stageLogin.show();
+    }
     /**
      * Если панель скрыта, она открывается, если открыта - скрывается.
      */
@@ -86,6 +98,23 @@ public class SellerController {
     //Действие при нажатии на кнопку Закрытия смены.
     @FXML
     void closeShiftButtonOnAction() throws IOException, SQLException {
+        closeShiftPane.setVisible(true);
+    }
+    /*____________________________________˄˄˄_____________________________________________
+     *___________________________________the end__________________________________________*/
+
+    /*____________________________________start___________________________________________
+     * Панель подтверждения закрытия смены.
+     *_____________________________________˅˅˅____________________________________________*/
+    @FXML
+    private Pane closeShiftPane;
+    @FXML
+    private Button okCloseShiftButton;
+    @FXML
+    private Button cancelCloseShiftButton;
+
+    @FXML
+    void okCloseShiftButtonOnAction() throws SQLException, IOException {
         writeSqlFromLocalDb(); //Записываем данные из локальной базы данных в сетевую. Локальная база данных очищается.
         currentSaleProducts.clear(); //Очищаем список текущих продуктов в списке
         products.clear(); //очищаем список Продуктов
@@ -100,8 +129,14 @@ public class SellerController {
         stageLogin.initStyle(StageStyle.UNDECORATED);
         stageLogin.setTitle("CoffeeApp");
         stageLogin.setScene(sceneLogin);
+        closeShiftPane.setVisible(false);
         stageLogin.show();
     }
+    @FXML
+    void cancelCloseShiftButtonOnAction() {
+        closeShiftPane.setVisible(false);
+    }
+
     /*____________________________________˄˄˄_____________________________________________
      *___________________________________the end__________________________________________*/
 
@@ -217,7 +252,6 @@ public class SellerController {
              *  который добавляет позицию в текущий Чек.
              */
             if (Integer.parseInt(button.getAccessibleText()) != 0) {
-                endThisTale.setDisable(false); //Кнопка Чек становится доступна
                 amountLabel.setText(button.getAccessibleText()); //Label количества берёт данные из AccessibleText цифровой кнопки.
                 amountLabel.setVisible(true);
                 currentProduct.setAmount(Integer.parseInt(button.getAccessibleText())); //для currentProduct устанавливается количество продукта.
@@ -337,6 +371,7 @@ public class SellerController {
         }
         SaleProductList.addProductToArray(positionsCount, currentProduct);
         positionsCount++;
+        endThisTale.setDisable(false); //Кнопка Чек становится доступна
         saleTable.setItems(saleProductsObservableList);
         saleTable.refresh();
 

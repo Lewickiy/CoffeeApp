@@ -11,6 +11,33 @@ import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.p
 
 public class TodaySalesList {
     public static ArrayList<SaleProduct> todaySalesArrayList = new ArrayList<>();
+    public static double sumAll() { //сумма всех продаж
+        double sumAll = 0.00;
+        for (SaleProduct saleProduct : todaySalesArrayList) {
+            sumAll = sumAll + saleProduct.getSum();
+        }
+        return sumAll;
+    }
+    public static double sumCash() {
+        double sumCash = 0.00;
+        for (int i = 0; i < todaySalesArrayList.size(); i++) {
+            TodaySales tempTodaySale = (TodaySales) todaySalesArrayList.get(i);
+            if (tempTodaySale.getPaymentType().equals("Наличные деньги")) {
+                    sumCash = sumCash + tempTodaySale.getSum();
+            }
+        }
+        return sumCash;
+    }
+    public static double sumCard() {
+        double sumCard = 0.00;
+        for (int i = 0; i < todaySalesArrayList.size(); i++) {
+            TodaySales tempTodaySale = (TodaySales) todaySalesArrayList.get(i);
+            if (tempTodaySale.getPaymentType().equals("Банковская карта")) {
+                sumCard = sumCard + tempTodaySale.getSum();
+            }
+        }
+        return sumCard;
+    }
 
     public static void addCurrentSaleToArray(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) {
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
