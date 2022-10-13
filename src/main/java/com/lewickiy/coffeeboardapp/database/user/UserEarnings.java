@@ -13,10 +13,10 @@ import static com.lewickiy.coffeeboardapp.database.user.UserList.currentUser;
 public class UserEarnings {
     /**
      * Данный метод непосредственно занимается подсчётом заработной платы за смену текущего бариста (сегодня).<br>
-     * Этот метод должен вызыватьсяя при закрытии смены. Он у меня очень тяжёлый.<br>
-     * Необходимо пересмотреть запросы для ускорения. Пока всё очень тяжело.
-     * @return - Метод возвращает сумму заработной платы за текущую смену типом double
-     * @throws SQLException
+     * Этот метод должен вызываться при закрытии смены. Он у меня очень тяжёлый.<br>
+     * Необходимо пересмотреть запросы для ускорения. Пока всё очень тяжело.<br>
+     * @return - Метод возвращает сумму заработной платы за текущую смену типом double<br>
+     * @throws SQLException - ...
      */
     public static double reloadUserEarnings() throws SQLException {
         double userEarnings = 0;
