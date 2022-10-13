@@ -27,7 +27,17 @@ public class User {
      * @param administrator - значение boolean. Является ли пользователь администратором системы для выполнения "особых" операций (false/true)
      * @param activeStuff - значение boolean. Является ли сотрудник действующим (false/true)
      */
-    public User(int userId, String login, String password, String firstName, String lastName, String patronymic, Date birthday, String phone, boolean administrator, boolean activeStuff) {
+    public User(int userId
+            , String login
+            , String password
+            , String firstName
+            , String lastName
+            , String patronymic
+            , Date birthday
+            , String phone
+            , boolean administrator
+            , boolean activeStuff) {
+
         this.userId = userId;
         this.login = login;
         this.password = password;
@@ -50,7 +60,15 @@ public class User {
      * @param administrator - значение boolean. Является ли пользователь администратором системы для выполнения "особых" операций (false/true)
      * @param activeStuff - значение boolean. Является ли сотрудник действующим (false/true)
      */
-    public User(int userId, String login, String password, String firstName, String lastName, String phone, boolean administrator, boolean activeStuff) {
+    public User(int userId
+            , String login
+            , String password
+            , String firstName
+            , String lastName
+            , String phone
+            , boolean administrator
+            , boolean activeStuff) {
+
         this.userId = userId;
         this.login = login;
         this.password = password;
