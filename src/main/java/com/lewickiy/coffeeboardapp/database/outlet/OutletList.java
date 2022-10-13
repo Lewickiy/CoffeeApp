@@ -8,13 +8,11 @@ import static com.lewickiy.coffeeboardapp.database.Query.selectFromSql;
 
 public class OutletList {
     public static ArrayList<Outlet> outlets = new ArrayList<>();
-
     /**
      * Метод загружающий перечень торговых точек в ArrayList outlets, для дальнейшей работы с ними <br>
      * при формировании чеков и различных отчётов.
      * @throws SQLException - не обработано
      */
-
     public static void createOutletList() throws SQLException {
         ResultSet resultSet = selectFromSql("outlet");
         while(resultSet.next()) {

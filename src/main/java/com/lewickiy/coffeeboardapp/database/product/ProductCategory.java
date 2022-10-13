@@ -3,7 +3,6 @@ package com.lewickiy.coffeeboardapp.database.product;
 public class ProductCategory {
     private int productCategoryId;
     private String productCategory;
-
     private int amountProducts;
 
     public ProductCategory(int productCategoryId, String productCategory) {

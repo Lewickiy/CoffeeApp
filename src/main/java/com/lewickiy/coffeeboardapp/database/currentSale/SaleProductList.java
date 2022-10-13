@@ -4,22 +4,34 @@ import java.util.ArrayList;
 
 public class SaleProductList {
     public static ArrayList<SaleProduct> currentSaleProducts = new ArrayList<>();
-    public static void addSaleProductsList(int saleProdId, int prodSaleId, String prodName, double priceProdSale, int discountId, int discount, int amountProdSale, double sumProdSale) {
-        currentSaleProducts.add(new SaleProduct(saleProdId, prodSaleId, prodName, priceProdSale, discountId, discount, amountProdSale, sumProdSale));
+    public static void addSaleProductsList(int saleProdId
+            , int prodSaleId
+            , String prodName
+            , double priceProdSale
+            , int discountId
+            , int discount
+            , int amountProdSale
+            , double sumProdSale) {
+
+        currentSaleProducts.add(new SaleProduct(saleProdId
+                , prodSaleId
+                , prodName
+                , priceProdSale
+                , discountId
+                , discount
+                , amountProdSale
+                , sumProdSale));
     }
 
     public static void addProductToArray(int positionsCount, SaleProduct currentProduct) {
         currentProduct.setSum((currentProduct.getPrice()
                 - (currentProduct.getPrice() * currentProduct.getDiscount() / 100))
                 * currentProduct.getAmount());
-
         if (positionsCount == 0) {
             addProductIf(currentProduct);
         } else {
             boolean b = true;
-
             for (int i = 0; i < currentSaleProducts.size(); i++) {
-
                 if (currentProduct.getProductId() == currentSaleProducts.get(i).getProductId()
                         && currentProduct.getDiscountId() == currentSaleProducts.get(i).getDiscountId()) {
                     currentSaleProducts.get(i).setAmount(
@@ -34,7 +46,6 @@ public class SaleProductList {
                     break;
                 }
             }
-
             if (b == true) {
                 addProductIf(currentProduct);
             }

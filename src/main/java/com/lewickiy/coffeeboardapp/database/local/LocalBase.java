@@ -70,7 +70,7 @@ public class LocalBase {
                 saleProduct.autoSizeColumn(i);
             }
 
-            FileOutputStream out = new FileOutputStream(new File("local_db.xlsx"));
+            FileOutputStream out = new FileOutputStream("local_db.xlsx");
             {
                 try {
                     local_db.write(out);
@@ -166,7 +166,7 @@ public class LocalBase {
     /**
      * Очистка локальной базы данных.
      * Должна выполняться после переноса данных в
-     * @throws IOException
+     * @throws IOException - ...
      */
     public static void clearLocalDb() throws IOException {
         InputStream myxlsx = new FileInputStream("local_db.xlsx");
@@ -209,7 +209,7 @@ public class LocalBase {
             System.out.println("Client Id: " + clientId);
             CurrentSale tempSale = new CurrentSale(saleId, userId, outletId, currentDate, currentTime, paymentTypeId, clientId);
             System.out.println("__________________________________________________________________________");
-            System.out.println("");
+            System.out.println();
 
             insertToSql("sale", "sale_id, "
                     + "user_id, "
@@ -249,7 +249,7 @@ public class LocalBase {
             System.out.println("Sum: " + sum);
             SaleProduct tempSaleProduct = new SaleProduct(saleId, productId, product, price, discountId, discount, amount, sum);
             System.out.println("__________________________________________________________________________");
-            System.out.println("");
+            System.out.println();
 
             insertToSql("sale_product", "sale_id, "
                     + "product_id, "

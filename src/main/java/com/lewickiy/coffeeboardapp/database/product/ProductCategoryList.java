@@ -11,7 +11,6 @@ public class ProductCategoryList {
 
     public static void createProductCategoriesList() throws SQLException {
         ResultSet resultSet = selectFromSql("product_category");
-
         while (resultSet.next()) {
             int productCategoryId = resultSet.getInt("product_category_id");
             String productCategory = resultSet.getString("product_category");

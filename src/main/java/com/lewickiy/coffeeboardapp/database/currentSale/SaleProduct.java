@@ -109,7 +109,6 @@ public class SaleProduct {
         Statement statement = DatabaseConnector.getConnection().createStatement();
 
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
-
             if (currentSaleProduct.getDiscountId() == 0) {
                 currentSaleProduct.setDiscountId(1);
             }

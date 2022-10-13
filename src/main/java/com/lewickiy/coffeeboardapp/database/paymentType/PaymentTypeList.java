@@ -11,7 +11,6 @@ public class PaymentTypeList {
 
     public static void createPaymentTypeAL() throws SQLException {
         ResultSet resultSet = selectFromSql("paymenttype");
-
         while(resultSet.next()) {
             int paymentTypeId = resultSet.getInt("paymenttype_id");
             String paymentType = resultSet.getString("paymenttype");
