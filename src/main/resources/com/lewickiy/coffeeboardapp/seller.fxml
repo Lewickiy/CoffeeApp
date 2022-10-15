@@ -175,7 +175,7 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="124.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
+                        <Button fx:id="openShiftButton" alignment="CENTER" contentDisplay="RIGHT" disable="true" layoutX="124.0" layoutY="12.0" mnemonicParsing="false" onAction="#openShiftButtonOnAction" prefHeight="27.0" prefWidth="110.0" text="Открыть смену" textOverrun="CLIP">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -287,7 +287,7 @@
                               <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </Button>
-                        <Button fx:id="discountButtonActivate" layoutX="279.0" layoutY="45.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountButtonActivateOnAction" prefHeight="75.0" prefWidth="75.0" text="\%" AnchorPane.rightAnchor="15.0">
+                        <Button fx:id="discountButtonActivate" focusTraversable="false" layoutX="279.0" layoutY="45.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountButtonActivateOnAction" prefHeight="75.0" prefWidth="75.0" text="\%" AnchorPane.rightAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="33.0" />
                            </font>
@@ -297,17 +297,17 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Button fx:id="delProduct" layoutX="147.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#delProductOnAction" prefHeight="75.0" prefWidth="75.0" text="C" AnchorPane.bottomAnchor="15.0">
+                        <Button fx:id="delProduct" focusTraversable="false" layoutX="147.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#delProductOnAction" prefHeight="75.0" prefWidth="75.0" text="C" AnchorPane.bottomAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
                         </Button>
-                        <Button fx:id="endThisTale" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="45.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#endThisTaleOnAction" prefHeight="75.0" prefWidth="136.0" text="Чек" textAlignment="CENTER" textFill="#12ae27" wrapText="true" AnchorPane.leftAnchor="15.0">
+                        <Button fx:id="cashReceiptButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="14.0" layoutY="45.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#cashReceiptOnAction" prefHeight="75.0" prefWidth="136.0" text="Чек" textAlignment="CENTER" textFill="#12ae27" wrapText="true" AnchorPane.leftAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
                         </Button>
-                        <Button fx:id="endThisTaleAnother" alignment="CENTER" contentDisplay="CENTER" layoutX="279.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnotherOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                        <Button fx:id="cancelCashReceiptButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="279.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cancelCashReceiptOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
@@ -337,7 +337,7 @@
                         </AnchorPane>
                         <AnchorPane fx:id="paymentTypePanel" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false">
                            <children>
-                              <Button fx:id="endThisTaleAnother1" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnother1OnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
+                              <Button fx:id="endThisTaleAnother1" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnother1OnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="35.0" />
                                  </font>
@@ -371,7 +371,7 @@
                                     <Font name="System Bold" size="36.0" />
                                  </font>
                               </TextField>
-                              <Button fx:id="correctionButton" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#correctionButtonOnAction" prefHeight="75.0" prefWidth="149.0" text="Пересчёт" textAlignment="CENTER" wrapText="true">
+                              <Button fx:id="correctionButton" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#correctionButtonOnAction" prefHeight="75.0" prefWidth="149.0" text="Пересчёт" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="22.0" />
                                  </font>
@@ -381,7 +381,7 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="endThisTaleAnother11" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnother11OnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
+                              <Button fx:id="cancelOupsButton" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cancelOupsButtonOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="35.0" />
                                  </font>
@@ -390,7 +390,7 @@
                         </AnchorPane>
                         <AnchorPane fx:id="changePane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button fx:id="endThisTaleAnother12" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnother1OnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
+                              <Button fx:id="cancelChangeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cancelChangeButtonOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="35.0" />
                                  </font>
@@ -414,7 +414,7 @@
                         </AnchorPane>
                         <AnchorPane fx:id="withChangePane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button fx:id="endThisTaleAnother121" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnother1OnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
+                              <Button fx:id="cancelWithChangeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cancelWithChangeOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
                                  <font>
                                     <Font name="System Bold" size="35.0" />
                                  </font>

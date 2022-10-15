@@ -72,6 +72,8 @@ public class SellerController {
     @FXML
     private Button closeShiftButton; //кнопка закрытия смены
     @FXML
+    private Button openShiftButton;
+    @FXML
     private Button allSales;
     @FXML
     private Button adminButton;
@@ -99,6 +101,11 @@ public class SellerController {
     @FXML
     void closeShiftButtonOnAction() throws IOException, SQLException {
         closeShiftPane.setVisible(true);
+    }
+    @FXML
+    void openShiftButtonOnAction() {
+        System.out.println("Open shift pane button is pressed");
+//        openShiftPane.setVisible(true);
     }
     /*____________________________________˄˄˄_____________________________________________
      *___________________________________the end__________________________________________*/
@@ -178,11 +185,11 @@ public class SellerController {
         @Override
         public void handle(ActionEvent event) {
             Button button = (Button) event.getSource(); //Получить данные от нажатой кнопки
-            endThisTale.setDisable(true);
+            cashReceiptButton.setDisable(true);
             int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
 
             if (newSale) { //Если данный продукт в Чеке первый, то...
-                endThisTaleAnother.setDisable(false);
+                cancelCashReceiptButton.setDisable(false);
                 saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи (Создаётся уникальный идентификатор нового чека)
                 currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId()); //Создаётся текущий Чек.
                 newSale = false; //Значение boolean true меняется на false. Последующие действия уже не создают новую продажу до момента нажатия на "+" в Панели Текущего продукта.
@@ -242,7 +249,7 @@ public class SellerController {
         @Override
         public void handle(ActionEvent event) {
             Button button = (Button) event.getSource();
-            endThisTale.setDisable(true);
+            cashReceiptButton.setDisable(true);
             /*
              *При нажатии на Цифровую кнопку происходит обновление данных в amountLabel, отражающем выбранное количество Продукта
              * Также происходит пересчёт суммы Текущего продукта исходя из выбранного количества.
@@ -342,9 +349,9 @@ public class SellerController {
     @FXML
     private Button delProduct; //"С" - удалить продукт (действует так же как и 0???)
     @FXML
-    private Button endThisTale; //сформировать чек.
+    private Button cashReceiptButton; //сформировать чек.
     @FXML
-    private Button endThisTaleAnother; //отменить чек.
+    private Button cancelCashReceiptButton; //отменить чек.
 
     @FXML
     void discountButtonActivateOnAction() {
@@ -371,7 +378,7 @@ public class SellerController {
         }
         SaleProductList.addProductToArray(positionsCount, currentProduct);
         positionsCount++;
-        endThisTale.setDisable(false); //Кнопка Чек становится доступна
+        cashReceiptButton.setDisable(false); //Кнопка Чек становится доступна
         saleTable.setItems(saleProductsObservableList);
         saleTable.refresh();
 
@@ -391,12 +398,12 @@ public class SellerController {
         buttonsIsDisable(PRODUCT_BUTTONS, false); //Кнопки с Продуктами становятся активными.
     }
     @FXML
-    void endThisTaleOnAction() {
-        endThisTale.setDisable(false);
+    void cashReceiptOnAction() {
+        cashReceiptButton.setDisable(false);
         paymentTypePanel.setVisible(true);
     }
     @FXML
-    void endThisTaleAnotherOnAction() {
+    void cancelCashReceiptOnAction() {
         currentSale = null;
         newSale = true;
         positionsCount = 0;
@@ -477,8 +484,8 @@ public class SellerController {
     void paymentTypeOnAction(ActionEvent event) throws SQLException, IOException {
         Button button = (Button) event.getSource();
         currentSale.setPaymentTypeId(Integer.parseInt(button.getAccessibleText()));
-        paymentTypePanel.setVisible(false);
-        endThisTale.setDisable(true);
+//        paymentTypePanel.setVisible(false);
+        cashReceiptButton.setDisable(true);
         long nowDate = System.currentTimeMillis();
         Date saleDate = new Date(nowDate);
         long nowTime = System.currentTimeMillis();
@@ -489,6 +496,7 @@ public class SellerController {
 
         if (Integer.parseInt(button.getAccessibleText()) == 1) {
             changePane.setVisible(true);
+            paymentTypePanel.setVisible(false);
         } else if (Integer.parseInt(button.getAccessibleText()) == 2) {
             addCurrentSaleToArray(currentSaleProducts, currentSale);
             allSalesTable.setItems(todaySalesObservableList);
@@ -504,6 +512,7 @@ public class SellerController {
             sumLabel.setText("0.00");
             //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
             saleTable.refresh();
+            paymentTypePanel.setVisible(false);
         }
     }
     @FXML
@@ -518,13 +527,18 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     private Pane changePane;
-
     @FXML
     private Button noChange;
-
     @FXML
     private Button withChangeButton;
+    @FXML
+    private Button cancelChangeButton;
 
+    @FXML
+    void cancelChangeButtonOnAction() {
+        changePane.setVisible(false);
+        cashReceiptButton.setDisable(false);
+    }
     @FXML
     void noChangeOnAction() throws IOException {
         addCurrentSaleToArray(currentSaleProducts, currentSale);
@@ -542,6 +556,7 @@ public class SellerController {
         //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
         saleTable.refresh();
         changePane.setVisible(false);
+        paymentTypePanel.setVisible(false);
     }
 
     @FXML
@@ -567,6 +582,14 @@ public class SellerController {
 
     @FXML
     private Button okWithChangeButton;
+    @FXML
+    private Button cancelWithChangeButton;
+
+    @FXML
+    void cancelWithChangeOnAction() {
+        withChangePane.setVisible(false);
+        paymentTypePanel.setVisible(false);
+    }
 
     @FXML
     void okWithChangeOnAction() throws IOException {
@@ -603,7 +626,7 @@ public class SellerController {
     private Button correctionButton;
 
     @FXML
-    private Button endThisTaleAnother11;
+    private Button cancelOupsButton;
 
     @FXML
     private TextField correctionTextField;
@@ -637,7 +660,7 @@ public class SellerController {
     }
 
     @FXML
-    void endThisTaleAnother11OnAction() {
+    void cancelOupsButtonOnAction() {
         correctionPane.setVisible(false);
     }
     /*____________________________________˄˄˄_____________________________________________
@@ -702,8 +725,8 @@ public class SellerController {
         productNameLabel.setVisible(false);
         productOperationButtonsIsDisable(true);
         buttonsIsDisable(NUMBER_BUTTONS, true);
-        endThisTale.setDisable(true);
-        endThisTaleAnother.setDisable(true);
+        cashReceiptButton.setDisable(true);
+        cancelCashReceiptButton.setDisable(true);
 
         //Размещаем кнопки с актуальными скидками.
         int countD = 0;
