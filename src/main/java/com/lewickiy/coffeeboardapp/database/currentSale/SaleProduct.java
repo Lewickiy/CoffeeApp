@@ -17,6 +17,9 @@ public class SaleProduct {
     private int amount;
     private double sum;
 
+    public SaleProduct() {
+    }
+
     public SaleProduct(int saleProdId
             , int prodSaleId
             , String prodName

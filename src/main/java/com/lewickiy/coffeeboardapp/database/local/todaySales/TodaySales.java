@@ -1,16 +1,21 @@
 package com.lewickiy.coffeeboardapp.database.local.todaySales;
 
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 
 import java.sql.Date;
 import java.sql.Time;
 
+// Расширенный класс от SaleProduct
 public class TodaySales extends SaleProduct {
 
-    private Date saleDate;
-    private Time saleTime;
-    private String paymentType;
+    private Date saleDate; //Помимо полей Продукта имеет Дату продажи
+    private Time saleTime; //И время продажи
+    private String paymentType; //А также тип оплаты типа String
 
+    public TodaySales() {
+        super();
+    }
     public TodaySales(int saleProdId
             , int prodSaleId
             , String prodName

@@ -4,13 +4,16 @@ import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
 import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
 
-import java.sql.Time;
+import java.sql.*;
 import java.util.ArrayList;
 
+import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
 
-public class TodaySalesList {
+public class TodaySalesList { //Список сегодняшних продаж
     public static ArrayList<SaleProduct> todaySalesArrayList = new ArrayList<>();
+
+    //Данный метод считает все продажи сегодняшнего дня (сумму)
     public static double sumAll() { //сумма всех продаж
         double sumAll = 0.00;
         for (SaleProduct saleProduct : todaySalesArrayList) {
@@ -18,6 +21,8 @@ public class TodaySalesList {
         }
         return sumAll;
     }
+
+    //Данный метод считает все продажи сегодняшнего дня за наличные.
     public static double sumCash() {
         double sumCash = 0.00;
         for (int i = 0; i < todaySalesArrayList.size(); i++) {
@@ -28,6 +33,8 @@ public class TodaySalesList {
         }
         return sumCash;
     }
+
+    //Данный метод считает все продажи сегодняшнего дня по банковской карте.
     public static double sumCard() {
         double sumCard = 0.00;
         for (int i = 0; i < todaySalesArrayList.size(); i++) {
@@ -39,6 +46,16 @@ public class TodaySalesList {
         return sumCard;
     }
 
+    /**
+     * Данный метод добавляет сформированный объект tempSale класса TodaySales в Array todaySalesArrayList
+     * для этого он принимает следующие параметры:
+     * @param currentSaleProducts - ArrayList продуктов текущей продажи
+     * @param currentSale - объект класса CurrentSale.
+     * TODO для того чтобы при перезагрузке системы не происходил сброс этого списка,
+     *                    он должен формироваться отдельно в базе данных. Пока это локальная база данных.
+     *                    То есть, данный метод должен принимать параметры чего-то в базе данных.
+     *
+     */
     public static void addCurrentSaleToArray(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) {
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
             TodaySales tempSale = new TodaySales(currentSale.getSaleId()
@@ -59,6 +76,39 @@ public class TodaySalesList {
             Time saleTime = new Time(nowTime);
             tempSale.setSaleTime(saleTime);
             todaySalesArrayList.add(tempSale);
+        }
+    }
+
+    public static void showSalesThisShift() throws SQLException {
+        Connection conn = null; //Подключение null
+        try {
+            // Параметры базы данных
+            String url = "jdbc:sqlite:coffee_app_local.db";
+            // создаём подключение к базе данных
+            conn = DriverManager.getConnection(url);
+            Statement statement = conn.createStatement(); //создаётся подключение
+            String queryInsert = "INSERT into outlet ( VALUES (8, 'Hello! One More Time');";
+            statement.executeUpdate(queryInsert);
+            //---------------------------------
+
+
+            //---------------or----------------
+            String query = "SELECT * FROM outlet"; //создаётся запрос к базе данных
+            ResultSet rs = statement.executeQuery(query); //результат
+            while (rs.next()) {
+                System.out.println(rs.getInt("outlet_id") + "\t" +
+                        rs.getString("outlet"));
+
+            }} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
 }

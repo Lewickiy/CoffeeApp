@@ -30,6 +30,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -42,8 +43,7 @@ import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.c
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.local.LocalBase.*;
-import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.addCurrentSaleToArray;
-import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.todaySalesArrayList;
+import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.*;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeAL;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
@@ -94,7 +94,8 @@ public class SellerController {
      * Если панель скрыта, она открывается, если открыта - скрывается.
      */
     @FXML
-    void allSalesOnAction() {
+    void allSalesOnAction() throws IOException, SQLException {
+        showSalesThisShift(); //TEMP
         allSalesPane.setVisible(!allSalesPane.isVisible()); //если панель со всеми продажами выключена, она включается, если включена - выключается.
     }
     //Действие при нажатии на кнопку Закрытия смены.
@@ -670,7 +671,7 @@ public class SellerController {
      * Инициализация
      _____________________________________˅˅˅____________________________________________*/
     @FXML
-    void initialize() throws SQLException {
+    void initialize() throws SQLException, IOException {
         createProductsList();
         createDiscountList();
         createPaymentTypeAL();
