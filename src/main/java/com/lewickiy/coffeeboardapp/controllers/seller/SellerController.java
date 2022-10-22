@@ -30,7 +30,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -53,7 +52,6 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductList.createPro
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 
 public class SellerController {
-
     private boolean newSale = true; //boolean значение необходимости создания нового чека
     private int saleId; //Идентификатор текущей продажи. Создаётся в классе UniqueIdGenerator
     private int positionsCount;
@@ -79,7 +77,6 @@ public class SellerController {
     private Button adminButton;
     @FXML
     private Label userEarnings; //Не действует. Должно помещаться на отдельном окне при закрытии смены.
-
     @FXML
     void adminButtonOnAction() throws IOException { //Временная кнопка для открытия админки.
         FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("administrator.fxml"));
@@ -301,25 +298,18 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     private TableView<SaleProduct> saleTable; //таблица продажи (текущий чек)
-
     @FXML
     private TableColumn<SaleProduct, String> productColumn; //колонка с наименованием продукта
-
     @FXML
     private TableColumn<SaleProduct, Double> priceColumn; //колонка со стоимостью продукта
-
     @FXML
     private TableColumn<SaleProduct, Integer> amountColumn; //количество продукта
-
     @FXML
     private TableColumn<SaleProduct, Integer> discountColumn;
-
     @FXML
     private TableColumn<SaleProduct, Double> sumColumn; //сумма стоимости продукта исходя из количества
-
     @FXML
     private Label sumLabel; //Сумма стоимости товара
-
     //TODO добавить сумму Чека без учёта скидки и сумму чека со скидкой (итог)
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
@@ -359,7 +349,6 @@ public class SellerController {
         //discountPanel, на которой находятся discountGrid, DISCOUNT_BUTTONS становится видимой и доступной пользователю для дальнейших действий
         discountPanel.setVisible(true);
     }
-
     //На данный момент кнопка не имеет действия.
     @FXML
     void delProductOnAction() throws IOException, SQLException {

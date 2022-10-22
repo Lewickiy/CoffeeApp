@@ -10,6 +10,11 @@ import java.io.IOException;
 
 import static com.lewickiy.coffeeboardapp.database.local.LocalBase.createLocalDb;
 
+/**
+ * @Author - Lewickiy Anatoliy
+ * @Version - start0.3
+ */
+
 public class CoffeeBoardApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
