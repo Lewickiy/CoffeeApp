@@ -83,18 +83,19 @@ public class TodaySalesList { //Список сегодняшних продаж
         Connection conn = null; //Подключение null
         try {
             // Параметры базы данных
-            String url = "jdbc:sqlite:coffee_app_local.db";
-            // создаём подключение к базе данных
+            String url = "jdbc:sqlite:coffeeapp_local.db";
+//            // создаём подключение к базе данных
             conn = DriverManager.getConnection(url);
             Statement statement = conn.createStatement(); //создаётся подключение
-            String queryInsert = "INSERT into outlet ( VALUES (8, 'Hello! One More Time');";
-            statement.executeUpdate(queryInsert);
+//            String queryInsert = "INSERT into outlet VALUES (12, 'Hell');";
+//            statement.executeUpdate(queryInsert);
             //---------------------------------
 
 
             //---------------or----------------
             String query = "SELECT * FROM outlet"; //создаётся запрос к базе данных
             ResultSet rs = statement.executeQuery(query); //результат
+            System.out.println("Query is ok");
             while (rs.next()) {
                 System.out.println(rs.getInt("outlet_id") + "\t" +
                         rs.getString("outlet"));
