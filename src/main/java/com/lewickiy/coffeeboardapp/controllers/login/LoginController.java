@@ -3,10 +3,6 @@ package com.lewickiy.coffeeboardapp.controllers.login;
 import com.lewickiy.coffeeboardapp.CoffeeBoardApp;
 import com.lewickiy.coffeeboardapp.database.outlet.Outlet;
 import com.lewickiy.coffeeboardapp.database.user.User;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,22 +13,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncOutletsList;
-import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncUsersList;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.createOutletList;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.database.user.UserList.*;
-import static java.lang.Thread.sleep;
 
 public class LoginController {
     static ObservableList<Outlet> outletsObservableList = FXCollections.observableList(outlets);
@@ -59,28 +48,10 @@ public class LoginController {
 
     @FXML
     void initialize() throws SQLException, ParseException {
-
-/*
-        new Timeline(new KeyFrame(Duration.millis(10000), ae ->
-                testLabel.setText("0"))).play(); //Задержка?
-
- */
-
-//        Runnable task = () -> {
-//            Platform.runLater(() -> {
-//                        int i = 100;
-//                        testLabel.setText(String.valueOf(i));
-//
-//            });
-//        };
-//        Thread thread = new Thread(task);
-//        thread.setDaemon(true);
-//        thread.start();
-
-
-
-//        syncUsersList(); //синхронизация локальной базы данных пользователей с сетевой
-//        syncOutletsList();
+        /*
+        syncUsersList(); //синхронизация локальной базы данных пользователей с сетевой
+        syncOutletsList();
+         */
         acceptOutletChoice.setDisable(true);
         createUsersList(); //Загрузка объектов из локальной базы в список пользователей.
         createOutletList(); //Загрузка объектов из базы в список торговых точек.
