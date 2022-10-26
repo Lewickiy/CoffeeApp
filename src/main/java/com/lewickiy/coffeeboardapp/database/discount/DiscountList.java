@@ -4,13 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.lewickiy.coffeeboardapp.database.Query.selectFromSql;
+import static com.lewickiy.coffeeboardapp.database.Query.selectAllFromSql;
 
 public class DiscountList {
     public static ArrayList<Discount> discounts = new ArrayList<>();
 
     public static void createDiscountList() throws SQLException {
-        ResultSet resultSet = selectFromSql("discount");
+        ResultSet resultSet = selectAllFromSql("network_database", "discount");
 
         while(resultSet.next()) {
             int discountId = resultSet.getInt("discount_id");

@@ -23,12 +23,12 @@ public class UserEarnings {
         long nowDate = System.currentTimeMillis(); //Дата сейчас.
         java.sql.Date currentDate = new java.sql.Date(nowDate);
         System.out.println(currentDate);
-        Statement statement = getConnection().createStatement(); //создаётся подключение
+        Statement statement = getConnection("network_database").createStatement(); //создаётся подключение
         String query = "SELECT * FROM `sale` WHERE `user_id` = " + currentUser.getUserId() +" AND `date` = '" + currentDate + "'"; //создаётся запрос к базе данных
         ResultSet resultSet = statement.executeQuery(query);
         while (resultSet.next()) {
             int saleId = resultSet.getInt("sale_id");
-            Statement statement1 = getConnection().createStatement();
+            Statement statement1 = getConnection("network_database").createStatement();
             String sumQuery = "SELECT * FROM `sale_product` WHERE `sale_id` = " + saleId;
             ResultSet resultSet1 = statement1.executeQuery(sumQuery);
             while (resultSet1.next()) {

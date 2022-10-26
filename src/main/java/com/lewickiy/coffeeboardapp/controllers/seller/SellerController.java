@@ -38,13 +38,14 @@ import java.util.ArrayList;
 
 import static com.lewickiy.coffeeboardapp.controllers.seller.DiscountNameButton.discountNameButtons;
 import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
+import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.addSaleToLocalDB;
+import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addSaleProductsToLocalDB;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
-import static com.lewickiy.coffeeboardapp.database.local.LocalBase.*;
 import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.*;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
-import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeAL;
+import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeList;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.createProductCategoriesList;
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
@@ -92,7 +93,6 @@ public class SellerController {
      */
     @FXML
     void allSalesOnAction() throws IOException, SQLException {
-        showSalesThisShift(); //TEMP
         allSalesPane.setVisible(!allSalesPane.isVisible()); //если панель со всеми продажами выключена, она включается, если включена - выключается.
     }
     //Действие при нажатии на кнопку Закрытия смены.
@@ -102,7 +102,6 @@ public class SellerController {
     }
     @FXML
     void openShiftButtonOnAction() {
-        System.out.println("Open shift pane button is pressed");
 //        openShiftPane.setVisible(true);
     }
     /*____________________________________˄˄˄_____________________________________________
@@ -120,7 +119,6 @@ public class SellerController {
 
     @FXML
     void okCloseShiftButtonOnAction() throws SQLException, IOException {
-        writeSqlFromLocalDb(); //Записываем данные из локальной базы данных в сетевую. Локальная база данных очищается.
         currentSaleProducts.clear(); //Очищаем список текущих продуктов в списке
         products.clear(); //очищаем список Продуктов
         discounts.clear(); //очищаем список скидок
@@ -474,7 +472,6 @@ public class SellerController {
     void paymentTypeOnAction(ActionEvent event) throws SQLException, IOException {
         Button button = (Button) event.getSource();
         currentSale.setPaymentTypeId(Integer.parseInt(button.getAccessibleText()));
-//        paymentTypePanel.setVisible(false);
         cashReceiptButton.setDisable(true);
         long nowDate = System.currentTimeMillis();
         Date saleDate = new Date(nowDate);
@@ -491,16 +488,13 @@ public class SellerController {
             addCurrentSaleToArray(currentSaleProducts, currentSale);
             allSalesTable.setItems(todaySalesObservableList);
             allSalesTable.refresh();
-            addSaleToLocalDb(currentSale);
-//        createNewSale(currentSale);
-            addProductsToLocalDb(currentSaleProducts, currentSale);
-//        addProductsToSale(currentSaleProducts, currentSale);
+            addSaleToLocalDB(currentSale); //Добавляем текущую продажу в SQLite
+            addSaleProductsToLocalDB(currentSaleProducts, currentSale); //Добавляем продукты в SQLite
             currentSale = null;
             newSale = true;
             positionsCount = 0;
             currentSaleProducts.clear();
             sumLabel.setText("0.00");
-            //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
             saleTable.refresh();
             paymentTypePanel.setVisible(false);
         }
@@ -530,20 +524,17 @@ public class SellerController {
         cashReceiptButton.setDisable(false);
     }
     @FXML
-    void noChangeOnAction() throws IOException {
+    void noChangeOnAction() throws IOException, SQLException {
         addCurrentSaleToArray(currentSaleProducts, currentSale);
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
-        addSaleToLocalDb(currentSale);
-//        createNewSale(currentSale);
-        addProductsToLocalDb(currentSaleProducts, currentSale);
-//        addProductsToSale(currentSaleProducts, currentSale);
+        addSaleToLocalDB(currentSale); //Добавляем текущую продажу в SQLite
+        addSaleProductsToLocalDB(currentSaleProducts, currentSale); //Добавляем продукты в SQLite
         currentSale = null;
         newSale = true;
         positionsCount = 0;
         currentSaleProducts.clear();
         sumLabel.setText("0.00");
-        //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
         saleTable.refresh();
         changePane.setVisible(false);
         paymentTypePanel.setVisible(false);
@@ -582,20 +573,17 @@ public class SellerController {
     }
 
     @FXML
-    void okWithChangeOnAction() throws IOException {
+    void okWithChangeOnAction() throws IOException, SQLException {
         addCurrentSaleToArray(currentSaleProducts, currentSale);
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
-        addSaleToLocalDb(currentSale);
-//        createNewSale(currentSale);
-        addProductsToLocalDb(currentSaleProducts, currentSale);
-//        addProductsToSale(currentSaleProducts, currentSale);
+        addSaleToLocalDB(currentSale); //Добавляем текущую продажу в SQLite
+        addSaleProductsToLocalDB(currentSaleProducts, currentSale); //Добавляем продукты текущей продажи в SQLite
         currentSale = null;
         newSale = true;
         positionsCount = 0;
         currentSaleProducts.clear();
         sumLabel.setText("0.00");
-        //    userEarnings.setText(String.valueOf(reloadUserEarnings()));
         saleTable.refresh();
 
         withChangePane.setVisible(false);
@@ -661,11 +649,14 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     void initialize() throws SQLException, IOException {
+//        syncProductsList();
         createProductsList();
+//        syncDiscountsList();
         createDiscountList();
-        createPaymentTypeAL();
+//        syncPaymentTypesList();
+        createPaymentTypeList();
+//        syncProductCategoriesList();
         createProductCategoriesList();
-        System.out.println(productCategories.size());
         paymentTypePanel.setVisible(false);
         paymentTypeButtons[0] = paymentType1;
         paymentTypeButtons[1] = paymentType2;

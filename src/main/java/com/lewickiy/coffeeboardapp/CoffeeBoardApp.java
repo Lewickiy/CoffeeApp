@@ -8,17 +8,14 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-import static com.lewickiy.coffeeboardapp.database.local.LocalBase.createLocalDb;
-
 /**
- * @Author - Lewickiy Anatoliy
- * @Version - start0.3
+ * @author - Lewickiy Anatoliy
+ * @version - start0.4
  */
 
 public class CoffeeBoardApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        createLocalDb();
         FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("login.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.initStyle(StageStyle.UNDECORATED);

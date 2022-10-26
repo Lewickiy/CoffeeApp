@@ -151,6 +151,8 @@ public class User {
         this.administrator = administrator;
     }
 
+
+
     public boolean isActiveStuff() {
         return activeStuff;
     }

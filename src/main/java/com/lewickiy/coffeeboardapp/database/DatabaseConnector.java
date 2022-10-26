@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnector {
-
     private static final String DB_DRIVER = "jdbc:mysql:";
     private static final String HOST = "server5.hosting.reg.ru";
     private static final int PORT = 3306;
@@ -18,9 +17,13 @@ public class DatabaseConnector {
      * Метод реализует подключение к базе данных<br>
      * @return - возвращает Connection connectNow; при запросе из прочих участков кода
      */
-    public static Connection getConnection() { // метод подключения к базе данных
+    public static Connection getConnection(String dbName) { // метод подключения к базе данных
         try {
-            connectNow = DriverManager.getConnection(URL, USER, PASSWORD);
+            if (dbName.equals("network_database")) {
+                connectNow = DriverManager.getConnection(URL, USER, PASSWORD);
+            } else if (dbName.equals("local_database")) {
+                connectNow = DriverManager.getConnection("jdbc:sqlite:coffeeapp_local.db"); //Заменить на переменную
+            }
         } catch (SQLException sqlEx) {
             System.out.println(sqlEx);
             //TODO при отсутствии подключения вывести на экран сообщение о необходимости подключения

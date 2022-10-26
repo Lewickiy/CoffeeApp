@@ -16,7 +16,10 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 
+import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncOutletsList;
+import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncUsersList;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.createOutletList;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
@@ -45,9 +48,11 @@ public class LoginController {
     @FXML
     private Label choiceLabel;
     @FXML
-    void initialize() throws SQLException {
+    void initialize() throws SQLException, ParseException {
+//        syncUsersList(); //синхронизация локальной базы данных пользователей с сетевой
+//        syncOutletsList();
         acceptOutletChoice.setDisable(true);
-        createUsersList(); //Загрузка объектов из базы в список пользователей.
+        createUsersList(); //Загрузка объектов из локальной базы в список пользователей.
         createOutletList(); //Загрузка объектов из базы в список торговых точек.
         outletChoiceBox.setItems(outletsObservableList); //Устанавливаем значения в ChoiceBox из observableList
         /*

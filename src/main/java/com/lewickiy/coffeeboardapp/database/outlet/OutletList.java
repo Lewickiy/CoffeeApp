@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.lewickiy.coffeeboardapp.database.Query.selectFromSql;
+import static com.lewickiy.coffeeboardapp.database.Query.selectAllFromSql;
 
 public class OutletList {
     public static ArrayList<Outlet> outlets = new ArrayList<>();
@@ -14,7 +14,7 @@ public class OutletList {
      * @throws SQLException - не обработано
      */
     public static void createOutletList() throws SQLException {
-        ResultSet resultSet = selectFromSql("outlet");
+        ResultSet resultSet = selectAllFromSql("local_database","outlet");
         while(resultSet.next()) {
             int outletId = resultSet.getInt("outlet_id");
             String outlet = resultSet.getString("outlet");

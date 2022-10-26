@@ -4,10 +4,9 @@ import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
 import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
 
-import java.sql.*;
+import java.sql.Time;
 import java.util.ArrayList;
 
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
 
 public class TodaySalesList { //Список сегодняшних продаж
@@ -76,40 +75,6 @@ public class TodaySalesList { //Список сегодняшних продаж
             Time saleTime = new Time(nowTime);
             tempSale.setSaleTime(saleTime);
             todaySalesArrayList.add(tempSale);
-        }
-    }
-
-    public static void showSalesThisShift() throws SQLException {
-        Connection conn = null; //Подключение null
-        try {
-            // Параметры базы данных
-            String url = "jdbc:sqlite:coffeeapp_local.db";
-//            // создаём подключение к базе данных
-            conn = DriverManager.getConnection(url);
-            Statement statement = conn.createStatement(); //создаётся подключение
-//            String queryInsert = "INSERT into outlet VALUES (12, 'Hell');";
-//            statement.executeUpdate(queryInsert);
-            //---------------------------------
-
-
-            //---------------or----------------
-            String query = "SELECT * FROM outlet"; //создаётся запрос к базе данных
-            ResultSet rs = statement.executeQuery(query); //результат
-            System.out.println("Query is ok");
-            while (rs.next()) {
-                System.out.println(rs.getInt("outlet_id") + "\t" +
-                        rs.getString("outlet"));
-
-            }} catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
         }
     }
 }

@@ -1,10 +1,9 @@
 package com.lewickiy.coffeeboardapp.database.currentSale;
 
-import com.lewickiy.coffeeboardapp.database.DatabaseConnector;
-
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+
+import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 
 public class SaleProduct {
 
@@ -108,26 +107,20 @@ public class SaleProduct {
         this.sum = sum;
     }
 
-    public static void addProductsToSale(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) throws SQLException {
-        Statement statement = DatabaseConnector.getConnection().createStatement();
-
+    public static void addSaleProductsToLocalDB(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) throws SQLException {
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
-            if (currentSaleProduct.getDiscountId() == 0) {
-                currentSaleProduct.setDiscountId(1);
-            }
-            statement.executeUpdate("INSERT sale_product("
-                + "sale_id, "
-                + "product_id, "
-                + "discount_id, "
-                + "price, "
-                + "amount, "
-                + "sum) VALUES ('"
-                + currentSale.getSaleId() + "', '"
-                + currentSaleProduct.getProductId() + "', '"
-                + currentSaleProduct.getDiscountId() + "', '"
-                + currentSaleProduct.getPrice() + "', '"
-                + currentSaleProduct.getAmount() + "', '"
-                + currentSaleProduct.getSum()  + "')");
+            insertToSql("local_database", "sale_product", "sale_id, "
+                    + "product_id, "
+                    + "discount_id, "
+                    + "price, "
+                    + "amount, "
+                    + "sum) VALUES ('"
+                    + currentSale.getSaleId() + "', '"
+                    + currentSaleProduct.getProductId() + "', '"
+                    + currentSaleProduct.getDiscountId() + "', '"
+                    + currentSaleProduct.getPrice() + "', '"
+                    + currentSaleProduct.getAmount() + "', '"
+                    + currentSaleProduct.getSum()  + "'");
         }
     }
 }

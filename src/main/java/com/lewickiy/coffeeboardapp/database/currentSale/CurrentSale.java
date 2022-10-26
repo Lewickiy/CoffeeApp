@@ -21,23 +21,6 @@ public class CurrentSale {
         this.outletId = outletId;
     }
 
-    public CurrentSale(int saleId
-            , int userId
-            , int outletId
-            , Date currentDate
-            , Time currentTime
-            , int paymentTypeId
-            , int clientId) {
-
-        this.saleId = saleId;
-        this.userId = userId;
-        this.outletId = outletId;
-        this.currentDate = currentDate;
-        this.currentTime = currentTime;
-        this.paymentTypeId = paymentTypeId;
-        this.clientId = clientId;
-    }
-
     public int getSaleId() {
         return saleId;
     }
@@ -88,8 +71,8 @@ public class CurrentSale {
         this.clientId = clientId;
     }
 
-    public static void createNewSale(CurrentSale currentSale) throws SQLException {
-        insertToSql("sale","sale_id, "
+    public static void addSaleToLocalDB(CurrentSale currentSale) throws SQLException {
+        insertToSql("local_database", "sale","sale_id, "
                 + "user_id, "
                 + "outlet_id, "
                 + "date, "
@@ -102,6 +85,6 @@ public class CurrentSale {
                 + currentSale.getCurrentDate() + "', '"
                 + currentSale.getCurrentTime() + "', '"
                 + currentSale.getPaymentTypeId() + "', '"
-                + currentSale.getClientId());
+                + currentSale.getClientId()  + "'");
     }
 }

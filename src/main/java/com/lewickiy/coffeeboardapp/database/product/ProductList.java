@@ -4,14 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.lewickiy.coffeeboardapp.database.Query.selectFromSql;
+import static com.lewickiy.coffeeboardapp.database.Query.selectAllFromSql;
 import static java.util.Comparator.comparing;
 
 public class ProductList {
     public static ArrayList<Product> products = new ArrayList<>();
 
     public static void createProductsList() throws SQLException {
-        ResultSet resultSet = selectFromSql("product");
+        ResultSet resultSet = selectAllFromSql("local_database","product");
 
         while(resultSet.next()) {
             int productId = resultSet.getInt("product_id");
