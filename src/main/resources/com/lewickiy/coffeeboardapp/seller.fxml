@@ -207,6 +207,11 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
+                        <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="60.0" text="00:00" textAlignment="CENTER" textFill="#07b215">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
                         <Button fx:id="adminButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="580.0" layoutY="12.0" mnemonicParsing="false" onAction="#adminButtonOnAction" prefHeight="27.0" prefWidth="110.0" text="Admin" textOverrun="CLIP">
                            <font>
                               <Font size="13.0" />

@@ -12,6 +12,7 @@ import com.lewickiy.coffeeboardapp.database.product.Product;
 import com.lewickiy.coffeeboardapp.database.product.ProductCategory;
 import com.lewickiy.coffeeboardapp.database.user.UserList;
 import com.lewickiy.coffeeboardapp.idgenerator.UniqueIdGenerator;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import static com.lewickiy.coffeeboardapp.controllers.seller.DiscountNameButton.discountNameButtons;
@@ -55,6 +57,9 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 public class SellerController {
     private boolean newSale = true; //boolean значение необходимости создания нового чека
     private int saleId; //Идентификатор текущей продажи. Создаётся в классе UniqueIdGenerator
+
+    @FXML
+    private Label timeLabel;
     private int positionsCount;
     private CurrentSale currentSale; //объект - текущая продажа.
     private SaleProduct currentProduct; //объект - зона сбора данных.
@@ -92,12 +97,12 @@ public class SellerController {
      * Если панель скрыта, она открывается, если открыта - скрывается.
      */
     @FXML
-    void allSalesOnAction() throws IOException, SQLException {
+    void allSalesOnAction() {
         allSalesPane.setVisible(!allSalesPane.isVisible()); //если панель со всеми продажами выключена, она включается, если включена - выключается.
     }
     //Действие при нажатии на кнопку Закрытия смены.
     @FXML
-    void closeShiftButtonOnAction() throws IOException, SQLException {
+    void closeShiftButtonOnAction() {
         closeShiftPane.setVisible(true);
     }
     @FXML
@@ -118,7 +123,7 @@ public class SellerController {
     private Button cancelCloseShiftButton;
 
     @FXML
-    void okCloseShiftButtonOnAction() throws SQLException, IOException {
+    void okCloseShiftButtonOnAction() throws IOException {
         currentSaleProducts.clear(); //Очищаем список текущих продуктов в списке
         products.clear(); //очищаем список Продуктов
         discounts.clear(); //очищаем список скидок
@@ -349,7 +354,7 @@ public class SellerController {
     }
     //На данный момент кнопка не имеет действия.
     @FXML
-    void delProductOnAction() throws IOException, SQLException {
+    void delProductOnAction() {
         //TODO кнопка отмены ButtonOnAction
     }
 
@@ -463,13 +468,13 @@ public class SellerController {
     private Button oups;
 
     @FXML
-    void oupsOnAction() throws IOException {
+    void oupsOnAction() {
         correctionPane.setVisible(true);
 //        clearLocalDb();
     }
 
     @FXML
-    void paymentTypeOnAction(ActionEvent event) throws SQLException, IOException {
+    void paymentTypeOnAction(ActionEvent event) throws SQLException {
         Button button = (Button) event.getSource();
         currentSale.setPaymentTypeId(Integer.parseInt(button.getAccessibleText()));
         cashReceiptButton.setDisable(true);
@@ -524,7 +529,7 @@ public class SellerController {
         cashReceiptButton.setDisable(false);
     }
     @FXML
-    void noChangeOnAction() throws IOException, SQLException {
+    void noChangeOnAction() throws SQLException {
         addCurrentSaleToArray(currentSaleProducts, currentSale);
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
@@ -573,7 +578,7 @@ public class SellerController {
     }
 
     @FXML
-    void okWithChangeOnAction() throws IOException, SQLException {
+    void okWithChangeOnAction() throws SQLException {
         addCurrentSaleToArray(currentSaleProducts, currentSale);
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
@@ -648,7 +653,25 @@ public class SellerController {
      * Инициализация
      _____________________________________˅˅˅____________________________________________*/
     @FXML
-    void initialize() throws SQLException, IOException {
+    void initialize() throws SQLException {
+
+        //Часы висящие в панели.
+        Thread timerThread = new Thread(() -> {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+            while (true) {
+                try {
+                    Thread.sleep(1000); //10 second
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                final String time = simpleDateFormat.format(new java.util.Date());
+                Platform.runLater(() -> {
+                    timeLabel.setText(time);
+                });
+            }
+        });   timerThread.setDaemon(true); //Это закроет поток. Он сообщает JVM, что это фоновый поток, поэтому он завершится при выходе.
+        timerThread.start(); //Запускаем поток.
+
 //        syncProductsList();
         createProductsList();
 //        syncDiscountsList();
@@ -658,6 +681,7 @@ public class SellerController {
 //        syncProductCategoriesList();
         createProductCategoriesList();
         paymentTypePanel.setVisible(false);
+        closeShiftButton.setDisable(true);
         paymentTypeButtons[0] = paymentType1;
         paymentTypeButtons[1] = paymentType2;
 
@@ -667,8 +691,7 @@ public class SellerController {
             paymentTypeButtons[count].setText(paymentType.getPaymentType());
             count++;
         }
-        saleProductsObservableList.addListener((ListChangeListener<SaleProduct>) change -> {
-        });
+        saleProductsObservableList.addListener((ListChangeListener<SaleProduct>) change -> {});
 
         for (int i = 0; i < numbersGridPane.getColumnCount(); i++) {
             Button numberButton = new Button();
@@ -795,14 +818,14 @@ public class SellerController {
         sumChangeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             String changeSumString = newValue.replace(',', '.');
             changeSumString = changeSumString.replace(" ", "");
-            double change = 0.00;
+            double change;
             if (changeSumString.isEmpty()) {
-                change = 0.00;
+                change = 0.0;
             } else {
                 change = Double.parseDouble(changeSumString) - (Double.parseDouble(sumLabel.getText()));
             }
             if (change < 0.0) {
-                changeLabel.setText("0.00");
+                changeLabel.setText("0.0");
             } else {
                 changeLabel.setText(String.valueOf(change));
             }
