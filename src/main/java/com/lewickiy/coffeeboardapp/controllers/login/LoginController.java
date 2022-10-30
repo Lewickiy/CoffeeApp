@@ -30,8 +30,10 @@ import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.database.user.UserList.*;
 
 public class LoginController {
-    private Connection conNetworkDB = null;
-    private Connection conLocalDB = null;
+    private Connection conNetworkUserDB = null;
+    private Connection conLocalUserDB = null;
+    private Connection conNetworkOutletDB = null;
+    private Connection conLocalOutletDB = null;
     static ObservableList<Outlet> outletsObservableList = FXCollections.observableList(outlets);
     @FXML
     private Label usernameLabel;
@@ -71,42 +73,52 @@ public class LoginController {
 
 
         try {
-            conNetworkDB = getConnection("network_database");
+            conNetworkUserDB = getConnection("network_database");
         } catch (SQLException sqlEx) {
             System.out.println(sqlEx);
         }
-            conLocalDB = getConnection("local_database");
-        if (conNetworkDB != null) {
+
+        conLocalUserDB = getConnection("local_database");
+
+        if (conNetworkUserDB != null) {
             networkIndicatorLabel.setText("в сети");
             networkIndicator.setFill(Color.GREEN);
-            syncUsersList(conNetworkDB, conLocalDB);
-            createUsersList(conLocalDB);
+            syncUsersList(conNetworkUserDB, conLocalUserDB);
+            conNetworkUserDB.close();
+            createUsersList(conLocalUserDB);
+            conLocalUserDB.close();
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createUsersList(conLocalDB);
+            createUsersList(conLocalUserDB);
+            conLocalUserDB.close();
         }
 
-        if (conNetworkDB != null) {
+        try {
+            conNetworkOutletDB = getConnection("network_database");
+        } catch (SQLException sqlEx) {
+            System.out.println(sqlEx);
+        }
+
+        conLocalOutletDB = getConnection("local_database");
+
+        if (conNetworkOutletDB != null) {
             networkIndicatorLabel.setText("в сети");
             networkIndicator.setFill(Color.GREEN);
-            syncOutletsList(conNetworkDB, conLocalDB);
-            conNetworkDB.close();
-            System.out.println("Connetwork DB is close()");
-            createOutletList(conLocalDB);
-            conLocalDB.close();
+            syncOutletsList(conNetworkOutletDB, conLocalOutletDB);
+            conNetworkOutletDB.close();
+            createOutletList(conLocalOutletDB);
+            conLocalOutletDB.close();
             outletChoiceBox.setItems(outletsObservableList);
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createOutletList(conLocalDB);
+            createOutletList(conLocalOutletDB);
+            conLocalOutletDB.close();
             outletChoiceBox.setItems(outletsObservableList);
         }
 
-        System.out.println(conLocalDB + " local DB connection");
         acceptOutletChoice.setDisable(true);
-        System.out.println(conNetworkDB + " network DB connection");
-        System.out.println();
         System.out.println("Теперь запускаем Seller Controller и начинаем синхронизировать то, что там есть...");
 
         /*
@@ -143,16 +155,6 @@ public class LoginController {
         if (currentOutlet == null) {
             System.out.println("Проверьте подключение к интернету и перезапустите систему, или свяжитесь с службой поддержки");
         } else {
-            try {
-                conNetworkDB.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                conLocalDB.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
             //Это уходит в кнопку Ok после выбора Торговой точки.
             Stage stage = (Stage) loginButton.getScene().getWindow();
             Stage stageSeller = new Stage(); //запуск второй сцены

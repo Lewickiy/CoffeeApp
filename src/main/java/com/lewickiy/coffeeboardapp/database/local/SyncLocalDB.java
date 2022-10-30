@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.connectNow;
 import static com.lewickiy.coffeeboardapp.database.Query.*;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;

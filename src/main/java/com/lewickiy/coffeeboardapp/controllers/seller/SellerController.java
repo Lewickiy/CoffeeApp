@@ -669,7 +669,6 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     void initialize() throws SQLException {
-
         //Часы висящие в панели.
         Thread timerThread = new Thread(() -> {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -689,72 +688,98 @@ public class SellerController {
 
         networkIndicator.setFill(Color.YELLOW);
 
-        Connection conNetworkDB = null;
-        Connection conLocalDB = null;
-        System.out.println(conNetworkDB + " подключение к сетевой базе данных ПЕРЕД ЗАПУСКОМ");
-        System.out.println(conLocalDB + " подключение к локальной базе данных ПЕРЕД ЗАПУСКОМ");
+        //Синхронизация и загрузка списка продуктов
+        Connection conNetworkProductDB = null;
+        Connection conLocalProductDB;
         try {
-            conNetworkDB = getConnection("network_database");
-            System.out.println(conNetworkDB.getHoldability() + " getHoldability()");
-            System.out.println(conNetworkDB.getAutoCommit() + " getAutoCommit()");
-            System.out.println(conNetworkDB.getClientInfo() + " getClientInfo()");
-
-
+            conNetworkProductDB = getConnection("network_database");
         } catch (SQLException sqlEx) {
             System.out.println(sqlEx);
         }
 
-        conLocalDB = getConnection("local_database");
+        conLocalProductDB = getConnection("local_database");
 
-        System.out.println(conNetworkDB + " подключение к сетевой базе данных ПОСЛЕ ЗАПУСКА");
-        System.out.println(conLocalDB + " подключение к локальной базе данных ПОСЛЕ ЗАПУСКА");
-
-        //Синхронизация и загрузка списка продуктов
-        if (conNetworkDB != null) {
+        if (conNetworkProductDB != null) {
             networkIndicatorLabel.setText("в сети");
             networkIndicator.setFill(Color.GREEN);
-            syncProductsList(conNetworkDB, conLocalDB);
-            createProductsList(conLocalDB);
+            syncProductsList(conNetworkProductDB, conLocalProductDB);
+            conNetworkProductDB.close();
+            createProductsList(conLocalProductDB);
+            conLocalProductDB.close();
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createProductsList(conLocalDB);
+            createProductsList(conLocalProductDB);
+            conLocalProductDB.close();
         }
 
         //Синхронизация и загрузка категорий продуктов
-        if (conNetworkDB != null) {
+        Connection conNetworkCategoryDB = null;
+        Connection conLocalCategoryDB;
+        try {
+            conNetworkCategoryDB = getConnection("network_database");
+        } catch (SQLException sqlEx) {
+            System.out.println(sqlEx);
+        }
+        conLocalCategoryDB = getConnection("local_database");
+        if (conNetworkCategoryDB != null) {
             networkIndicatorLabel.setText("в сети");
             networkIndicator.setFill(Color.GREEN);
-            syncProductCategoriesList(conNetworkDB, conLocalDB);
-            createProductCategoriesList(conLocalDB);
+            syncProductCategoriesList(conNetworkCategoryDB, conLocalCategoryDB);
+            conNetworkCategoryDB.close();
+            createProductCategoriesList(conLocalCategoryDB);
+            conLocalCategoryDB.close();
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createProductCategoriesList(conLocalDB);
+            createProductCategoriesList(conLocalCategoryDB);
+            conLocalCategoryDB.close();
         }
 
         //Синхронизация и загрузка типов оплаты
-        if (conNetworkDB != null) {
+        Connection conNetworkPaymentTypeDB = null;
+        Connection conLocalPaymentTypeDB;
+        try {
+            conNetworkPaymentTypeDB = getConnection("network_database");
+        } catch (SQLException sqlEx) {
+            System.out.println(sqlEx);
+        }
+        conLocalPaymentTypeDB = getConnection("local_database");
+        if (conNetworkPaymentTypeDB != null) {
             networkIndicatorLabel.setText("в сети");
             networkIndicator.setFill(Color.GREEN);
-            syncPaymentTypesList(conNetworkDB, conLocalDB);
-            createPaymentTypeList(conLocalDB);
+            syncPaymentTypesList(conNetworkPaymentTypeDB, conLocalPaymentTypeDB);
+            conNetworkPaymentTypeDB.close();
+            createPaymentTypeList(conLocalPaymentTypeDB);
+            conLocalPaymentTypeDB.close();
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createPaymentTypeList(conLocalDB);
+            createPaymentTypeList(conLocalPaymentTypeDB);
+            conLocalCategoryDB.close();
         }
 
         //Синхронизация и загрузка скидок
-        if (conNetworkDB != null) {
+        Connection conNetworkDiscountDB = null;
+        Connection conLocalDiscountDB;
+        try {
+            conNetworkDiscountDB = getConnection("network_database");
+        } catch (SQLException sqlEx) {
+            System.out.println(sqlEx);
+        }
+        conLocalDiscountDB = getConnection("local_database");
+        if (conNetworkDiscountDB != null) {
             networkIndicatorLabel.setText("в сети");
             networkIndicator.setFill(Color.GREEN);
-            syncDiscountsList(conNetworkDB, conLocalDB);
-            createDiscountList(conLocalDB);
+            syncDiscountsList(conNetworkDiscountDB, conLocalDiscountDB);
+            conNetworkDiscountDB.close();
+            createDiscountList(conLocalDiscountDB);
+            conLocalDiscountDB.close();
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createDiscountList(conLocalDB);
+            createDiscountList(conLocalDiscountDB);
+            conLocalDiscountDB.close();
         }
 
         paymentTypePanel.setVisible(false);
