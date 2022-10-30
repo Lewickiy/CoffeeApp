@@ -11,19 +11,27 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 
+import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncOutletsList;
+import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncUsersList;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.createOutletList;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.database.user.UserList.*;
 
 public class LoginController {
+    private Connection conNetworkDB = null;
+    private Connection conLocalDB = null;
     static ObservableList<Outlet> outletsObservableList = FXCollections.observableList(outlets);
     @FXML
     private Label usernameLabel;
@@ -45,17 +53,62 @@ public class LoginController {
     private TextField usernameTextField;
     @FXML
     private Label choiceLabel;
+    @FXML
+    private Circle networkIndicator;
+    @FXML
+    private Label networkIndicatorLabel;
 
     @FXML
     void initialize() throws SQLException, ParseException {
-        /*
-        syncUsersList(); //синхронизация локальной базы данных пользователей с сетевой
-        syncOutletsList();
-         */
+        networkIndicator.setFill(Color.YELLOW);
+
+        //Если удаётся установить соединение с сетевой базой данных, то подключаемся к ней и
+        //проводим синхронизацию с ней локальной базы данных,
+        //после чего загружаем список пользователей из локальной базы данных для продолжения работы.
+        //Если соединение с сетевой базой данных не установлено, загружаем список пользователей из
+        //локальной базы данных, пропуская её синхронизацию с сетевой.
+
+
+
+        try {
+            conNetworkDB = getConnection("network_database");
+        } catch (SQLException sqlEx) {
+            System.out.println(sqlEx);
+        }
+            conLocalDB = getConnection("local_database");
+        if (conNetworkDB != null) {
+            networkIndicatorLabel.setText("в сети");
+            networkIndicator.setFill(Color.GREEN);
+            syncUsersList(conNetworkDB, conLocalDB);
+            createUsersList(conLocalDB);
+        } else {
+            networkIndicatorLabel.setText("не в сети");
+            networkIndicator.setFill(Color.YELLOW);
+            createUsersList(conLocalDB);
+        }
+
+        if (conNetworkDB != null) {
+            networkIndicatorLabel.setText("в сети");
+            networkIndicator.setFill(Color.GREEN);
+            syncOutletsList(conNetworkDB, conLocalDB);
+            conNetworkDB.close();
+            System.out.println("Connetwork DB is close()");
+            createOutletList(conLocalDB);
+            conLocalDB.close();
+            outletChoiceBox.setItems(outletsObservableList);
+        } else {
+            networkIndicatorLabel.setText("не в сети");
+            networkIndicator.setFill(Color.YELLOW);
+            createOutletList(conLocalDB);
+            outletChoiceBox.setItems(outletsObservableList);
+        }
+
+        System.out.println(conLocalDB + " local DB connection");
         acceptOutletChoice.setDisable(true);
-        createUsersList(); //Загрузка объектов из локальной базы в список пользователей.
-        createOutletList(); //Загрузка объектов из базы в список торговых точек.
-        outletChoiceBox.setItems(outletsObservableList); //Устанавливаем значения в ChoiceBox из observableList
+        System.out.println(conNetworkDB + " network DB connection");
+        System.out.println();
+        System.out.println("Теперь запускаем Seller Controller и начинаем синхронизировать то, что там есть...");
+
         /*
          *Это Listener для outletChoiceBox. Он следит за изменениями в выборе и создаёт из них объект
          * currentOutlet класса Outlet. Дальше я буду с ним работать для фильтрации администратором продаж
@@ -90,6 +143,16 @@ public class LoginController {
         if (currentOutlet == null) {
             System.out.println("Проверьте подключение к интернету и перезапустите систему, или свяжитесь с службой поддержки");
         } else {
+            try {
+                conNetworkDB.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                conLocalDB.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             //Это уходит в кнопку Ok после выбора Торговой точки.
             Stage stage = (Stage) loginButton.getScene().getWindow();
             Stage stageSeller = new Stage(); //запуск второй сцены
@@ -99,6 +162,7 @@ public class LoginController {
             stageSeller.setScene(scene);
             stageSeller.setTitle("CoffeeApp. Добро пожаловать, " + currentUser.getFirstName());
             stageSeller.setMaximized(true); //сцена при запуске развёрнута на весь экран
+
             stageSeller.show();
             stage.close(); //закрытие первой сцены
         }

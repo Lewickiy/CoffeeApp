@@ -27,11 +27,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -40,11 +43,13 @@ import java.util.ArrayList;
 
 import static com.lewickiy.coffeeboardapp.controllers.seller.DiscountNameButton.discountNameButtons;
 import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
+import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.addSaleToLocalDB;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addSaleProductsToLocalDB;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
+import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.*;
 import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.*;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeList;
@@ -53,6 +58,7 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.c
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
+import static com.lewickiy.coffeeboardapp.database.user.UserList.createUsersList;
 
 public class SellerController {
     private boolean newSale = true; //boolean значение необходимости создания нового чека
@@ -65,6 +71,11 @@ public class SellerController {
     private SaleProduct currentProduct; //объект - зона сбора данных.
     static ObservableList<SaleProduct> saleProductsObservableList = FXCollections.observableList(currentSaleProducts);
     static ObservableList<SaleProduct> todaySalesObservableList = FXCollections.observableList(todaySalesArrayList);
+    @FXML
+    private Circle networkIndicator;
+    @FXML
+    private Label networkIndicatorLabel;
+
 
     /*____________________________________start___________________________________________
      * Панель информации в верхней части экрана.
@@ -493,8 +504,9 @@ public class SellerController {
             addCurrentSaleToArray(currentSaleProducts, currentSale);
             allSalesTable.setItems(todaySalesObservableList);
             allSalesTable.refresh();
-            addSaleToLocalDB(currentSale); //Добавляем текущую продажу в SQLite
-            addSaleProductsToLocalDB(currentSaleProducts, currentSale); //Добавляем продукты в SQLite
+            Connection conLocalDB = getConnection("local_database");
+            addSaleToLocalDB(conLocalDB, currentSale); //Добавляем текущую продажу в SQLite
+            addSaleProductsToLocalDB(conLocalDB, currentSaleProducts, currentSale); //Добавляем продукты текущей продажи в SQLite
             currentSale = null;
             newSale = true;
             positionsCount = 0;
@@ -528,13 +540,15 @@ public class SellerController {
         changePane.setVisible(false);
         cashReceiptButton.setDisable(false);
     }
+
     @FXML
     void noChangeOnAction() throws SQLException {
         addCurrentSaleToArray(currentSaleProducts, currentSale);
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
-        addSaleToLocalDB(currentSale); //Добавляем текущую продажу в SQLite
-        addSaleProductsToLocalDB(currentSaleProducts, currentSale); //Добавляем продукты в SQLite
+        Connection conLocalDB = getConnection("local_database");
+        addSaleToLocalDB(conLocalDB, currentSale); //Добавляем текущую продажу в SQLite
+        addSaleProductsToLocalDB(conLocalDB, currentSaleProducts, currentSale); //Добавляем продукты текущей продажи в SQLite
         currentSale = null;
         newSale = true;
         positionsCount = 0;
@@ -582,8 +596,9 @@ public class SellerController {
         addCurrentSaleToArray(currentSaleProducts, currentSale);
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
-        addSaleToLocalDB(currentSale); //Добавляем текущую продажу в SQLite
-        addSaleProductsToLocalDB(currentSaleProducts, currentSale); //Добавляем продукты текущей продажи в SQLite
+        Connection conLocalDB = getConnection("local_database");
+        addSaleToLocalDB(conLocalDB, currentSale); //Добавляем текущую продажу в SQLite
+        addSaleProductsToLocalDB(conLocalDB, currentSaleProducts, currentSale); //Добавляем продукты текущей продажи в SQLite
         currentSale = null;
         newSale = true;
         positionsCount = 0;
@@ -672,14 +687,76 @@ public class SellerController {
         });   timerThread.setDaemon(true); //Это закроет поток. Он сообщает JVM, что это фоновый поток, поэтому он завершится при выходе.
         timerThread.start(); //Запускаем поток.
 
-//        syncProductsList();
-        createProductsList();
-//        syncDiscountsList();
-        createDiscountList();
-//        syncPaymentTypesList();
-        createPaymentTypeList();
-//        syncProductCategoriesList();
-        createProductCategoriesList();
+        networkIndicator.setFill(Color.YELLOW);
+
+        Connection conNetworkDB = null;
+        Connection conLocalDB = null;
+        System.out.println(conNetworkDB + " подключение к сетевой базе данных ПЕРЕД ЗАПУСКОМ");
+        System.out.println(conLocalDB + " подключение к локальной базе данных ПЕРЕД ЗАПУСКОМ");
+        try {
+            conNetworkDB = getConnection("network_database");
+            System.out.println(conNetworkDB.getHoldability() + " getHoldability()");
+            System.out.println(conNetworkDB.getAutoCommit() + " getAutoCommit()");
+            System.out.println(conNetworkDB.getClientInfo() + " getClientInfo()");
+
+
+        } catch (SQLException sqlEx) {
+            System.out.println(sqlEx);
+        }
+
+        conLocalDB = getConnection("local_database");
+
+        System.out.println(conNetworkDB + " подключение к сетевой базе данных ПОСЛЕ ЗАПУСКА");
+        System.out.println(conLocalDB + " подключение к локальной базе данных ПОСЛЕ ЗАПУСКА");
+
+        //Синхронизация и загрузка списка продуктов
+        if (conNetworkDB != null) {
+            networkIndicatorLabel.setText("в сети");
+            networkIndicator.setFill(Color.GREEN);
+            syncProductsList(conNetworkDB, conLocalDB);
+            createProductsList(conLocalDB);
+        } else {
+            networkIndicatorLabel.setText("не в сети");
+            networkIndicator.setFill(Color.YELLOW);
+            createProductsList(conLocalDB);
+        }
+
+        //Синхронизация и загрузка категорий продуктов
+        if (conNetworkDB != null) {
+            networkIndicatorLabel.setText("в сети");
+            networkIndicator.setFill(Color.GREEN);
+            syncProductCategoriesList(conNetworkDB, conLocalDB);
+            createProductCategoriesList(conLocalDB);
+        } else {
+            networkIndicatorLabel.setText("не в сети");
+            networkIndicator.setFill(Color.YELLOW);
+            createProductCategoriesList(conLocalDB);
+        }
+
+        //Синхронизация и загрузка типов оплаты
+        if (conNetworkDB != null) {
+            networkIndicatorLabel.setText("в сети");
+            networkIndicator.setFill(Color.GREEN);
+            syncPaymentTypesList(conNetworkDB, conLocalDB);
+            createPaymentTypeList(conLocalDB);
+        } else {
+            networkIndicatorLabel.setText("не в сети");
+            networkIndicator.setFill(Color.YELLOW);
+            createPaymentTypeList(conLocalDB);
+        }
+
+        //Синхронизация и загрузка скидок
+        if (conNetworkDB != null) {
+            networkIndicatorLabel.setText("в сети");
+            networkIndicator.setFill(Color.GREEN);
+            syncDiscountsList(conNetworkDB, conLocalDB);
+            createDiscountList(conLocalDB);
+        } else {
+            networkIndicatorLabel.setText("не в сети");
+            networkIndicator.setFill(Color.YELLOW);
+            createDiscountList(conLocalDB);
+        }
+
         paymentTypePanel.setVisible(false);
         closeShiftButton.setDisable(true);
         paymentTypeButtons[0] = paymentType1;
@@ -752,7 +829,10 @@ public class SellerController {
                 countD++;
             }
         }
-        discountNameButtons(DISCOUNT_BUTTONS);
+
+        discountNameButtons(DISCOUNT_BUTTONS); //именуем кнопки
+
+
         /*____________________________________________________________________________________
          * Здесь происходит инициализация столбцов таблицы текущей продажи.
          * В неё добавляются позиции Продуктов.

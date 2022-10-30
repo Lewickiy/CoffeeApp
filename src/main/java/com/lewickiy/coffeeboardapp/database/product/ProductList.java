@@ -1,5 +1,6 @@
 package com.lewickiy.coffeeboardapp.database.product;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,8 +11,10 @@ import static java.util.Comparator.comparing;
 public class ProductList {
     public static ArrayList<Product> products = new ArrayList<>();
 
-    public static void createProductsList() throws SQLException {
-        ResultSet resultSet = selectAllFromSql("local_database","product");
+    public static void createProductsList(Connection localCon) throws SQLException {
+
+
+        ResultSet resultSet = selectAllFromSql(localCon, "local_database","product");
 
         while(resultSet.next()) {
             int productId = resultSet.getInt("product_id");
@@ -30,6 +33,7 @@ public class ProductList {
                     , category
                     , price));
         }
+        resultSet.close();
         products.sort(comparing(Product::getCategory));
     }
 }

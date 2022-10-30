@@ -7,10 +7,12 @@ import com.lewickiy.coffeeboardapp.database.product.Product;
 import com.lewickiy.coffeeboardapp.database.product.ProductCategory;
 import com.lewickiy.coffeeboardapp.database.user.User;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.connectNow;
 import static com.lewickiy.coffeeboardapp.database.Query.*;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
@@ -23,10 +25,10 @@ public class SyncLocalDB {
     static final String LOCAL_DB = "local_database";
     static final String NETWORK_DB = "network_database";
 
-    public static void syncUsersList() throws SQLException {
+    public static void syncUsersList(Connection networkCon, Connection localCon) throws SQLException {
         System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
 
-        ResultSet resultSet = selectAllFromSql(NETWORK_DB,"user");
+        ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"user");
         while(resultSet.next()) {
             int userId = resultSet.getInt("user_id");
             String login = resultSet.getString("login");
@@ -43,10 +45,10 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(LOCAL_DB, "user", "delete");
+        deleteFromSql(localCon, LOCAL_DB, "user", "delete");
 
         for (User user : users) {
-            insertToSql(LOCAL_DB,"user", "user_id, "
+            insertToSql(localCon, LOCAL_DB,"user", "user_id, "
                     + "login, "
                     + "first_name, "
                     + "last_name, "
@@ -67,12 +69,14 @@ public class SyncLocalDB {
                     + user.isAdministrator() + "', '"
                     + user.isActiveStuff() + "'");
         }
+        users.clear();
     }
 
-    public static void syncOutletsList() throws SQLException {
+    public static void syncOutletsList(Connection networkCon, Connection localCon) throws SQLException {
         System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
 
-        ResultSet resultSet = selectAllFromSql(NETWORK_DB,"outlet");
+        ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"outlet");
+        System.out.println("ResultSet is Ok");
         while(resultSet.next()) {
             int outletId = resultSet.getInt("outlet_id");
             String outlet = resultSet.getString("outlet");
@@ -81,20 +85,21 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(LOCAL_DB, "outlet", "delete");
+        deleteFromSql(localCon, LOCAL_DB, "outlet", "delete");
 
         for (Outlet outlet : outlets) {
-            insertToSql(LOCAL_DB,"outlet", "outlet_id, "
+            insertToSql(localCon, LOCAL_DB,"outlet", "outlet_id, "
                     + "outlet) VALUES ('"
                     + outlet.getOutletId() + "', '"
                     + outlet.getOutlet() + "'");
         }
+        outlets.clear();
     }
 
-    public static void syncPaymentTypesList() throws SQLException {
+    public static void syncPaymentTypesList(Connection networkCon, Connection localCon) throws SQLException {
         System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
 
-        ResultSet resultSet = selectAllFromSql(NETWORK_DB,"paymenttype");
+        ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"paymenttype");
         while(resultSet.next()) {
             int paymenttypeId = resultSet.getInt("paymenttype_id");
             String paymenttype = resultSet.getString("paymenttype");
@@ -103,20 +108,21 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(LOCAL_DB, "paymenttype", "delete");
+        deleteFromSql(localCon, LOCAL_DB, "paymenttype", "delete");
 
         for (PaymentType paymentType : paymentTypes) {
-            insertToSql(LOCAL_DB,"paymenttype", "paymenttype_id, "
+            insertToSql(localCon, LOCAL_DB,"paymenttype", "paymenttype_id, "
                     + "paymenttype) VALUES ('"
                     + paymentType.getPaymentTypeId() + "', '"
                     + paymentType.getPaymentType() + "'");
         }
+        paymentTypes.clear();
     }
 
-    public static void syncProductCategoriesList() throws SQLException {
+    public static void syncProductCategoriesList(Connection networkCon, Connection localCon) throws SQLException {
         System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
 
-        ResultSet resultSet = selectAllFromSql(NETWORK_DB,"product_category");
+        ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"product_category");
         while(resultSet.next()) {
             int productCategoryId = resultSet.getInt("product_category_id");
             String productCategory = resultSet.getString("product_category");
@@ -125,20 +131,21 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(LOCAL_DB, "product_category", "delete");
+        deleteFromSql(localCon, LOCAL_DB, "product_category", "delete");
 
         for (ProductCategory productCategory : productCategories) {
-            insertToSql(LOCAL_DB,"product_category", "product_category_id, "
+            insertToSql(localCon, LOCAL_DB,"product_category", "product_category_id, "
                     + "product_category) VALUES ('"
                     + productCategory.getProductCategoryId() + "', '"
                     + productCategory.getProductCategory() + "'");
         }
+        productCategories.clear();
     }
 
-    public static void syncProductsList() throws SQLException {
+    public static void syncProductsList(Connection networkCon, Connection localCon) throws SQLException {
         System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
 
-        ResultSet resultSet = selectAllFromSql(NETWORK_DB,"product");
+        ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"product");
         while(resultSet.next()) {
             int productId = resultSet.getInt("product_id");
             String product = resultSet.getString("product");
@@ -151,10 +158,10 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(LOCAL_DB, "product", "delete");
+        deleteFromSql(localCon, LOCAL_DB, "product", "delete");
 
         for (Product product : products) {
-            insertToSql(LOCAL_DB,"product", "product_id, "
+            insertToSql(localCon, LOCAL_DB,"product", "product_id, "
                     + "product, "
                     + "description, "
                     + "number_of_unit, "
@@ -169,12 +176,13 @@ public class SyncLocalDB {
                     + product.getCategory() + "', '"
                     + product.getPrice() + "'");
         }
+        products.clear();
     }
 
-    public static void syncDiscountsList() throws SQLException {
+    public static void syncDiscountsList(Connection networkCon, Connection localCon) throws SQLException {
         System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
 
-        ResultSet resultSet = selectAllFromSql(NETWORK_DB,"discount");
+        ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"discount");
         while(resultSet.next()) {
             int discountId = resultSet.getInt("discount_id");
             int discount = resultSet.getInt("discount");
@@ -183,15 +191,23 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(LOCAL_DB, "discount", "delete");
+        deleteFromSql(localCon, LOCAL_DB, "discount", "delete");
 
         for (Discount discount : discounts) {
-            insertToSql(LOCAL_DB,"discount", "discount_id, "
+            System.out.println(discount.isActive() + " в discounts после загрузки из сетевой базы");
+            int isActive = 0;
+            if (discount.isActive() == false) {
+                isActive = 0;
+            } else {
+                isActive = 1;
+            }
+            insertToSql(localCon, LOCAL_DB,"discount", "discount_id, "
                     + "discount, "
                     + "active) VALUES ('"
                     + discount.getDiscountId() + "', '"
                     + discount.getDiscount() + "', '"
-                    + discount.isActive() + "'");
+                    + isActive + "'");
         }
+        discounts.clear();
     }
 }

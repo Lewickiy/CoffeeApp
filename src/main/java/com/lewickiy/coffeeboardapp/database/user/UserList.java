@@ -1,5 +1,6 @@
 package com.lewickiy.coffeeboardapp.database.user;
 
+import java.sql.Connection;
 import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,8 +30,9 @@ public class UserList {
             ,  false
             , false);
 
-    public static void createUsersList() throws SQLException, ParseException {
-        ResultSet resultSet = selectAllFromSql("local_database","user");
+    public static void createUsersList(Connection con) throws SQLException, ParseException {
+
+        ResultSet resultSet = selectAllFromSql(con, "local_database","user");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         while(resultSet.next()) {
             int userId = resultSet.getInt("user_id");
@@ -45,5 +47,6 @@ public class UserList {
             boolean activeStuff = resultSet.getBoolean("active_stuff");
             users.add(new User(userId, login, password, firstName, lastName, patronymic, birthday, phone, administrator, activeStuff));
         }
+        resultSet.close();
     }
 }

@@ -19,6 +19,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
@@ -263,6 +264,8 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
+                        <Label fx:id="networkIndicatorLabel" alignment="CENTER_RIGHT" layoutX="251.0" layoutY="14.0" prefHeight="17.0" prefWidth="80.0" textAlignment="RIGHT" />
+                        <Circle fx:id="networkIndicator" fill="#fcff00" layoutX="346.0" layoutY="22.0" radius="7.5" stroke="#c9c9c9" strokeType="OUTSIDE" strokeWidth="0.5" />
                      </children>
                   </AnchorPane>
                </top>

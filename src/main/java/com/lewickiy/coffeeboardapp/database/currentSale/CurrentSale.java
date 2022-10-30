@@ -1,5 +1,6 @@
 package com.lewickiy.coffeeboardapp.database.currentSale;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -14,6 +15,8 @@ public class CurrentSale {
     private Time currentTime;
     private int paymentTypeId;
     private int clientId;
+
+    private boolean loaded;
 
     public CurrentSale(int saleId, int userId, int outletId) {
         this.saleId = saleId;
@@ -71,8 +74,8 @@ public class CurrentSale {
         this.clientId = clientId;
     }
 
-    public static void addSaleToLocalDB(CurrentSale currentSale) throws SQLException {
-        insertToSql("local_database", "sale","sale_id, "
+    public static void addSaleToLocalDB(Connection con, CurrentSale currentSale) throws SQLException {
+        insertToSql(con, "local_database", "sale","sale_id, "
                 + "user_id, "
                 + "outlet_id, "
                 + "date, "

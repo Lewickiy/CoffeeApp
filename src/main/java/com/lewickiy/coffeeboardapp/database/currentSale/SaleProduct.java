@@ -1,5 +1,6 @@
 package com.lewickiy.coffeeboardapp.database.currentSale;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -107,9 +108,9 @@ public class SaleProduct {
         this.sum = sum;
     }
 
-    public static void addSaleProductsToLocalDB(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) throws SQLException {
+    public static void addSaleProductsToLocalDB(Connection con, ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) throws SQLException {
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
-            insertToSql("local_database", "sale_product", "sale_id, "
+            insertToSql(con, "local_database", "sale_product", "sale_id, "
                     + "product_id, "
                     + "discount_id, "
                     + "price, "

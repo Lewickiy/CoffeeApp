@@ -1,5 +1,6 @@
 package com.lewickiy.coffeeboardapp.database;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,9 +14,9 @@ public class Query {
      * @return - метод возвращает объект resultSet класса ResultSet.
      * @throws SQLException - TODO проработать, описать.
      */
-    public static ResultSet selectAllFromSql(String dbName, String tableName) throws SQLException {
+    public static ResultSet selectAllFromSql(Connection con, String dbName, String tableName) throws SQLException {
         System.out.println("Start connection to " + dbName + " table: " + tableName);
-        Statement statement = getConnection(dbName).createStatement(); //создаётся подключение
+        Statement statement = con.createStatement(); //создаётся подключение
         System.out.println("Connected to " + dbName + " table: " + tableName);
         String query = null;
         if (dbName.equals("network_database")) {
@@ -27,22 +28,23 @@ public class Query {
         return statement.executeQuery(query);
     }
 
-    public static void deleteFromSql(String dbName, String tableName, String action) throws SQLException {
+    public static void deleteFromSql(Connection con, String dbName, String tableName, String action) throws SQLException {
         action = action.toUpperCase();
         String query = action + " FROM " + tableName;
         System.out.println("CONNECTION TO " + dbName + " for DELETING all data FROM " + tableName);
-        Statement statement = getConnection(dbName).createStatement(); //создаётся подключение
+        Statement statement = con.createStatement(); //создаётся подключение
         statement.executeUpdate(query);
         System.out.println("DATA from " + tableName + " DELETED");
+        statement.close();
     }
 
-    public static Statement insertToSql(String dbName, String tableName, String sql) throws SQLException {
-        Statement statement = getConnection(dbName).createStatement();
+    public static void insertToSql(Connection con, String dbName, String tableName, String sql) throws SQLException {
+        Statement statement = con.createStatement();
         if (dbName.equals("network_database")) {
             statement.executeUpdate("INSERT " + tableName + "(" + sql + "')");
         } else if (dbName.equals("local_database")) {
             statement.executeUpdate("INSERT INTO " + tableName + "(" + sql + ")");
         }
-        return statement;
+        statement.close();
     }
 }
