@@ -38,6 +38,19 @@ public class Query {
         statement.close();
     }
 
+    public static void showTablesFromSql(Connection con, String dbName, String tableName, String action) throws SQLException {
+        action = action.toUpperCase();
+        String query = action + " tables";
+        System.out.println("CONNECTION TO " + dbName + " for show all tables FROM DB");
+        Statement statement = con.createStatement(); //создаётся подключение
+        ResultSet rs = statement.executeQuery(query);
+        while(rs.next()) {
+            System.out.print(rs.getString(1) + " | ");
+        }
+        System.out.println();
+        statement.close();
+    }
+
     public static void insertToSql(Connection con, String dbName, String tableName, String sql) throws SQLException {
         Statement statement = con.createStatement();
         if (dbName.equals("network_database")) {

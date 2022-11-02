@@ -81,13 +81,15 @@ public class CurrentSale {
                 + "date, "
                 + "time, "
                 + "paymenttype_id, "
-                + "client_id) VALUES ('"
+                + "client_id, "
+                + "loaded) VALUES ('"
                 + currentSale.getSaleId() + "', '"
                 + currentSale.getUserId() + "', '"
                 + currentSale.getSaleOutletId() + "', '"
                 + currentSale.getCurrentDate() + "', '"
                 + currentSale.getCurrentTime() + "', '"
                 + currentSale.getPaymentTypeId() + "', '"
-                + currentSale.getClientId()  + "'");
+                + currentSale.getClientId()  + "', '"
+                + 0 + "'");
     }
 }

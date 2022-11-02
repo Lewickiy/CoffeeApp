@@ -115,13 +115,15 @@ public class SaleProduct {
                     + "discount_id, "
                     + "price, "
                     + "amount, "
-                    + "sum) VALUES ('"
+                    + "sum, "
+                    + "loaded) VALUES ('"
                     + currentSale.getSaleId() + "', '"
                     + currentSaleProduct.getProductId() + "', '"
                     + currentSaleProduct.getDiscountId() + "', '"
                     + currentSaleProduct.getPrice() + "', '"
                     + currentSaleProduct.getAmount() + "', '"
-                    + currentSaleProduct.getSum()  + "'");
+                    + currentSaleProduct.getSum() + "', '"
+                    + 0 + "'");
         }
     }
 }

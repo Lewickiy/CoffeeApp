@@ -4,7 +4,7 @@ import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
 import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
 
-import java.sql.Time;
+import java.sql.*;
 import java.util.ArrayList;
 
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
@@ -76,5 +76,23 @@ public class TodaySalesList { //Список сегодняшних продаж
             tempSale.setSaleTime(saleTime);
             todaySalesArrayList.add(tempSale);
         }
+    }
+    //Метод, который опрашивает локальную базу данных через join. Заготовка для таблицы сегодняшних продаж.
+    public static void addCurrentSaleToArray2(Connection con, String query) throws SQLException {
+        System.out.println("Start loading Sales List");
+        Statement statement = con.createStatement(); //создаётся подключение
+        query = "SELECT sale.time, product.product, product.number_of_unit, product.unit_of_measurement, sale_product.price, sale_product.amount, discount.discount, sale_product.sum, paymenttype.paymenttype FROM sale FULL OUTER JOIN sale_product ON sale.sale_id = sale_product.sale_id FULL OUTER JOIN paymenttype ON sale.paymenttype_id = paymenttype.paymenttype_id FULL OUTER JOIN discount ON sale_product.discount_id = discount.discount_id FULL OUTER JOIN product ON sale_product.product_id = product.product_id";
+        ResultSet rs = statement.executeQuery(query);
+        int count = 0;
+
+        while(rs.next()) {
+            if (rs.getString(1) == null) {
+                break;
+            } else {
+                count++;
+                System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5) + " | " + rs.getString(6) + " | " + rs.getString(7) + " | " + rs.getString(8) + " | " + rs.getString(9));
+            }
+        }
+        System.out.println(count);
     }
 }

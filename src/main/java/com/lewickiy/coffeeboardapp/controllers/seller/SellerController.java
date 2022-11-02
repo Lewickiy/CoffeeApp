@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import static com.lewickiy.coffeeboardapp.controllers.seller.DiscountNameButton.discountNameButtons;
 import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.Query.showTablesFromSql;
 import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.addSaleToLocalDB;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addSaleProductsToLocalDB;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
@@ -58,7 +59,6 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.c
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
-import static com.lewickiy.coffeeboardapp.database.user.UserList.createUsersList;
 
 public class SellerController {
     private boolean newSale = true; //boolean значение необходимости создания нового чека
@@ -674,7 +674,7 @@ public class SellerController {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
             while (true) {
                 try {
-                    Thread.sleep(1000); //10 second
+                    Thread.sleep(1000); //1 second
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -685,6 +685,37 @@ public class SellerController {
             }
         });   timerThread.setDaemon(true); //Это закроет поток. Он сообщает JVM, что это фоновый поток, поэтому он завершится при выходе.
         timerThread.start(); //Запускаем поток.
+
+        //Тестовый поток для периодической синхронизации продаж.
+
+        Thread syncTestThread = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(50000); //5 second
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(() -> {
+                    Connection con = null;
+                    try {
+                        con = getConnection("network_database");
+                        networkIndicatorLabel.setText("в сети");
+                        networkIndicator.setFill(Color.GREEN);
+                        try {
+                            showTablesFromSql(con, "network", "String tableName", "Show");
+                            con.close();
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } catch (SQLException e) {
+                            System.out.println("offline");
+                            networkIndicatorLabel.setText("не в сети");
+                            networkIndicator.setFill(Color.YELLOW);
+                    }
+                });
+            }
+        });   syncTestThread.setDaemon(true); //Это закроет поток. Он сообщает JVM, что это фоновый поток, поэтому он завершится при выходе.
+        syncTestThread.start(); //Запускаем поток.
 
         networkIndicator.setFill(Color.YELLOW);
 
@@ -887,6 +918,8 @@ public class SellerController {
         sumSalesColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
         paymentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("paymentType"));
         allSalesTable.setItems(todaySalesObservableList);
+        Connection cone = getConnection("local_database");
+        addCurrentSaleToArray2(cone, "String query");
 
         //Подсчитываем количество Продуктов в каждой категории.
         for (Product product : products) {
