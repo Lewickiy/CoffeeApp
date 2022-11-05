@@ -14,19 +14,6 @@ public class User {
     private boolean administrator;
     private boolean activeStuff;
 
-    /**
-     * Конструктор, который принимает следующие параметры: <br>
-     * @param userId - id пользователя из базы SQL
-     * @param login - логин пользователя из базы SQL
-     * @param password - пароль пользователя
-     * @param firstName - имя пользователя. Будет использоваться для обращения системы к пользователю
-     * @param lastName - фамилия пользователя.
-     * @param patronymic - отчество пользователя.
-     * @param birthday - дата рождения пользователя
-     * @param phone - контактный номер телефона пользователя
-     * @param administrator - значение boolean. Является ли пользователь администратором системы для выполнения "особых" операций (false/true)
-     * @param activeStuff - значение boolean. Является ли сотрудник действующим (false/true)
-     */
     public User(int userId
             , String login
             , String password

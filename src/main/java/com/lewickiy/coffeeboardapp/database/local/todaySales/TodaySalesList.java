@@ -1,13 +1,12 @@
 package com.lewickiy.coffeeboardapp.database.local.todaySales;
 
-import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
-import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-
-import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
 
 public class TodaySalesList { //Список сегодняшних продаж
     public static ArrayList<SaleProduct> todaySalesArrayList = new ArrayList<>();
@@ -48,10 +47,24 @@ public class TodaySalesList { //Список сегодняшних продаж
     public static void addAllSalesToArray(Connection con) throws SQLException {
         System.out.println("Start loading Sales List");
         Statement statement = con.createStatement(); //создаётся подключение
-        String query = "SELECT sale.sale_id, sale.time, product.product_id, product.product, product.number_of_unit, product.unit_of_measurement, sale_product.price, sale_product.amount, discount.discount_id, discount.discount, sale_product.sum, paymenttype.paymenttype FROM sale FULL OUTER JOIN sale_product ON sale.sale_id = sale_product.sale_id FULL OUTER JOIN paymenttype ON sale.paymenttype_id = paymenttype.paymenttype_id FULL OUTER JOIN discount ON sale_product.discount_id = discount.discount_id FULL OUTER JOIN product ON sale_product.product_id = product.product_id";
+        String query = "SELECT sale.sale_id" +
+                ", sale.time" +
+                ", product.product_id" +
+                ", product.product" +
+                ", product.number_of_unit" +
+                ", product.unit_of_measurement" +
+                ", sale_product.price" +
+                ", sale_product.amount" +
+                ", discount.discount_id" +
+                ", discount.discount" +
+                ", sale_product.sum" +
+                ", paymenttype.paymenttype" +
+                " FROM sale " +
+                "FULL OUTER JOIN sale_product ON sale.sale_id = sale_product.sale_id " +
+                "FULL OUTER JOIN paymenttype ON sale.paymenttype_id = paymenttype.paymenttype_id " +
+                "FULL OUTER JOIN discount ON sale_product.discount_id = discount.discount_id " +
+                "FULL OUTER JOIN product ON sale_product.product_id = product.product_id";
         ResultSet rs = statement.executeQuery(query);
-        int count = 0;
-
         //TODO добавить время продажи
 
         while(rs.next()) {
@@ -70,10 +83,10 @@ public class TodaySalesList { //Список сегодняшних продаж
                 tempSale.setUnitOfMeasurement(rs.getString(6));
                 tempSale.setPaymentType(rs.getString(12));
                 todaySalesArrayList.add(tempSale);
-                count++;
                 System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5) + " | " + rs.getString(6) + " | " + rs.getString(7) + " | " + rs.getString(8) + " | " + rs.getString(9) + " | " + rs.getString(10) + " | " + rs.getString(11) + " | " + rs.getString(12));
             }
         }
-        System.out.println(count);
+        rs.close();
+        statement.close();
     }
 }

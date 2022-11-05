@@ -14,10 +14,11 @@ public class ProductCategoryList {
 
         ResultSet resultSet = selectAllFromSql(localCon, "local_database","product_category");
         while (resultSet.next()) {
-            int productCategoryId = resultSet.getInt("product_category_id");
+            int productCategoryId = resultSet.getInt("PRODUCT_CATEGORY_ID");
             String productCategory = resultSet.getString("product_category");
 
             productCategories.add(new ProductCategory(productCategoryId, productCategory));
         }
+        resultSet.close();
     }
 }
