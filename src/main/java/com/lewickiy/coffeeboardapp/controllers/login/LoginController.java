@@ -37,8 +37,6 @@ public class LoginController {
     private Connection conLocalOutletDB = null;
     static ObservableList<Outlet> outletsObservableList = FXCollections.observableList(outlets);
     @FXML
-    private Label usernameLabel;
-    @FXML
     private AnchorPane outletChoicePane;
     @FXML
     private ChoiceBox<Outlet> outletChoiceBox;
@@ -49,15 +47,11 @@ public class LoginController {
     @FXML
     private Button acceptOutletChoice;
     @FXML
-    private Label passwordLabel;
-    @FXML
     private PasswordField passwordField;
     @FXML
     private Label loginMessageLabel;
     @FXML
     private TextField usernameTextField;
-    @FXML
-    private Label choiceLabel;
     @FXML
     private Circle networkIndicator;
     @FXML
@@ -80,14 +74,12 @@ public class LoginController {
         conLocalUserDB = getConnection("local_database");
 
         if (conNetworkUserDB != null) {
-            networkIndicatorLabel.setText("в сети");
-            networkIndicator.setFill(Color.GREEN);
+            isOnline(true);
             syncUsersList(conNetworkUserDB, conLocalUserDB);
             conNetworkUserDB.close();
 
         } else {
-            networkIndicatorLabel.setText("не в сети");
-            networkIndicator.setFill(Color.YELLOW);
+            isOnline(false);
         }
         createUsersList(conLocalUserDB);
         conLocalUserDB.close();
@@ -101,13 +93,11 @@ public class LoginController {
         conLocalOutletDB = getConnection("local_database");
 
         if (conNetworkOutletDB != null) {
-            networkIndicatorLabel.setText("в сети");
-            networkIndicator.setFill(Color.GREEN);
+            isOnline(true);
             syncOutletsList(conNetworkOutletDB, conLocalOutletDB);
             conNetworkOutletDB.close();
         } else {
-            networkIndicatorLabel.setText("не в сети");
-            networkIndicator.setFill(Color.YELLOW);
+            isOnline(false);
         }
         createOutletList(conLocalOutletDB);
         conLocalOutletDB.close();
@@ -235,5 +225,14 @@ public class LoginController {
 
         stageSeller.show();
         stage.close();
+    }
+    private void isOnline(boolean status) {
+        if (status == true) {
+            networkIndicatorLabel.setText("в сети");
+            networkIndicator.setFill(Color.GREEN);
+        } else {
+            networkIndicatorLabel.setText("не в сети");
+            networkIndicator.setFill(Color.YELLOW);
+        }
     }
 }

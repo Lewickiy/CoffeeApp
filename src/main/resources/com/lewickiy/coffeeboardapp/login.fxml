@@ -51,7 +51,7 @@
                   <Image url="@image/loginIco.png" />
                </image>
             </ImageView>
-            <Label fx:id="usernameLabel" layoutX="67.0" layoutY="135.0" text="Имя пользователя">
+            <Label layoutX="67.0" layoutY="135.0" text="Имя пользователя">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -81,7 +81,7 @@
                   <Font size="13.0" />
                </font>
             </Button>
-            <Label fx:id="passwordLabel" layoutX="67.0" layoutY="198.0" text="Пароль">
+            <Label layoutX="67.0" layoutY="198.0" text="Пароль">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -89,7 +89,7 @@
             <AnchorPane fx:id="outletChoicePane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: WHITE;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <ChoiceBox fx:id="outletChoiceBox" layoutX="68.0" layoutY="149.0" onKeyPressed="#okButtonEnterKey" prefHeight="27.0" prefWidth="212.0" AnchorPane.bottomAnchor="216.0" AnchorPane.leftAnchor="68.0" AnchorPane.rightAnchor="68.0" AnchorPane.topAnchor="155.0" />
-                  <Label fx:id="choiceLabel" focusTraversable="false" layoutX="100.0" layoutY="122.0" text="Выберите расположение">
+                  <Label focusTraversable="false" layoutX="100.0" layoutY="122.0" text="Выберите расположение">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
