@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -38,6 +39,8 @@ public class LoginController {
     @FXML
     private Label usernameLabel;
     @FXML
+    private AnchorPane outletChoicePane;
+    @FXML
     private ChoiceBox<Outlet> outletChoiceBox;
     @FXML
     private Button loginButton;
@@ -63,15 +66,11 @@ public class LoginController {
     @FXML
     void initialize() throws SQLException, ParseException {
         networkIndicator.setFill(Color.YELLOW);
-
         //Если удаётся установить соединение с сетевой базой данных, то подключаемся к ней и
         //проводим синхронизацию с ней локальной базы данных,
         //после чего загружаем список пользователей из локальной базы данных для продолжения работы.
         //Если соединение с сетевой базой данных не установлено, загружаем список пользователей из
         //локальной базы данных, пропуская её синхронизацию с сетевой.
-
-
-
         try {
             conNetworkUserDB = getConnection("network_database");
         } catch (SQLException sqlEx) {
@@ -85,14 +84,13 @@ public class LoginController {
             networkIndicator.setFill(Color.GREEN);
             syncUsersList(conNetworkUserDB, conLocalUserDB);
             conNetworkUserDB.close();
-            createUsersList(conLocalUserDB);
-            conLocalUserDB.close();
+
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createUsersList(conLocalUserDB);
-            conLocalUserDB.close();
         }
+        createUsersList(conLocalUserDB);
+        conLocalUserDB.close();
 
         try {
             conNetworkOutletDB = getConnection("network_database");
@@ -107,20 +105,14 @@ public class LoginController {
             networkIndicator.setFill(Color.GREEN);
             syncOutletsList(conNetworkOutletDB, conLocalOutletDB);
             conNetworkOutletDB.close();
-            createOutletList(conLocalOutletDB);
-            conLocalOutletDB.close();
-            outletChoiceBox.setItems(outletsObservableList);
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createOutletList(conLocalOutletDB);
-            conLocalOutletDB.close();
-            outletChoiceBox.setItems(outletsObservableList);
         }
-
+        createOutletList(conLocalOutletDB);
+        conLocalOutletDB.close();
+        outletChoiceBox.setItems(outletsObservableList);
         acceptOutletChoice.setDisable(true);
-        System.out.println("Теперь запускаем Seller Controller и начинаем синхронизировать то, что там есть...");
-
         /*
          *Это Listener для outletChoiceBox. Он следит за изменениями в выборе и создаёт из них объект
          * currentOutlet класса Outlet. Дальше я буду с ним работать для фильтрации администратором продаж
@@ -151,29 +143,20 @@ public class LoginController {
         }
     }
     @FXML
+    private void okButtonEnterKey(KeyEvent okEvent) throws IOException {
+        if (okEvent.getCode() == KeyCode.ENTER && acceptOutletChoice.isDisable() == false)  {
+            acceptOutletChoice.setDisable(true);
+            enterToSellerWorkTable();
+        }
+    }
+    @FXML
     private void acceptOutletChoiceOnAction() throws IOException {
-        if (currentOutlet == null) {
-            System.out.println("Проверьте подключение к интернету и перезапустите систему, или свяжитесь с службой поддержки");
-        } else {
-            users.clear();
-            outlets.clear();
-            //Это уходит в кнопку Ok после выбора Торговой точки.
-            Stage stage = (Stage) loginButton.getScene().getWindow();
-            Stage stageSeller = new Stage(); //запуск второй сцены
-            FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("seller.fxml")); //запуск seller.fxml
-            Scene scene = new Scene(fxmlLoader.load());
-            stageSeller.initStyle(StageStyle.DECORATED); //Сцена с оформлением, кнопками свернуть, развернуть, закрыть, титульным заголовком.
-            stageSeller.setScene(scene);
-            stageSeller.setTitle("CoffeeApp. Добро пожаловать, " + currentUser.getFirstName());
-            stageSeller.setMaximized(true); //сцена при запуске развёрнута на весь экран
-
-            stageSeller.show();
-            stage.close(); //закрытие первой сцены
+        if (currentOutlet != null) {
+            enterToSellerWorkTable();
         }
     }
     /**
      * Метод выполняет вход в систему по нажатию клавиши Enter на клавиатуре пользователя.<br>
-     * TODO перенести код входа в отдельный метод чтобы не дублировать его при нажатии на клавишу и нажатии на кнопку "Войти"
      */
     @FXML
     void loginPasswordEnterKey(KeyEvent event) {
@@ -224,27 +207,33 @@ public class LoginController {
                 currentUser.setPhone(user.getPhone());
                 currentUser.setAdministrator(user.isAdministrator());
                 currentUser.setActiveStuff(user.isActiveStuff());
+                usernameTextField.setDisable(true);
+                passwordField.setDisable(true);
 
-                //Меняются блоки отображения
-                usernameLabel.setVisible(false); //становится невидимой
-                usernameTextField.setVisible(false); //становится невидимой
-
-                passwordLabel.setVisible(false); //становится невидимой
-                passwordField.setVisible(false); //становится невидимой
-
-                loginButton.setVisible(false); //становится невидимой
-                cancelButton.setVisible(false); //становится невидимой
-
-                choiceLabel.setVisible(true);
-                outletChoiceBox.setVisible(true);
-                acceptOutletChoice.setVisible(true);
+                outletChoicePane.setVisible(true);
+                System.out.println(outletChoiceBox.isFocused());
+                outletChoiceBox.setFocusTraversable(true);
                 break;
             }
         }
         if (!acceptOutletChoice.isVisible()) {
             loginMessageLabel.setText("Не правильный логин или имя пользователя");
-            //TODO В интерфейсе пользователя нужно сделать TextLabel выше чтобы не вмещающийся текст влез,
-            // может с переносом строки
         }
+    }
+    private void enterToSellerWorkTable() throws IOException {
+        users.clear();
+        outlets.clear();
+        //Это уходит в кнопку Ok после выбора Торговой точки.
+        Stage stage = (Stage) loginButton.getScene().getWindow();
+        Stage stageSeller = new Stage(); //запуск второй сцены
+        FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("seller.fxml")); //запуск seller.fxml
+        Scene scene = new Scene(fxmlLoader.load());
+        stageSeller.initStyle(StageStyle.UNDECORATED); //Сцена с оформлением, кнопками свернуть, развернуть, закрыть, титульным заголовком.
+        stageSeller.setScene(scene);
+        stageSeller.setTitle("CoffeeApp. Добро пожаловать, " + currentUser.getFirstName());
+        stageSeller.setMaximized(true); //сцена при запуске развёрнута на весь экран
+
+        stageSeller.show();
+        stage.close();
     }
 }
