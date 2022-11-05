@@ -94,7 +94,7 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Button fx:id="acceptOutletChoice" focusTraversable="false" layoutX="136.0" layoutY="251.0" mnemonicParsing="false" onAction="#acceptOutletChoiceOnAction" prefHeight="25.0" prefWidth="77.0" text="ok">
+                  <Button fx:id="acceptOutletChoice" disable="true" focusTraversable="false" layoutX="136.0" layoutY="251.0" mnemonicParsing="false" onAction="#acceptOutletChoiceOnAction" prefHeight="25.0" prefWidth="77.0" text="ok">
                      <font>
                         <Font size="13.0" />
                      </font>
