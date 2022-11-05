@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import static com.lewickiy.coffeeboardapp.controllers.seller.DiscountNameButton.discountNameButtons;
 import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.Query.deleteFromSql;
 import static com.lewickiy.coffeeboardapp.database.Query.showTablesFromSql;
 import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.addSaleToLocalDB;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addSaleProductsToLocalDB;
@@ -108,7 +109,18 @@ public class SellerController {
      * Если панель скрыта, она открывается, если открыта - скрывается.
      */
     @FXML
-    void allSalesOnAction() {
+    void allSalesOnAction() throws SQLException {
+        Connection con = getConnection("local_database");
+        addAllSalesToArray(con);
+        con.close();
+        allSalesTable.setItems(todaySalesObservableList);
+        allSalesTable.refresh();
+        cashSumSaleLabel.setText(String.valueOf(sumCash()) + " руб.");
+        cardSumSaleLabel.setText(String.valueOf(sumCard()) + " руб.");
+        allSumSaleLabel.setText(String.valueOf(sumAll()) + " руб.");
+        if (allSalesPane.isVisible()) {
+            todaySalesArrayList.clear();
+        }
         allSalesPane.setVisible(!allSalesPane.isVisible()); //если панель со всеми продажами выключена, она включается, если включена - выключается.
     }
     //Действие при нажатии на кнопку Закрытия смены.
@@ -134,12 +146,25 @@ public class SellerController {
     private Button cancelCloseShiftButton;
 
     @FXML
-    void okCloseShiftButtonOnAction() throws IOException {
-        currentSaleProducts.clear(); //Очищаем список текущих продуктов в списке
-        products.clear(); //очищаем список Продуктов
-        discounts.clear(); //очищаем список скидок
-        paymentTypes.clear(); //очищаем типы оплаты
-        outlets.clear(); //очищаем список торговых точек
+    void okCloseShiftButtonOnAction() throws IOException, SQLException {
+        todaySalesArrayList.clear();
+        allSalesTable.refresh();
+
+        Connection con = getConnection("local_database");
+        deleteFromSql(con, "local_database", "sale_product", "DELETE");
+        deleteFromSql(con, "local_database", "sale", "DELETE");
+        con.close();
+
+        PRODUCT_BUTTONS.clear(); //Кнопки продуктов очистка Array
+        NUMBER_BUTTONS.clear(); //Кнопки цифровые очистка Array
+
+        productCategories.clear(); //Очищаем категории продуктов Array
+        currentSaleProducts.clear(); //Очищаем список текущих продуктов в списке Array
+        products.clear(); //очищаем список Продуктов Array
+        discounts.clear(); //очищаем список скидок Array
+        paymentTypes.clear(); //очищаем типы оплаты Array
+        outlets.clear(); //очищаем список торговых точек Array
+
         Stage stage = (Stage) closeShiftButton.getScene().getWindow();
         stage.close();
         FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("login.fxml"));
@@ -163,15 +188,17 @@ public class SellerController {
      * Панель сегодняшних продаж
      *_____________________________________˅˅˅____________________________________________*/
     @FXML
-    private Label funLabel;
-    @FXML
     private AnchorPane allSalesPane;
     @FXML
     private TableView<SaleProduct> allSalesTable; //таблица продажи (текущий чек)
     @FXML
     private TableColumn<TodaySales, Time> timeSalesColumn; //колонка с наименованием продукта
     @FXML
-    private TableColumn<TodaySales, String> productSalesColumn; //колонка со стоимостью продукта
+    private TableColumn<TodaySales, String> productSalesColumn; //колонка с продуктом
+    @FXML
+    private TableColumn<TodaySales, Integer> numberOfUnit; //единиц
+    @FXML
+    private TableColumn<TodaySales, String> unitOfMeasurement;
     @FXML
     private TableColumn<TodaySales, Double> priceSalesColumn; //количество продукта
     @FXML
@@ -181,7 +208,14 @@ public class SellerController {
     @FXML
     private TableColumn<TodaySales, Double> sumSalesColumn; //сумма стоимости продукта исходя из количества
     @FXML
-    private TableColumn<TodaySales, String> paymentTypeColumn;
+    private TableColumn<TodaySales, String> paymentTypeColumn; //тип оплаты
+
+    @FXML
+    private Label cashSumSaleLabel;
+    @FXML
+    private Label cardSumSaleLabel;
+    @FXML
+    private Label allSumSaleLabel;
 
     /*____________________________________˄˄˄_____________________________________________
      *___________________________________the end__________________________________________*/
@@ -501,7 +535,6 @@ public class SellerController {
             changePane.setVisible(true);
             paymentTypePanel.setVisible(false);
         } else if (Integer.parseInt(button.getAccessibleText()) == 2) {
-            addCurrentSaleToArray(currentSaleProducts, currentSale);
             allSalesTable.setItems(todaySalesObservableList);
             allSalesTable.refresh();
             Connection conLocalDB = getConnection("local_database");
@@ -543,7 +576,6 @@ public class SellerController {
 
     @FXML
     void noChangeOnAction() throws SQLException {
-        addCurrentSaleToArray(currentSaleProducts, currentSale);
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
         Connection conLocalDB = getConnection("local_database");
@@ -593,7 +625,6 @@ public class SellerController {
 
     @FXML
     void okWithChangeOnAction() throws SQLException {
-        addCurrentSaleToArray(currentSaleProducts, currentSale);
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
         Connection conLocalDB = getConnection("local_database");
@@ -814,7 +845,7 @@ public class SellerController {
         }
 
         paymentTypePanel.setVisible(false);
-        closeShiftButton.setDisable(true);
+        closeShiftButton.setDisable(false);
         paymentTypeButtons[0] = paymentType1;
         paymentTypeButtons[1] = paymentType2;
 
@@ -910,16 +941,17 @@ public class SellerController {
         /*
         Здесь мы создаём таблицу с продажами за сегодняшний день.
          */
+
         timeSalesColumn.setCellValueFactory(new PropertyValueFactory<>("saleTime"));
         productSalesColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
+        numberOfUnit.setCellValueFactory(new PropertyValueFactory<>("numberOfUnit")); //кол-во ед.
+        unitOfMeasurement.setCellValueFactory(new PropertyValueFactory<>("unitOfMeasurement")); //ед.
         priceSalesColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         amountSalesColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         discountSalesColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
         sumSalesColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
         paymentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("paymentType"));
         allSalesTable.setItems(todaySalesObservableList);
-        Connection cone = getConnection("local_database");
-        addCurrentSaleToArray2(cone, "String query");
 
         //Подсчитываем количество Продуктов в каждой категории.
         for (Product product : products) {

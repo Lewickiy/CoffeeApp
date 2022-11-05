@@ -8,6 +8,8 @@ import java.sql.Time;
 // Расширенный класс от SaleProduct
 public class TodaySales extends SaleProduct {
 
+    private int numberOfUnit;
+    private String unitOfMeasurement;
     private Date saleDate; //Помимо полей Продукта имеет Дату продажи
     private Time saleTime; //И время продажи
     private String paymentType; //А также тип оплаты типа String
@@ -65,5 +67,21 @@ public class TodaySales extends SaleProduct {
 
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public int getNumberOfUnit() {
+        return numberOfUnit;
+    }
+
+    public void setNumberOfUnit(int numberOfUnit) {
+        this.numberOfUnit = numberOfUnit;
+    }
+
+    public String getUnitOfMeasurement() {
+        return unitOfMeasurement;
+    }
+
+    public void setUnitOfMeasurement(String unitOfMeasurement) {
+        this.unitOfMeasurement = unitOfMeasurement;
     }
 }

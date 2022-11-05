@@ -155,6 +155,8 @@ public class LoginController {
         if (currentOutlet == null) {
             System.out.println("Проверьте подключение к интернету и перезапустите систему, или свяжитесь с службой поддержки");
         } else {
+            users.clear();
+            outlets.clear();
             //Это уходит в кнопку Ok после выбора Торговой точки.
             Stage stage = (Stage) loginButton.getScene().getWindow();
             Stage stageSeller = new Stage(); //запуск второй сцены

@@ -44,53 +44,34 @@ public class TodaySalesList { //Список сегодняшних продаж
         }
         return sumCard;
     }
-
-    /**
-     * Данный метод добавляет сформированный объект tempSale класса TodaySales в Array todaySalesArrayList
-     * для этого он принимает следующие параметры:
-     * @param currentSaleProducts - ArrayList продуктов текущей продажи
-     * @param currentSale - объект класса CurrentSale.
-     * TODO для того чтобы при перезагрузке системы не происходил сброс этого списка,
-     *                    он должен формироваться отдельно в базе данных. Пока это локальная база данных.
-     *                    То есть, данный метод должен принимать параметры чего-то в базе данных.
-     *
-     */
-    public static void addCurrentSaleToArray(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) {
-        for (SaleProduct currentSaleProduct : currentSaleProducts) {
-            TodaySales tempSale = new TodaySales(currentSale.getSaleId()
-                    , currentSaleProduct.getProductId()
-                    , currentSaleProduct.getProduct()
-                    , currentSaleProduct.getPrice()
-                    , currentSaleProduct.getDiscountId()
-                    , currentSaleProduct.getDiscount()
-                    , currentSaleProduct.getAmount()
-                    , currentSaleProduct.getSum());
-
-            for (PaymentType paymentType : paymentTypes) {
-                if (currentSale.getPaymentTypeId() == paymentType.getPaymentTypeId()) {
-                    tempSale.setPaymentType(paymentType.getPaymentType());
-                }
-            }
-            long nowTime = System.currentTimeMillis();
-            Time saleTime = new Time(nowTime);
-            tempSale.setSaleTime(saleTime);
-            todaySalesArrayList.add(tempSale);
-        }
-    }
     //Метод, который опрашивает локальную базу данных через join. Заготовка для таблицы сегодняшних продаж.
-    public static void addCurrentSaleToArray2(Connection con, String query) throws SQLException {
+    public static void addAllSalesToArray(Connection con) throws SQLException {
         System.out.println("Start loading Sales List");
         Statement statement = con.createStatement(); //создаётся подключение
-        query = "SELECT sale.time, product.product, product.number_of_unit, product.unit_of_measurement, sale_product.price, sale_product.amount, discount.discount, sale_product.sum, paymenttype.paymenttype FROM sale FULL OUTER JOIN sale_product ON sale.sale_id = sale_product.sale_id FULL OUTER JOIN paymenttype ON sale.paymenttype_id = paymenttype.paymenttype_id FULL OUTER JOIN discount ON sale_product.discount_id = discount.discount_id FULL OUTER JOIN product ON sale_product.product_id = product.product_id";
+        String query = "SELECT sale.sale_id, sale.time, product.product_id, product.product, product.number_of_unit, product.unit_of_measurement, sale_product.price, sale_product.amount, discount.discount_id, discount.discount, sale_product.sum, paymenttype.paymenttype FROM sale FULL OUTER JOIN sale_product ON sale.sale_id = sale_product.sale_id FULL OUTER JOIN paymenttype ON sale.paymenttype_id = paymenttype.paymenttype_id FULL OUTER JOIN discount ON sale_product.discount_id = discount.discount_id FULL OUTER JOIN product ON sale_product.product_id = product.product_id";
         ResultSet rs = statement.executeQuery(query);
         int count = 0;
+
+        //TODO добавить время продажи
 
         while(rs.next()) {
             if (rs.getString(1) == null) {
                 break;
             } else {
+                TodaySales tempSale = new TodaySales(rs.getInt(1) //sale id
+                        , rs.getInt(3) //product id
+                        , rs.getString(4) //product
+                        , rs.getDouble(7) //price
+                        , rs.getInt(9) //discount id
+                        , rs.getInt(10) //discount
+                        , rs.getInt(8) //amount
+                        , rs.getDouble(11)); //sum
+                tempSale.setNumberOfUnit(rs.getInt(5));
+                tempSale.setUnitOfMeasurement(rs.getString(6));
+                tempSale.setPaymentType(rs.getString(12));
+                todaySalesArrayList.add(tempSale);
                 count++;
-                System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5) + " | " + rs.getString(6) + " | " + rs.getString(7) + " | " + rs.getString(8) + " | " + rs.getString(9));
+                System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5) + " | " + rs.getString(6) + " | " + rs.getString(7) + " | " + rs.getString(8) + " | " + rs.getString(9) + " | " + rs.getString(10) + " | " + rs.getString(11) + " | " + rs.getString(12));
             }
         }
         System.out.println(count);
