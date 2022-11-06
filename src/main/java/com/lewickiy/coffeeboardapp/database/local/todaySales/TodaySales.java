@@ -7,7 +7,7 @@ import java.sql.Time;
 
 // Расширенный класс от SaleProduct
 public class TodaySales extends SaleProduct {
-
+    private int outletId;
     private int numberOfUnit;
     private String unitOfMeasurement;
     private Date saleDate; //Помимо полей Продукта имеет Дату продажи
@@ -43,6 +43,14 @@ public class TodaySales extends SaleProduct {
         super(prodSaleId
                 , prodName
                 , priceProdSale);
+    }
+
+    public int getOutletId() {
+        return outletId;
+    }
+
+    public void setOutletId(int outletId) {
+        this.outletId = outletId;
     }
 
     public Date getSaleDate() {
