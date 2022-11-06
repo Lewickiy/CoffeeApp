@@ -12,7 +12,7 @@ public class OpenCloseShift {
         Connection con = getConnection("local_database");
         int sqlInt = 0;
 
-        if (sql == true) {
+        if (sql) {
             sqlInt = 1;
         }
 
