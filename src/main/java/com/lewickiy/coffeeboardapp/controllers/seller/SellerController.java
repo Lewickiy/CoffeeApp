@@ -6,7 +6,6 @@ import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList;
 import com.lewickiy.coffeeboardapp.database.discount.Discount;
 import com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySales;
-import com.lewickiy.coffeeboardapp.database.outlet.Outlet;
 import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
 import com.lewickiy.coffeeboardapp.database.product.Product;
 import com.lewickiy.coffeeboardapp.database.product.ProductCategory;
@@ -44,8 +43,7 @@ import java.util.ArrayList;
 import static com.lewickiy.coffeeboardapp.controllers.seller.DiscountNameButton.discountNameButtons;
 import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
-import static com.lewickiy.coffeeboardapp.database.Query.deleteFromSql;
-import static com.lewickiy.coffeeboardapp.database.Query.showTablesFromSql;
+import static com.lewickiy.coffeeboardapp.database.Query.*;
 import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.addSaleToLocalDB;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addSaleProductsToLocalDB;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
@@ -53,6 +51,7 @@ import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createD
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.*;
 import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.*;
+import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeList;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
@@ -60,6 +59,8 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.c
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
+import static com.lewickiy.coffeeboardapp.database.query.CheckShift.checkShift;
+import static com.lewickiy.coffeeboardapp.database.query.OpenCloseShift.updateShiftSql;
 
 public class SellerController {
     private boolean newSale = true; //boolean значение необходимости создания нового чека
@@ -104,9 +105,9 @@ public class SellerController {
         con.close();
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
-        cashSumSaleLabel.setText(String.valueOf(sumCash()) + " руб.");
-        cardSumSaleLabel.setText(String.valueOf(sumCard()) + " руб.");
-        allSumSaleLabel.setText(String.valueOf(sumAll()) + " руб.");
+        cashSumSaleLabel.setText(sumCash() + " руб.");
+        cardSumSaleLabel.setText(sumCard() + " руб.");
+        allSumSaleLabel.setText(sumAll() + " руб.");
         if (allSalesPane.isVisible()) {
             todaySalesArrayList.clear();
         }
@@ -118,8 +119,14 @@ public class SellerController {
         closeShiftPane.setVisible(true);
     }
     @FXML
-    void openShiftButtonOnAction() {
-//        openShiftPane.setVisible(true);
+    void openShiftButtonOnAction() throws SQLException {
+        updateShiftSql(false);
+        for (Button product_button : PRODUCT_BUTTONS) {
+            product_button.setDisable(false);
+        }
+        closeShiftButton.setDisable(false);
+        openShiftButton.setDisable(true);
+        allSales.setDisable(false);
     }
     /*____________________________________˄˄˄_____________________________________________
      *___________________________________the end__________________________________________*/
@@ -142,10 +149,11 @@ public class SellerController {
         Connection con = getConnection("local_database");
         deleteFromSql(con, "local_database", "sale_product", "DELETE");
         deleteFromSql(con, "local_database", "sale", "DELETE");
-        con.close();
+
+        updateShiftSql(true);
 
         PRODUCT_BUTTONS.clear(); //Кнопки продуктов очистка Array
-        NUMBER_BUTTONS.clear(); //Кнопки цифровые очистка Array
+        NUMBER_BUTTONS.clear(); //Очистка цифровых кнопок Array
 
         productCategories.clear(); //Очищаем категории продуктов Array
         currentSaleProducts.clear(); //Очищаем список текущих продуктов в списке Array
@@ -226,7 +234,7 @@ public class SellerController {
             if (newSale) { //Если данный продукт в Чеке первый, то...
                 cancelCashReceiptButton.setDisable(false);
                 saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи (Создаётся уникальный идентификатор нового чека)
-                currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), Outlet.currentOutlet.getOutletId()); //Создаётся текущий Чек.
+                currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), currentOutlet.getOutletId()); //Создаётся текущий Чек.
                 newSale = false; //Значение boolean true меняется на false. Последующие действия уже не создают новую продажу до момента нажатия на "+" в Панели Текущего продукта.
                 /*
                  * Здесь мы будем вставлять позицию в SaleProductList ПРИ СОЗДАНИИ НОВОГО ЧЕКА. Пока без загрузки в базу.
@@ -847,7 +855,7 @@ public class SellerController {
             NUMBER_BUTTONS.get(i).layoutBoundsProperty().addListener((observable, oldValue, newValue) -> NUMBER_BUTTONS.get(finalI).setFont(Font.font(Math.sqrt(newValue.getHeight() * 10))));
             NUMBER_BUTTONS.get(i).setWrapText(true);
             NUMBER_BUTTONS.get(i).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
-            NUMBER_BUTTONS.get(i).setPrefSize(85.0, 85.0);
+            NUMBER_BUTTONS.get(i).setPrefSize(91.0, 91.0);
             NUMBER_BUTTONS.get(i).setVisible(true);
             GridPane.setConstraints(NUMBER_BUTTONS.get(i), i, 0);
             numbersGridPane.getChildren().add(NUMBER_BUTTONS.get(i));
@@ -881,6 +889,8 @@ public class SellerController {
 
         //Размещаем кнопки с актуальными скидками.
         int countD = 0;
+        discountGridPane.getHgap();
+        discountGridPane.getVgap();
         for (int l = 0; l < discountGridPane.getColumnCount(); l++) {
             for (int h = 0; h < discountGridPane.getRowCount(); h++) {
                 Button discountButton = new Button();
@@ -958,7 +968,7 @@ public class SellerController {
                                 Font.font(Math.sqrt(newValue.getHeight() * 1.5))));
                 PRODUCT_BUTTONS.get(countP).setWrapText(true);
                 PRODUCT_BUTTONS.get(countP).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
-                PRODUCT_BUTTONS.get(countP).setPrefSize(85.0, 85.0);
+                PRODUCT_BUTTONS.get(countP).setPrefSize(91.0, 91.0);
                 PRODUCT_BUTTONS.get(countP).setVisible(false);
                 GridPane.setConstraints(PRODUCT_BUTTONS.get(countP), l, h);
                 mainGridPane.getChildren().add(PRODUCT_BUTTONS.get(countP));
