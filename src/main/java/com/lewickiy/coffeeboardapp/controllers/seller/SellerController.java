@@ -92,8 +92,6 @@ public class SellerController {
     @FXML
     private Button allSales;
     @FXML
-    private Button adminButton;
-    @FXML
     private Label userEarnings; //Не действует. Должно помещаться на отдельном окне при закрытии смены.
 
     /**
