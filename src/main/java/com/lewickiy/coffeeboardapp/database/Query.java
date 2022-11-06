@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
-
 public class Query {
     /**
      * Запрос SELECT FROM к таблице sql.
