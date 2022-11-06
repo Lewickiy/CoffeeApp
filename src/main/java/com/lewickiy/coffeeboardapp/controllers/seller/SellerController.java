@@ -985,6 +985,17 @@ public class SellerController {
         });
         saleTable.setPlaceholder(new Label("Выберете продукт"));
         allSalesTable.setPlaceholder(new Label("В текущей смене ещё нет продаж"));
+
+        //Проверка открыта смена или нет.
+        if (checkShift() == true) {
+            for (Button product_button : PRODUCT_BUTTONS) {
+                product_button.setDisable(true);
+            }
+            closeShiftButton.setDisable(true);
+            allSales.setDisable(true);
+        } else {
+            openShiftButton.setDisable(true);
+        }
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
