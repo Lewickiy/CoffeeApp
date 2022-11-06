@@ -95,16 +95,7 @@ public class SellerController {
     private Button adminButton;
     @FXML
     private Label userEarnings; //Не действует. Должно помещаться на отдельном окне при закрытии смены.
-    @FXML
-    void adminButtonOnAction() throws IOException { //Временная кнопка для открытия админки.
-        FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("administrator.fxml"));
-        Stage stageLogin = new Stage();
-        Scene sceneLogin = new Scene(fxmlLoader.load());
-        stageLogin.initStyle(StageStyle.DECORATED);
-        stageLogin.setTitle("CoffeeApp. Admin");
-        stageLogin.setScene(sceneLogin);
-        stageLogin.show();
-    }
+
     /**
      * Если панель скрыта, она открывается, если открыта - скрывается.
      */
