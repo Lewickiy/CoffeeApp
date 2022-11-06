@@ -755,14 +755,12 @@ public class SellerController {
             networkIndicator.setFill(Color.GREEN);
             syncProductsList(conNetworkProductDB, conLocalProductDB);
             conNetworkProductDB.close();
-            createProductsList(conLocalProductDB);
-            conLocalProductDB.close();
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createProductsList(conLocalProductDB);
-            conLocalProductDB.close();
         }
+        createProductsList(conLocalProductDB);
+        conLocalProductDB.close();
 
         //Синхронизация и загрузка категорий продуктов
         Connection conNetworkCategoryDB = null;
@@ -778,14 +776,12 @@ public class SellerController {
             networkIndicator.setFill(Color.GREEN);
             syncProductCategoriesList(conNetworkCategoryDB, conLocalCategoryDB);
             conNetworkCategoryDB.close();
-            createProductCategoriesList(conLocalCategoryDB);
-            conLocalCategoryDB.close();
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createProductCategoriesList(conLocalCategoryDB);
-            conLocalCategoryDB.close();
         }
+        createProductCategoriesList(conLocalCategoryDB);
+        conLocalCategoryDB.close();
 
         //Синхронизация и загрузка типов оплаты
         Connection conNetworkPaymentTypeDB = null;
@@ -824,14 +820,12 @@ public class SellerController {
             networkIndicator.setFill(Color.GREEN);
             syncDiscountsList(conNetworkDiscountDB, conLocalDiscountDB);
             conNetworkDiscountDB.close();
-            createDiscountList(conLocalDiscountDB);
-            conLocalDiscountDB.close();
         } else {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
-            createDiscountList(conLocalDiscountDB);
-            conLocalDiscountDB.close();
         }
+        createDiscountList(conLocalDiscountDB);
+        conLocalDiscountDB.close();
 
         paymentTypePanel.setVisible(false);
         closeShiftButton.setDisable(false);
