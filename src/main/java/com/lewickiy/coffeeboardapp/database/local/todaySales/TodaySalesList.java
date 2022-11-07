@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
+
 public class TodaySalesList { //Список сегодняшних продаж
     public static ArrayList<SaleProduct> todaySalesArrayList = new ArrayList<>();
 
@@ -18,6 +21,16 @@ public class TodaySalesList { //Список сегодняшних продаж
             sumAll = sumAll + saleProduct.getSum();
         }
         return sumAll;
+    }
+    public static double litresSum() {
+        double litres = 0.00;
+        for (int i = 0; i < todaySalesArrayList.size(); i++) {
+            TodaySales tempTodaySale = (TodaySales) todaySalesArrayList.get(i);
+            if (tempTodaySale.getUnitOfMeasurement().equals("мл.")) {
+                litres = litres + (tempTodaySale.getNumberOfUnit() * tempTodaySale.getAmount());
+            }
+        }
+        return litres/1000;
     }
 
     //Данный метод считает все продажи сегодняшнего дня за наличные.
@@ -42,6 +55,15 @@ public class TodaySalesList { //Список сегодняшних продаж
             }
         }
         return sumCard;
+    }
+    public static double getCashDeposit() throws SQLException {
+        double cashDeposit = 0.0;
+        Connection con = getConnection("local_database");
+        String sql = "SELECT cash_deposit FROM shift WHERE outlet_id = " + currentOutlet.getOutletId() + ";";
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(sql);
+        cashDeposit = rs.getDouble("cash_deposit");
+        return cashDeposit;
     }
     //Метод, который опрашивает локальную базу данных через join. Заготовка для таблицы сегодняшних продаж.
     public static void addAllSalesToArray(Connection con) throws SQLException {
