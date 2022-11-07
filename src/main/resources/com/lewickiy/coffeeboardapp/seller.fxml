@@ -26,13 +26,13 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox minWidth="1380.0" prefHeight="600.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.seller.SellerController">
+<VBox xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.seller.SellerController">
   <children>
       <HBox>
          <children>
             <BorderPane>
                <left>
-                <AnchorPane fx:id="productBar" maxHeight="-1.0" maxWidth="-1.0" minWidth="580.0" prefHeight="668.0" prefWidth="1012.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
+                <AnchorPane fx:id="productBar" maxHeight="-1.0" maxWidth="-1.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
                      <children>
                         <AnchorPane layoutY="112.0" style="-fx-background-color: LIGHTGREY;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0">
                            <children>
@@ -86,7 +86,7 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="115.0" prefWidth="1012.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane prefHeight="159.0" prefWidth="1012.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <GridPane fx:id="numbersGridPane" hgap="7.5" vgap="7.5" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                                 <columnConstraints>
@@ -142,7 +142,7 @@
                                     <Line endX="100.0" layoutX="117.0" layoutY="134.0" startX="-100.0" />
                                  </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="696.0" layoutY="261.0" prefHeight="226.0" prefWidth="301.0" style="-fx-background-color: white;">
+                              <AnchorPane layoutX="696.0" layoutY="261.0" prefHeight="226.0" prefWidth="301.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="15.0">
                                  <children>
                                     <Label prefHeight="17.0" prefWidth="129.0" text="Сегодня продано:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                        <font>
@@ -161,7 +161,7 @@
                            <children>
                               <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="264.0" prefWidth="375.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="320.0" AnchorPane.topAnchor="202.0">
                                  <children>
-                                    <Button fx:id="okCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okCloseShiftButtonOnAction" prefHeight="27.0" prefWidth="110.0" text="Закрыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="45.0">
+                                    <Button fx:id="okCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okCloseShiftButtonOnAction" prefHeight="75.0" prefWidth="110.0" text="Закрыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                                        <font>
                                           <Font size="13.0" />
                                        </font>
@@ -169,7 +169,7 @@
                                           <Insets />
                                        </opaqueInsets>
                                     </Button>
-                                    <Button fx:id="cancelCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelCloseShiftButtonOnAction" prefHeight="27.0" prefWidth="110.0" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="45.0" AnchorPane.rightAnchor="45.0">
+                                    <Button fx:id="cancelCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelCloseShiftButtonOnAction" prefHeight="75.0" prefWidth="110.0" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                                        <font>
                                           <Font size="13.0" />
                                        </font>
@@ -177,9 +177,9 @@
                                           <Insets />
                                        </opaqueInsets>
                                     </Button>
-                                    <Label alignment="TOP_CENTER" layoutX="45.0" layoutY="24.0" prefHeight="122.0" prefWidth="282.0" text="Сейчас произойдёт закрытие смены. В этот момент программа  будет недоступна. Пожалуйста, дождитесь окончания процесса." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="24.0">
+                                    <Label alignment="TOP_CENTER" layoutX="17.0" layoutY="24.0" prefHeight="164.0" prefWidth="338.0" text="Сейчас произойдёт закрытие смены. В этот момент программа  будет недоступна. Пожалуйста, дождитесь окончания процесса." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                                        <font>
-                                          <Font size="18.0" />
+                                          <Font size="23.0" />
                                        </font>
                                     </Label>
                                  </children>
@@ -316,18 +316,18 @@
                <top>
                   <AnchorPane minWidth="368.0" prefHeight="332.0" prefWidth="368.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Label layoutX="12.0" layoutY="4.0" prefHeight="20.0" prefWidth="58.0" text="Заказ">
+                        <Label layoutX="12.0" layoutY="4.0" prefHeight="20.0" prefWidth="58.0" text="Заказ" AnchorPane.topAnchor="4.0">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
                         <TableView fx:id="saleTable" focusTraversable="false" layoutX="21.0" layoutY="34.0" prefHeight="248.0" prefWidth="341.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0">
                            <columns>
-                              <TableColumn fx:id="productColumn" maxWidth="170.0" minWidth="110.0" prefWidth="110.0" text="Наименование" />
-                              <TableColumn fx:id="priceColumn" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Цена" />
-                              <TableColumn fx:id="amountColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Кол-во" />
-                              <TableColumn fx:id="discountColumn" maxWidth="43.0" minWidth="43.0" prefWidth="43.0" text="Скидка" />
-                              <TableColumn fx:id="sumColumn" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Сумма" />
+                              <TableColumn fx:id="productColumn" maxWidth="170.0" minWidth="110.0" prefWidth="147.5" text="Наименование" />
+                              <TableColumn fx:id="priceColumn" maxWidth="70.0" minWidth="11.5" prefWidth="38.0" text="Цена" />
+                              <TableColumn fx:id="amountColumn" maxWidth="66.5" minWidth="26.0" prefWidth="48.5" text="Кол-во" />
+                              <TableColumn fx:id="discountColumn" maxWidth="86.0" minWidth="26.5" prefWidth="50.0" text="Скидка" />
+                              <TableColumn fx:id="sumColumn" maxWidth="94.5" minWidth="50.0" prefWidth="65.0" text="Сумма" />
                            </columns>
                         </TableView>
                         <Label layoutX="12.0" layoutY="296.0" text="Итого:">
@@ -340,8 +340,11 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="networkIndicatorLabel" alignment="CENTER_RIGHT" layoutX="251.0" layoutY="14.0" prefHeight="17.0" prefWidth="80.0" textAlignment="RIGHT" />
-                        <Circle fx:id="networkIndicator" fill="#fcff00" layoutX="346.0" layoutY="22.0" radius="7.5" stroke="#c9c9c9" strokeType="OUTSIDE" strokeWidth="0.5" />
+                        <Label fx:id="networkIndicatorLabel" alignment="CENTER_RIGHT" layoutX="262.0" layoutY="7.0" prefHeight="18.0" prefWidth="69.0" text="status" textAlignment="RIGHT" AnchorPane.topAnchor="7.0">
+                           <font>
+                              <Font name="Monospaced Regular" size="12.0" />
+                           </font></Label>
+                        <Circle fx:id="networkIndicator" fill="#fcff00" layoutX="346.0" layoutY="18.0" radius="7.5" stroke="#c9c9c9" strokeType="OUTSIDE" strokeWidth="0.5" AnchorPane.topAnchor="9.0" />
                      </children>
                   </AnchorPane>
                </top>
@@ -358,12 +361,22 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="amountLabel" layoutX="187.0" layoutY="242.0" text="5">
+                        <Label fx:id="productNameLabel" layoutX="164.0" layoutY="271.0" prefHeight="30.0" prefWidth="190.0" text="product" textAlignment="CENTER">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#12ae27" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                        <Label fx:id="priceLabel" layoutX="160.0" layoutY="143.0" opacity="0.98" prefHeight="78.0" prefWidth="191.0" text="price" textFill="#060168" visible="false">
+                           <font>
+                              <Font name="System Bold" size="74.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="amountLabel" layoutX="187.0" layoutY="242.0" prefHeight="30.0" prefWidth="71.0" text="amount">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
@@ -371,22 +384,17 @@
                               <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </Button>
-                        <Button fx:id="discountButtonActivate" focusTraversable="false" layoutX="279.0" layoutY="45.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountButtonActivateOnAction" prefHeight="75.0" prefWidth="75.0" text="\%" AnchorPane.rightAnchor="15.0">
+                        <Button fx:id="discountButtonActivate" focusTraversable="false" layoutX="279.0" layoutY="45.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountButtonActivateOnAction" prefHeight="75.0" prefWidth="75.0" text="\%" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="33.0" />
                            </font>
                         </Button>
-                        <Label fx:id="productNameLabel" layoutX="164.0" layoutY="271.0" prefHeight="30.0" prefWidth="190.0" text="Американо" textAlignment="CENTER">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
                         <Button fx:id="delProduct" focusTraversable="false" layoutX="147.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#delProductOnAction" prefHeight="75.0" prefWidth="75.0" text="C" AnchorPane.bottomAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
                         </Button>
-                        <Button fx:id="cashReceiptButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="14.0" layoutY="45.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#cashReceiptOnAction" prefHeight="75.0" prefWidth="136.0" text="Чек" textAlignment="CENTER" textFill="#12ae27" wrapText="true" AnchorPane.leftAnchor="15.0">
+                        <Button fx:id="cashReceiptButton" accessibleHelp="В чеке можно выбрать оплату наличными или картой, а также корректировку суммы чека" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="14.0" layoutY="45.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#cashReceiptOnAction" prefHeight="75.0" prefWidth="136.0" text="Чек" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
@@ -525,11 +533,6 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <Label fx:id="priceLabel" layoutX="160.0" layoutY="143.0" opacity="0.98" prefHeight="78.0" prefWidth="191.0" text="price" textFill="#060168" visible="false">
-                           <font>
-                              <Font name="System Bold" size="74.0" />
-                           </font>
-                        </Label>
                      </children>
                   </AnchorPane>
                </bottom>
