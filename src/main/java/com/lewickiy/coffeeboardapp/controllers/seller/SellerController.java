@@ -94,6 +94,12 @@ public class SellerController {
     private Button allSales;
     @FXML
     private Label userEarnings; //Не действует. Должно помещаться на отдельном окне при закрытии смены.
+    @FXML
+    private Label cashDepositLabel;
+    @FXML
+    private Label allCashLabel;
+    @FXML
+    private Label litresLabel;
 
     /**
      * Если панель скрыта, она открывается, если открыта - скрывается.
@@ -107,10 +113,13 @@ public class SellerController {
         allSalesTable.refresh();
         cashSumSaleLabel.setText(sumCash() + " руб.");
         cardSumSaleLabel.setText(sumCard() + " руб.");
-        allSumSaleLabel.setText(sumAll() + " руб.");
+        allSumSaleLabel.setText(sumAll() + " руб."); //getCashDeposit();
+        cashDepositLabel.setText(getCashDeposit() + " руб.");
+        allCashLabel.setText((sumCash() + getCashDeposit()) + " руб.");
         if (allSalesPane.isVisible()) {
             todaySalesArrayList.clear();
         }
+        litresLabel.setText(String.valueOf(litresSum()));
         allSalesPane.setVisible(!allSalesPane.isVisible()); //если панель со всеми продажами выключена, она включается, если включена - выключается.
     }
     //Действие при нажатии на кнопку Закрытия смены.
@@ -119,17 +128,38 @@ public class SellerController {
         closeShiftPane.setVisible(true);
     }
     @FXML
-    void openShiftButtonOnAction() throws SQLException {
-        updateShiftSql(false);
+    void openShiftButtonOnAction() {
+        openShiftPane.setVisible(true);
+    }
+    /*____________________________________˄˄˄_____________________________________________
+     *___________________________________the end__________________________________________*/
+
+    @FXML
+    private Pane openShiftPane;
+    @FXML
+    private Button okOpenShiftButton;
+    @FXML
+    private Button cancelOpenShiftButton;
+    @FXML
+    private TextField cashDepositTextField;
+    @FXML
+    void okOpenShiftButtonOnAction() throws SQLException {
+        String cashDepositString = cashDepositTextField.getText().replace(',', '.');
+        cashDepositString = cashDepositString.replace(" ", "");
+        double cashDeposit = Double.parseDouble(cashDepositString);
+        updateShiftSql(false, cashDeposit);
         for (Button product_button : PRODUCT_BUTTONS) {
             product_button.setDisable(false);
         }
         closeShiftButton.setDisable(false);
         openShiftButton.setDisable(true);
         allSales.setDisable(false);
+        openShiftPane.setVisible(false);
     }
-    /*____________________________________˄˄˄_____________________________________________
-     *___________________________________the end__________________________________________*/
+    @FXML
+    void cancelOpenShiftButtonOnAction() {
+
+    }
 
     /*____________________________________start___________________________________________
      * Панель подтверждения закрытия смены.
@@ -150,7 +180,7 @@ public class SellerController {
         deleteFromSql(con, "local_database", "sale_product", "DELETE");
         deleteFromSql(con, "local_database", "sale", "DELETE");
 
-        updateShiftSql(true);
+        updateShiftSql(true, 0.00);
 
         PRODUCT_BUTTONS.clear(); //Кнопки продуктов очистка Array
         NUMBER_BUTTONS.clear(); //Очистка цифровых кнопок Array
@@ -267,6 +297,8 @@ public class SellerController {
             //TODO в зависимости от категории продукта или от продукта (это сложнее поддерживать в случае смены ассортимента),
             // иконка Продукта при выборе должна меняться.
             productNameLabel.setText(product.getProduct()); //Рядом с иконкой продукта отображается наименование продукта.
+            priceLabel.setText(String.valueOf(product.getPrice())); //Установить стоимость продукта.
+            priceLabel.setVisible(true);
             //TODO в пользовательском интерфейсе сделать TextLabel с суммой около информации о выбранном продукте,
             // которая меняется при каждом совершаемом действии (выборе количества, процента скидки и т.д.)
             //Добавляем данные в currentProduct
@@ -315,6 +347,7 @@ public class SellerController {
                  * При этом, если даже позиция в Чеке первая, новый чек не создаётся, т.к. в данном моменте значение переменной newSale типа boolean всё ещё false.
                  * (данное значение меняется на true только после формирования Чека при закрытии текущей продажи).
                  */
+                priceLabel.setVisible(false);
                 currentProduct = null; //Текущий продукт становится null.
                 productCategoryIco.setVisible(false); //Картинка Продукта перестаёт быть видимой
                 xLabel.setVisible(false); //Символ количества перестаёт отображаться
@@ -373,6 +406,8 @@ public class SellerController {
     @FXML
     private ImageView productCategoryIco; //Графическое отображение товара
     @FXML
+    private Label priceLabel; //Отображение цены выбранного товара
+    @FXML
     private Label xLabel; //Символ X количество товара
     @FXML
     private Label amountLabel; //Цифровое отображение количества товара
@@ -413,6 +448,7 @@ public class SellerController {
         }
         SaleProductList.addProductToArray(positionsCount, currentProduct);
         positionsCount++;
+        priceLabel.setVisible(false);
         cashReceiptButton.setDisable(false); //Кнопка Чек становится доступна
         saleTable.setItems(saleProductsObservableList);
         saleTable.refresh();
@@ -512,7 +548,6 @@ public class SellerController {
     @FXML
     void oupsOnAction() {
         correctionPane.setVisible(true);
-//        clearLocalDb();
     }
 
     @FXML
@@ -1006,6 +1041,8 @@ public class SellerController {
         } else {
             openShiftButton.setDisable(true);
         }
+
+        cashDepositTextField.textProperty().addListener(observable -> okOpenShiftButton.setDisable(false));
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
