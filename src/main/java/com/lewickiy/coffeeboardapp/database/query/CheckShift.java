@@ -19,6 +19,19 @@ public class CheckShift {
         boolean isClosed;
         int outletId = currentOutlet.getOutletId();
         Connection con = getConnection("local_database");
+        System.out.println("START CHECK");
+        String sqlSearchOutlet = "SELECT outlet_id FROM shift WHERE outlet_id = " + outletId + ";";
+        Statement stm = con.createStatement();
+        ResultSet rsSearchOutlet = stm.executeQuery(sqlSearchOutlet);
+        if(rsSearchOutlet.getInt("outlet_id") != outletId) {
+            System.out.println("OUTLET NOT FOUND");
+            String sqlAddOutlet = "INSERT INTO shift (outlet_id, is_closed, cash_deposit) VALUES (" + outletId + ", 1, 0.0);";
+            Statement stmSqlAddOutlet = con.createStatement();
+            stmSqlAddOutlet.executeUpdate(sqlAddOutlet);
+            stmSqlAddOutlet.close();
+        }
+        rsSearchOutlet.close();
+        stm.close();
 
         String sql = "SELECT is_closed FROM shift WHERE outlet_id = " + outletId + ";";
         Statement statement = con.createStatement();
