@@ -9,10 +9,13 @@ import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnecti
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 
 public class CheckShift {
+    /**
+     * Данный метод позволяет узнать из локальной базы данных, закрыта ли смена.
+     * Для этого существует таблица shift.
+     * @return - boolean значение ответа на вопрос "Закрыта ли смена?"
+     * @throws SQLException - не обрабатывается
+     */
     public static boolean checkShift() throws SQLException {
-        System.out.println();
-        System.out.println("______________________________");
-        System.out.println("Start checking SHIFT status...");
         boolean isClosed;
         int outletId = currentOutlet.getOutletId();
         Connection con = getConnection("local_database");
@@ -21,11 +24,11 @@ public class CheckShift {
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(sql);
         isClosed = rs.getBoolean("is_closed");
-        System.out.println("SHIFT is closed? - " + isClosed);
+
         rs.close();
         statement.close();
         con.close();
-        System.out.println();
+
         return isClosed;
     }
 }
