@@ -1064,11 +1064,11 @@ public class SellerController {
     /**
      * Данный метод делает кнопки с действиями с Добавляемым продуктом активными/неактивными
      * Например: кнопки Работы с Выбранным продуктом недоступны пока не выбран продукт.
-     * @param res - тип boolean, который работает как переключатель доступности.
+     * @param isDisable - тип boolean, который работает как переключатель доступности.
      */
-    public void productOperationButtonsIsDisable(boolean res) {
-        addProduct.setDisable(res);
-        discountButtonActivate.setDisable(res);
-        delProduct.setDisable(res);
+    public void productOperationButtonsIsDisable(boolean isDisable) {
+        addProduct.setDisable(isDisable);
+        discountButtonActivate.setDisable(isDisable);
+        delProduct.setDisable(isDisable);
     }
 }
