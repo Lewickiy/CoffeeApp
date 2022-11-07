@@ -22,6 +22,7 @@ public class TodaySalesList { //Список сегодняшних продаж
         }
         return sumAll;
     }
+    //Подсчёт литров проданных за текущую смену напитков
     public static double litresSum() {
         double litres = 0.00;
         for (int i = 0; i < todaySalesArrayList.size(); i++) {
