@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.MotionBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -20,18 +21,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <VBox minWidth="1380.0" prefHeight="600.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.seller.SellerController">
   <children>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox>
          <children>
-            <BorderPane minHeight="708.0" prefHeight="708.0" prefWidth="1012.0">
+            <BorderPane>
                <left>
                 <AnchorPane fx:id="productBar" maxHeight="-1.0" maxWidth="-1.0" minWidth="580.0" prefHeight="668.0" prefWidth="1012.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutY="112.0" style="-fx-background-color: LIGHTGREY;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="154.0">
+                        <AnchorPane layoutY="112.0" style="-fx-background-color: LIGHTGREY;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0">
                            <children>
                               <GridPane fx:id="mainGridPane" alignment="TOP_CENTER" focusTraversable="true" hgap="7.5" layoutX="30.0" layoutY="14.0" vgap="7.5" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                 <columnConstraints>
@@ -83,7 +86,7 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="115.0" prefWidth="1012.0">
+                        <AnchorPane prefHeight="115.0" prefWidth="1012.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <GridPane fx:id="numbersGridPane" hgap="7.5" vgap="7.5" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                                 <columnConstraints>
@@ -121,14 +124,35 @@
                               </TableView>
                               <AnchorPane layoutX="747.0" layoutY="270.0" prefHeight="226.0" prefWidth="301.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                                  <children>
-                                    <Label text="Продажи сегодня:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
+                                    <Label text="Продажи сегодня:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Label>
                                     <Separator layoutX="16.0" layoutY="40.0" prefWidth="200.0" />
                                     <Label layoutX="16.0" layoutY="55.0" text="Наличные:" />
-                                    <Label fx:id="cashSumSaleLabel" layoutX="86.0" layoutY="55.0" text="0.00" />
+                                    <Label fx:id="cashSumSaleLabel" layoutX="94.0" layoutY="55.0" text="0.00" />
                                     <Label layoutX="16.0" layoutY="82.0" text="Карта:" />
-                                    <Label fx:id="cardSumSaleLabel" layoutX="86.0" layoutY="82.0" text="0.00" />
+                                    <Label fx:id="cardSumSaleLabel" layoutX="94.0" layoutY="82.0" text="0.00" />
                                     <Label layoutX="16.0" layoutY="108.0" text="Всего:" />
-                                    <Label fx:id="allSumSaleLabel" layoutX="86.0" layoutY="108.0" text="0.00" />
+                                    <Label fx:id="allSumSaleLabel" layoutX="94.0" layoutY="108.0" text="0.00" />
+                                    <Label layoutX="16.0" layoutY="145.0" prefHeight="7.0" prefWidth="140.0" text="Внесено при открытии:" wrapText="true" />
+                                    <Label fx:id="cashDepositLabel" layoutX="164.0" layoutY="146.0" prefHeight="17.0" prefWidth="122.0" text="0.00" />
+                                    <Label layoutX="16.0" layoutY="174.0" prefHeight="17.0" prefWidth="147.0" text="Всего наличными в кассе:" wrapText="true" />
+                                    <Label fx:id="allCashLabel" layoutX="164.0" layoutY="174.0" prefHeight="17.0" prefWidth="122.0" text="0.00" />
+                                    <Line endX="100.0" layoutX="117.0" layoutY="134.0" startX="-100.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="696.0" layoutY="261.0" prefHeight="226.0" prefWidth="301.0" style="-fx-background-color: white;">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="129.0" text="Сегодня продано:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Separator layoutX="16.0" layoutY="40.0" prefWidth="200.0" />
+                                    <Label layoutX="16.0" layoutY="55.0" text="Литров напитков" />
+                                    <Label fx:id="litresLabel" layoutX="119.0" layoutY="55.0" text="0.00" />
+                                    <Line endX="100.0" layoutX="117.0" layoutY="134.0" startX="-100.0" />
                                  </children>
                               </AnchorPane>
                            </children>
@@ -159,6 +183,50 @@
                                        </font>
                                     </Label>
                                  </children>
+                                 <effect>
+                                    <DropShadow offsetX="7.0" offsetY="7.0">
+                                       <color>
+                                          <Color opacity="0.3700000047683716" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="openShiftPane" layoutX="10.0" layoutY="10.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="264.0" prefWidth="375.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="320.0" AnchorPane.topAnchor="202.0">
+                                 <children>
+                                    <Button fx:id="okOpenShiftButton" alignment="CENTER" contentDisplay="RIGHT" disable="true" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okOpenShiftButtonOnAction" prefHeight="27.0" prefWidth="110.0" text="Открыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="45.0">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Button>
+                                    <Button fx:id="cancelOpenShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelOpenShiftButtonOnAction" prefHeight="27.0" prefWidth="110.0" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="45.0" AnchorPane.rightAnchor="45.0">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Button>
+                                    <Label alignment="TOP_CENTER" layoutX="32.0" layoutY="24.0" prefHeight="96.0" prefWidth="316.0" text="Пожалуйста, введите сумму размена, после чего нажмите на кнопку &quot;Открыть смену&quot;:" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="186.0" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="25.0">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="cashDepositTextField" layoutX="98.0" layoutY="137.0" prefHeight="46.0" prefWidth="192.0" AnchorPane.bottomAnchor="123.0" AnchorPane.leftAnchor="89.0" AnchorPane.rightAnchor="89.0" AnchorPane.topAnchor="137.0" />
+                                 </children>
+                                 <effect>
+                                    <DropShadow offsetX="7.0" offsetY="7.0">
+                                       <color>
+                                          <Color opacity="0.3700000047683716" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
                               </AnchorPane>
                            </children>
                         </AnchorPane>
@@ -216,11 +284,6 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                        <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" prefHeight="27.0" prefWidth="60.0" text="00:00" textAlignment="CENTER" textFill="#07b215">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
                         <Button alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="580.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Admin" textOverrun="CLIP" visible="false">
                            <font>
                               <Font size="13.0" />
@@ -229,6 +292,11 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
+                        <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" prefHeight="27.0" prefWidth="60.0" text="00:00" textAlignment="CENTER" textFill="#03790b">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
                         <Button fx:id="allSales" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="694.0" layoutY="12.0" mnemonicParsing="false" onAction="#allSalesOnAction" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP">
                            <font>
                               <Font size="13.0" />
@@ -253,7 +321,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="saleTable" layoutX="21.0" layoutY="34.0" prefHeight="248.0" prefWidth="341.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0">
+                        <TableView fx:id="saleTable" focusTraversable="false" layoutX="21.0" layoutY="34.0" prefHeight="248.0" prefWidth="341.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0">
                            <columns>
                               <TableColumn fx:id="productColumn" maxWidth="170.0" minWidth="110.0" prefWidth="110.0" text="Наименование" />
                               <TableColumn fx:id="priceColumn" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Цена" />
@@ -278,21 +346,21 @@
                   </AnchorPane>
                </top>
                <bottom>
-                  <AnchorPane minWidth="334.0" prefHeight="332.0" prefWidth="368.0" BorderPane.alignment="CENTER">
+                  <AnchorPane BorderPane.alignment="CENTER">
                      <children>
-                        <ImageView fx:id="productCategoryIco" fitHeight="150.0" fitWidth="200.0" layoutX="50.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="productCategoryIco" fitHeight="150.0" fitWidth="200.0" layoutX="50.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0">
                            <image>
                               <Image url="@image/product/coffeeToGo_1.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="197.0" layoutY="190.0" text="X" fx:id="xLabel">
+                        <Label layoutX="165.0" layoutY="242.0" text="X" fx:id="xLabel">
                            <font>
-                              <Font size="45.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="amountLabel" layoutX="247.0" layoutY="169.0" text="5">
+                        <Label fx:id="amountLabel" layoutX="187.0" layoutY="242.0" text="5">
                            <font>
-                              <Font size="74.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
                         <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#12ae27" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
@@ -308,9 +376,9 @@
                               <Font name="System Bold" size="33.0" />
                            </font>
                         </Button>
-                        <Label fx:id="productNameLabel" layoutX="210.0" layoutY="271.0" prefHeight="16.0" prefWidth="94.0" text="Американо" textAlignment="CENTER">
+                        <Label fx:id="productNameLabel" layoutX="164.0" layoutY="271.0" prefHeight="30.0" prefWidth="190.0" text="Американо" textAlignment="CENTER">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
                         <Button fx:id="delProduct" focusTraversable="false" layoutX="147.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#delProductOnAction" prefHeight="75.0" prefWidth="75.0" text="C" AnchorPane.bottomAnchor="15.0">
@@ -457,6 +525,11 @@
                               </Label>
                            </children>
                         </AnchorPane>
+                        <Label fx:id="priceLabel" layoutX="160.0" layoutY="143.0" opacity="0.98" prefHeight="78.0" prefWidth="191.0" text="price" textFill="#060168" visible="false">
+                           <font>
+                              <Font name="System Bold" size="74.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
                </bottom>
