@@ -11,10 +11,17 @@ import java.util.ArrayList;
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 
-public class TodaySalesList { //Список сегодняшних продаж
+/**
+ * Класс списка продаж Текущей(открытой) смены. Содержит todaySalesArrayList, с которым и работает.
+ * А также методы для работы со списком сегодняшних продаж.
+ */
+public class TodaySalesList {
     public static ArrayList<SaleProduct> todaySalesArrayList = new ArrayList<>();
 
-    //Данный метод считает все продажи сегодняшнего дня (сумму)
+    /**
+     * Данный метод считает сумму всех продаж Текущей(открытой) смены.
+     * @return - сумму всех продаж в виде double без округлений.
+     */
     public static double sumAll() { //сумма всех продаж
         double sumAll = 0.00;
         for (SaleProduct saleProduct : todaySalesArrayList) {
@@ -22,11 +29,15 @@ public class TodaySalesList { //Список сегодняшних продаж
         }
         return sumAll;
     }
-    //Подсчёт литров проданных за текущую смену напитков
+
+    /**
+     * Подсчёт проданных напитков в литрах
+     * @return - возвращается значение double не округлённое.
+     */
     public static double litresSum() {
         double litres = 0.00;
-        for (int i = 0; i < todaySalesArrayList.size(); i++) {
-            TodaySales tempTodaySale = (TodaySales) todaySalesArrayList.get(i);
+        for (SaleProduct saleProduct : todaySalesArrayList) {
+            TodaySales tempTodaySale = (TodaySales) saleProduct;
             if (tempTodaySale.getUnitOfMeasurement().equals("мл.")) {
                 litres = litres + (tempTodaySale.getNumberOfUnit() * tempTodaySale.getAmount());
             }
@@ -34,31 +45,47 @@ public class TodaySalesList { //Список сегодняшних продаж
         return litres/1000;
     }
 
-    //Данный метод считает все продажи сегодняшнего дня за наличные.
+    /**
+     * Данный метод считает сумму всех продаж за наличные Текущей(открытой) смены.
+     * @return - сумму всех продаж за наличные в виде double без округлений.
+     */
     public static double sumCash() {
         double sumCash = 0.00;
-        for (int i = 0; i < todaySalesArrayList.size(); i++) {
-            TodaySales tempTodaySale = (TodaySales) todaySalesArrayList.get(i);
+        for (SaleProduct saleProduct : todaySalesArrayList) {
+            TodaySales tempTodaySale = (TodaySales) saleProduct;
             if (tempTodaySale.getPaymentType().equals("Наличные деньги")) {
-                    sumCash = sumCash + tempTodaySale.getSum();
+                sumCash = sumCash + tempTodaySale.getSum();
             }
         }
         return sumCash;
     }
 
-    //Данный метод считает все продажи сегодняшнего дня по банковской карте.
+    /**
+     * Данный метод считает сумму всех продаж по карте Текущей(открытой) смены.
+     * @return - сумму всех продаж по карте в виде double без округлений.
+     */
     public static double sumCard() {
         double sumCard = 0.00;
-        for (int i = 0; i < todaySalesArrayList.size(); i++) {
-            TodaySales tempTodaySale = (TodaySales) todaySalesArrayList.get(i);
+        for (SaleProduct saleProduct : todaySalesArrayList) {
+            TodaySales tempTodaySale = (TodaySales) saleProduct;
             if (tempTodaySale.getPaymentType().equals("Банковская карта")) {
                 sumCard = sumCard + tempTodaySale.getSum();
             }
         }
         return sumCard;
     }
+
+    /**
+     * Данный метод, подключаясь к локальной базе данных, берёт сумму Депозита наличными,
+     * внесённую при открытии текущей смены
+     * @return - эта сумма возвращается в виде double для дальнейших операций с ней.
+     * Например: данная сумма прибавляется к сумме продаж за наличный расчёт, чтобы показать,
+     * сколько фактически наличных денег находится в кассе.
+     * @throws SQLException - исключение пока не обрабатывается.
+     * TODO обработка исключений при отсутствии соединения с локальной базой данных в виде информационных сообщений с вариантами решения проблемы.
+     */
     public static double getCashDeposit() throws SQLException {
-        double cashDeposit = 0.0;
+        double cashDeposit;
         Connection con = getConnection("local_database");
         String sql = "SELECT cash_deposit FROM shift WHERE outlet_id = " + currentOutlet.getOutletId() + ";";
         Statement statement = con.createStatement();
@@ -66,7 +93,12 @@ public class TodaySalesList { //Список сегодняшних продаж
         cashDeposit = rs.getDouble("cash_deposit");
         return cashDeposit;
     }
-    //Метод, который опрашивает локальную базу данных через join. Заготовка для таблицы сегодняшних продаж.
+
+    /**
+     * //Метод, который опрашивает локальную базу данных через join. Заготовка для таблицы сегодняшних продаж.
+     * @param con - принимает Connection
+     * @throws SQLException - не обрабатывается.
+     */
     public static void addAllSalesToArray(Connection con) throws SQLException {
         System.out.println("Start loading Sales List");
         Statement statement = con.createStatement(); //создаётся подключение
@@ -89,7 +121,6 @@ public class TodaySalesList { //Список сегодняшних продаж
                 "FULL OUTER JOIN product ON sale_product.product_id = product.product_id";
         ResultSet rs = statement.executeQuery(query);
         //TODO добавить время продажи
-
         while(rs.next()) {
             if (rs.getString(1) == null) {
                 break;
