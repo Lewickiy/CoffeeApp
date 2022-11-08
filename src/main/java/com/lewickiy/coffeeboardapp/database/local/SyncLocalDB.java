@@ -25,8 +25,6 @@ public class SyncLocalDB {
     static final String NETWORK_DB = "network_database";
 
     public static void syncUsersList(Connection networkCon, Connection localCon) throws SQLException {
-        System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
-
         ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"user");
         while(resultSet.next()) {
             int userId = resultSet.getInt("user_id");
@@ -72,10 +70,7 @@ public class SyncLocalDB {
     }
 
     public static void syncOutletsList(Connection networkCon, Connection localCon) throws SQLException {
-        System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
-
         ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"outlet");
-        System.out.println("ResultSet is Ok");
         while(resultSet.next()) {
             int outletId = resultSet.getInt("outlet_id");
             String outlet = resultSet.getString("outlet");
@@ -96,8 +91,6 @@ public class SyncLocalDB {
     }
 
     public static void syncPaymentTypesList(Connection networkCon, Connection localCon) throws SQLException {
-        System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
-
         ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"paymenttype");
         while(resultSet.next()) {
             int paymenttypeId = resultSet.getInt("paymenttype_id");
@@ -119,8 +112,6 @@ public class SyncLocalDB {
     }
 
     public static void syncProductCategoriesList(Connection networkCon, Connection localCon) throws SQLException {
-        System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
-
         ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"product_category");
         while(resultSet.next()) {
             int productCategoryId = resultSet.getInt("product_category_id");
@@ -142,8 +133,6 @@ public class SyncLocalDB {
     }
 
     public static void syncProductsList(Connection networkCon, Connection localCon) throws SQLException {
-        System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
-
         ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"product");
         while(resultSet.next()) {
             int productId = resultSet.getInt("product_id");
@@ -179,8 +168,6 @@ public class SyncLocalDB {
     }
 
     public static void syncDiscountsList(Connection networkCon, Connection localCon) throws SQLException {
-        System.out.println("Start " + new Object(){}.getClass().getEnclosingMethod().getName() + "();");
-
         ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"discount");
         while(resultSet.next()) {
             int discountId = resultSet.getInt("discount_id");
