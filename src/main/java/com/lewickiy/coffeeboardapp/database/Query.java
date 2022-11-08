@@ -52,7 +52,7 @@ public class Query {
     public static void insertToSql(Connection con, String dbName, String tableName, String sql) throws SQLException {
         Statement statement = con.createStatement();
         if (dbName.equals("network_database")) {
-            statement.executeUpdate("INSERT " + tableName + "(" + sql + "')");
+            statement.executeUpdate("INSERT " + tableName + "(" + sql + ")");
         } else if (dbName.equals("local_database")) {
             statement.executeUpdate("INSERT INTO " + tableName + "(" + sql + ")");
         }

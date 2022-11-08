@@ -1,8 +1,11 @@
 package com.lewickiy.coffeeboardapp.database.query;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.user.UserList.currentUser;
 
@@ -10,6 +13,52 @@ import static com.lewickiy.coffeeboardapp.database.user.UserList.currentUser;
  * Класс работы с логом открытия/закрытия смен
  */
 public class ShiftLog {
+    int outletId;
+    int userId;
+    Date date;
+    Time time;
+    int isClosed;
+
+    public int getOutletId() {
+        return outletId;
+    }
+
+    public void setOutletId(int outletId) {
+        this.outletId = outletId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
+    public int getIsClosed() {
+        return isClosed;
+    }
+
+    public void setIsClosed(int isClosed) {
+        this.isClosed = isClosed;
+    }
+
     /**
      * Метод, записывающий в лог-таблицу дату, время и точку продаж. Он отмечает когда была открыта смена
      * и когда закрыта.
@@ -24,17 +73,14 @@ public class ShiftLog {
         Connection con = getConnection("local_database");
         long nowDate = System.currentTimeMillis();
         Date logDate = new Date(nowDate);
-        long nowTime = System.currentTimeMillis();
-        Time logTime = new Time(nowTime);
+        Time logTime = new Time(nowDate);
         String query = "INSERT INTO shift_log (outlet_id, user_id, date, time, is_closed, loaded) VALUES ("
                 + currentOutlet.getOutletId()
                 + ", " + currentUser.getUserId()
                 + ", '" + logDate
-                + "', '"
-                + logTime
-                + "',"
-                + isClosedB
-                +", 0);";
+                + "', '" + logTime
+                + "', " + isClosedB
+                + ", 0);";
 
         Statement statement = con.createStatement();
         statement.executeUpdate(query);
@@ -42,7 +88,57 @@ public class ShiftLog {
         statement.close();
         con.close();
     }
-    public static void syncShiftLog() {
-        //TODO метод синхронизации с сетевой базой данных
+    public static void syncShiftLog() throws SQLException, ParseException {
+        boolean start = true;
+        while(start) {
+            Connection conNetwork;
+            Connection conLocal;
+            try {
+                conNetwork = getConnection("network_database");
+            } catch (SQLException sqlEx) {
+                break;
+            }
+
+            conLocal = getConnection("local_database");
+
+            if (conNetwork != null) {
+                String selectNotLoaded = "SELECT outlet_id, user_id, date, time, is_closed FROM shift_log WHERE loaded = 0 AND outlet_id = " + currentOutlet.getOutletId() + ";";
+                Statement statement = conLocal.createStatement();
+                ResultSet resultSelectNotLoaded  = statement.executeQuery(selectNotLoaded);
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+
+                while(resultSelectNotLoaded.next()) {
+                    ShiftLog shiftLog = new ShiftLog();
+                    shiftLog.setOutletId(resultSelectNotLoaded.getInt("outlet_id"));
+                    shiftLog.setUserId(resultSelectNotLoaded.getInt("user_id"));
+                    shiftLog.setDate(Date.valueOf(dateFormatter.format(dateFormatter.parse(resultSelectNotLoaded.getString("date")))));
+                    shiftLog.setTime(Time.valueOf(timeFormatter.format(timeFormatter.parse(resultSelectNotLoaded.getString("time")))));
+                    shiftLog.setIsClosed(resultSelectNotLoaded.getInt("is_closed"));
+
+                    insertToSql(conNetwork, "network_database", "shift_log", "outlet_id, "
+                            + "user_id, "
+                            + "date, "
+                            + "time, "
+                            + "is_closed) VALUES ("
+                            + shiftLog.getOutletId() + ", "
+                            + shiftLog.getUserId() + ", '"
+                            + shiftLog.getDate() + "', '"
+                            + shiftLog.getTime() + "', "
+                            + shiftLog.getIsClosed());
+
+                }
+                conNetwork.close();
+
+                String update = "UPDATE shift_log SET loaded = ? WHERE outlet_id = ?";
+                PreparedStatement prepareStatement = conLocal.prepareStatement(update);
+                prepareStatement.setInt(1, 1);
+                prepareStatement.setInt(2, currentOutlet.getOutletId());
+                prepareStatement.executeUpdate();
+                prepareStatement.close();
+            }
+            conLocal.close();
+            break;
+        }
     }
 }

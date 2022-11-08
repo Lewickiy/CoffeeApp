@@ -34,6 +34,7 @@ public class UserList {
 
         ResultSet resultSet = selectAllFromSql(con, "local_database","user");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
         while(resultSet.next()) {
             int userId = resultSet.getInt("user_id");
             String login = resultSet.getString("login");

@@ -37,6 +37,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -62,6 +63,7 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 import static com.lewickiy.coffeeboardapp.database.query.CheckShift.checkShift;
 import static com.lewickiy.coffeeboardapp.database.query.OpenCloseShift.updateShiftSql;
 import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.shiftLog;
+import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.syncShiftLog;
 
 public class SellerController {
     private boolean newSale = true; //boolean значение необходимости создания нового чека
@@ -735,7 +737,8 @@ public class SellerController {
      * Инициализация
      _____________________________________˅˅˅____________________________________________*/
     @FXML
-    void initialize() throws SQLException {
+    void initialize() throws SQLException, ParseException {
+        syncShiftLog();
         //Часы висящие в панели.
         Thread timerThread = new Thread(() -> {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
