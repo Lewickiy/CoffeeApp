@@ -11,6 +11,8 @@ import static com.lewickiy.coffeeboardapp.database.user.UserList.currentUser;
 
 /**
  * Класс работы с логом открытия/закрытия смен
+ * TODO удалять синхронизированные строки для сокращения времени проверки таблицы shiftLog в локальной базе данных.
+ * это касается метода syncShiftLog().
  */
 public class ShiftLog {
     int outletId;
@@ -88,6 +90,14 @@ public class ShiftLog {
         statement.close();
         con.close();
     }
+
+    /**
+     * Данный метод реализует синхронизацию таблиц shift_log (сетевой с локальной)<br>
+     * в локальной базе данных выгруженные данные помечаются отметкой loaded,<br>
+     * после чего в сетевую базу данных эти строки повторно не выгружаются.<br>
+     * @throws SQLException - прерывает выполнение метода, не продолжая какие-либо действия break;<br>
+     * @throws ParseException - не обрабатывается.
+     */
     public static void syncShiftLog() throws SQLException, ParseException {
         boolean start = true;
         while(start) {
@@ -128,6 +138,7 @@ public class ShiftLog {
                             + shiftLog.getIsClosed());
 
                 }
+                resultSelectNotLoaded.close();
                 conNetwork.close();
 
                 String update = "UPDATE shift_log SET loaded = ? WHERE outlet_id = ?";
