@@ -97,7 +97,6 @@ public class TodaySalesList {
      * @throws SQLException - не обрабатывается.
      */
     public static void addAllSalesToArray(Connection con) throws SQLException {
-        System.out.println("Start loading Sales List");
         Statement statement = con.createStatement(); //создаётся подключение
         String query = "SELECT sale.sale_id" +
                 ", sale.time" +
@@ -117,7 +116,7 @@ public class TodaySalesList {
                 "FULL OUTER JOIN discount ON sale_product.discount_id = discount.discount_id " +
                 "FULL OUTER JOIN product ON sale_product.product_id = product.product_id";
         ResultSet rs = statement.executeQuery(query);
-        //TODO добавить время продажи
+        //TODO добавить время продажи по аналогии с shift_log
         while(rs.next()) {
             if (rs.getString(1) == null) {
                 break;
