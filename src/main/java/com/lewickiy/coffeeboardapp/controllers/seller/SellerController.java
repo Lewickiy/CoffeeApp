@@ -61,6 +61,7 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductList.createPro
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 import static com.lewickiy.coffeeboardapp.database.query.CheckShift.checkShift;
 import static com.lewickiy.coffeeboardapp.database.query.OpenCloseShift.updateShiftSql;
+import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.shiftLog;
 
 public class SellerController {
     private boolean newSale = true; //boolean значение необходимости создания нового чека
@@ -151,10 +152,12 @@ public class SellerController {
         for (Button product_button : PRODUCT_BUTTONS) {
             product_button.setDisable(false);
         }
+        shiftLog(false); //смена открыта
         closeShiftButton.setDisable(false);
         openShiftButton.setDisable(true);
         allSales.setDisable(false);
         openShiftPane.setVisible(false);
+
     }
     @FXML
     void cancelOpenShiftButtonOnAction() {
@@ -181,6 +184,7 @@ public class SellerController {
         deleteFromSql(con, "local_database", "sale", "DELETE");
 
         updateShiftSql(true, 0.00);
+        shiftLog(true);
 
         PRODUCT_BUTTONS.clear(); //Кнопки продуктов очистка Array
         NUMBER_BUTTONS.clear(); //Очистка цифровых кнопок Array
