@@ -738,7 +738,6 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     void initialize() throws SQLException, ParseException {
-        syncShiftLog();
         //Часы висящие в панели.
         Thread timerThread = new Thread(() -> {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -756,12 +755,11 @@ public class SellerController {
         });   timerThread.setDaemon(true); //Это закроет поток. Он сообщает JVM, что это фоновый поток, поэтому он завершится при выходе.
         timerThread.start(); //Запускаем поток.
 
-        //Тестовый поток для периодической синхронизации продаж.
-
+        //Тестовый поток для периодической синхронизации продаж. TODO не тестовым.
         Thread syncTestThread = new Thread(() -> {
             while (true) {
                 try {
-                    Thread.sleep(50000); //5 second
+                    Thread.sleep(300000); //5 min
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -769,18 +767,16 @@ public class SellerController {
                     Connection con = null;
                     try {
                         con = getConnection("network_database");
-                        networkIndicatorLabel.setText("в сети");
-                        networkIndicator.setFill(Color.GREEN);
+                        isOnline(true);
                         try {
-                            showTablesFromSql(con, "network", "String tableName", "Show");
+                            syncShiftLog();
                             con.close();
-                        } catch (SQLException e) {
+                        } catch (SQLException | ParseException e) {
                             throw new RuntimeException(e);
                         }
                     } catch (SQLException e) {
                             System.out.println("offline");
-                            networkIndicatorLabel.setText("не в сети");
-                            networkIndicator.setFill(Color.YELLOW);
+                            isOnline(false);
                     }
                 });
             }
@@ -801,13 +797,11 @@ public class SellerController {
         conLocalProductDB = getConnection("local_database");
 
         if (conNetworkProductDB != null) {
-            networkIndicatorLabel.setText("в сети");
-            networkIndicator.setFill(Color.GREEN);
+            isOnline(true);
             syncProductsList(conNetworkProductDB, conLocalProductDB);
             conNetworkProductDB.close();
         } else {
-            networkIndicatorLabel.setText("не в сети");
-            networkIndicator.setFill(Color.YELLOW);
+            isOnline(false);
         }
         createProductsList(conLocalProductDB);
         conLocalProductDB.close();
@@ -822,13 +816,11 @@ public class SellerController {
         }
         conLocalCategoryDB = getConnection("local_database");
         if (conNetworkCategoryDB != null) {
-            networkIndicatorLabel.setText("в сети");
-            networkIndicator.setFill(Color.GREEN);
+            isOnline(true);
             syncProductCategoriesList(conNetworkCategoryDB, conLocalCategoryDB);
             conNetworkCategoryDB.close();
         } else {
-            networkIndicatorLabel.setText("не в сети");
-            networkIndicator.setFill(Color.YELLOW);
+            isOnline(false);
         }
         createProductCategoriesList(conLocalCategoryDB);
         conLocalCategoryDB.close();
@@ -843,15 +835,13 @@ public class SellerController {
         }
         conLocalPaymentTypeDB = getConnection("local_database");
         if (conNetworkPaymentTypeDB != null) {
-            networkIndicatorLabel.setText("в сети");
-            networkIndicator.setFill(Color.GREEN);
+            isOnline(true);
             syncPaymentTypesList(conNetworkPaymentTypeDB, conLocalPaymentTypeDB);
             conNetworkPaymentTypeDB.close();
             createPaymentTypeList(conLocalPaymentTypeDB);
             conLocalPaymentTypeDB.close();
         } else {
-            networkIndicatorLabel.setText("не в сети");
-            networkIndicator.setFill(Color.YELLOW);
+            isOnline(false);
             createPaymentTypeList(conLocalPaymentTypeDB);
             conLocalCategoryDB.close();
         }
@@ -866,13 +856,11 @@ public class SellerController {
         }
         conLocalDiscountDB = getConnection("local_database");
         if (conNetworkDiscountDB != null) {
-            networkIndicatorLabel.setText("в сети");
-            networkIndicator.setFill(Color.GREEN);
+            isOnline(true);
             syncDiscountsList(conNetworkDiscountDB, conLocalDiscountDB);
             conNetworkDiscountDB.close();
         } else {
-            networkIndicatorLabel.setText("не в сети");
-            networkIndicator.setFill(Color.YELLOW);
+            isOnline(false);
         }
         createDiscountList(conLocalDiscountDB);
         conLocalDiscountDB.close();
@@ -1077,5 +1065,14 @@ public class SellerController {
         addProduct.setDisable(isDisable);
         discountButtonActivate.setDisable(isDisable);
         delProduct.setDisable(isDisable);
+    }
+    public void isOnline(boolean status) {
+        if (status) {
+            networkIndicatorLabel.setText("в сети");
+            networkIndicator.setFill(Color.GREEN);
+        } else {
+            networkIndicatorLabel.setText("не в сети");
+            networkIndicator.setFill(Color.YELLOW);
+        }
     }
 }
