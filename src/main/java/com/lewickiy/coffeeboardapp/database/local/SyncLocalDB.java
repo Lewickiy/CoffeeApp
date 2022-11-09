@@ -180,12 +180,9 @@ public class SyncLocalDB {
         deleteFromSql(localCon, LOCAL_DB, "discount", "delete");
 
         for (Discount discount : discounts) {
-            System.out.println(discount.isActive() + " в discounts после загрузки из сетевой базы");
-            int isActive = 0;
-            if (discount.isActive() == false) {
+            int isActive = 1;
+            if (!discount.isActive()) {
                 isActive = 0;
-            } else {
-                isActive = 1;
             }
             insertToSql(localCon, LOCAL_DB,"discount", "discount_id, "
                     + "discount, "
