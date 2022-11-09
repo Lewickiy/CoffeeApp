@@ -96,7 +96,6 @@ public class SyncLocalDB {
             int paymenttypeId = resultSet.getInt("paymenttype_id");
             String paymenttype = resultSet.getString("paymenttype");
             paymentTypes.add(new PaymentType(paymenttypeId, paymenttype));
-
         }
         resultSet.close();
 
@@ -117,7 +116,6 @@ public class SyncLocalDB {
             int productCategoryId = resultSet.getInt("product_category_id");
             String productCategory = resultSet.getString("product_category");
             productCategories.add(new ProductCategory(productCategoryId, productCategory));
-
         }
         resultSet.close();
 

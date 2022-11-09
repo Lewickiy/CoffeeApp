@@ -62,13 +62,12 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductList.createPro
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 import static com.lewickiy.coffeeboardapp.database.query.CheckShift.checkShift;
 import static com.lewickiy.coffeeboardapp.database.query.OpenCloseShift.updateShiftSql;
-import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.shiftLog;
-import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.syncShiftLog;
+import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.*;
 
 public class SellerController {
     private boolean newSale = true; //boolean значение необходимости создания нового чека
     private int saleId; //Идентификатор текущей продажи. Создаётся в классе UniqueIdGenerator
-
+    private boolean startSync = true;
     @FXML
     private Label timeLabel;
     private int positionsCount;
@@ -129,6 +128,7 @@ public class SellerController {
     @FXML
     void closeShiftButtonOnAction() {
         closeShiftPane.setVisible(true);
+        startSync = false;
     }
     @FXML
     void openShiftButtonOnAction() {
@@ -155,15 +155,15 @@ public class SellerController {
             product_button.setDisable(false);
         }
         shiftLog(false); //смена открыта
+        startSync = true;
         closeShiftButton.setDisable(false);
         openShiftButton.setDisable(true);
         allSales.setDisable(false);
         openShiftPane.setVisible(false);
-
     }
     @FXML
     void cancelOpenShiftButtonOnAction() {
-
+        boolean start = false;
     }
 
     /*____________________________________start___________________________________________
@@ -184,10 +184,15 @@ public class SellerController {
         Connection con = getConnection("local_database");
         deleteFromSql(con, "local_database", "sale_product", "DELETE");
         deleteFromSql(con, "local_database", "sale", "DELETE");
-
         updateShiftSql(true, 0.00);
         shiftLog(true);
+        try {
+            syncShiftLog();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
 
+        clearLoadedShiftLog();
         PRODUCT_BUTTONS.clear(); //Кнопки продуктов очистка Array
         NUMBER_BUTTONS.clear(); //Очистка цифровых кнопок Array
 
@@ -211,6 +216,7 @@ public class SellerController {
     }
     @FXML
     void cancelCloseShiftButtonOnAction() {
+        startSync = true;
         closeShiftPane.setVisible(false);
     }
 
@@ -264,6 +270,7 @@ public class SellerController {
         @Override
         public void handle(ActionEvent event) {
             Button button = (Button) event.getSource(); //Получить данные от нажатой кнопки
+            startSync = false;
             cashReceiptButton.setDisable(true);
             int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
 
@@ -573,6 +580,7 @@ public class SellerController {
             changePane.setVisible(true);
             paymentTypePanel.setVisible(false);
         } else if (Integer.parseInt(button.getAccessibleText()) == 2) {
+            startSync = true;
             allSalesTable.setItems(todaySalesObservableList);
             allSalesTable.refresh();
             Connection conLocalDB = getConnection("local_database");
@@ -614,6 +622,7 @@ public class SellerController {
 
     @FXML
     void noChangeOnAction() throws SQLException {
+        startSync = true;
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
         Connection conLocalDB = getConnection("local_database");
@@ -633,7 +642,6 @@ public class SellerController {
     void withChangeOnAction() {
         changePane.setVisible(false);
         withChangePane.setVisible(true);
-        System.out.println("With change pressed");
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
@@ -663,6 +671,7 @@ public class SellerController {
 
     @FXML
     void okWithChangeOnAction() throws SQLException {
+        startSync = true;
         allSalesTable.setItems(todaySalesObservableList);
         allSalesTable.refresh();
         Connection conLocalDB = getConnection("local_database");
@@ -757,31 +766,35 @@ public class SellerController {
 
         //Тестовый поток для периодической синхронизации продаж. TODO не тестовым.
         Thread syncTestThread = new Thread(() -> {
-            while (true) {
+            while(true) {
                 try {
                     Thread.sleep(300000); //5 min
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 Platform.runLater(() -> {
-                    Connection con = null;
-                    try {
-                        con = getConnection("network_database");
-                        isOnline(true);
+                    if (startSync) {
+                        Connection con;
                         try {
-                            syncShiftLog();
-                            con.close();
-                        } catch (SQLException | ParseException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } catch (SQLException e) {
-                            System.out.println("offline");
+                            con = getConnection("network_database");
+                            isOnline(true);
+                            try {
+                                syncShiftLog();
+                                con.close();
+                            } catch (SQLException | ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        } catch (SQLException e) {
                             isOnline(false);
+                        }
                     }
                 });
             }
-        });   syncTestThread.setDaemon(true); //Это закроет поток. Он сообщает JVM, что это фоновый поток, поэтому он завершится при выходе.
+
+        });
+        syncTestThread.setDaemon(true); //Это закроет поток. Он сообщает JVM, что это фоновый поток, поэтому он завершится при выходе.
         syncTestThread.start(); //Запускаем поток.
+
 
         networkIndicator.setFill(Color.YELLOW);
 
@@ -1030,6 +1043,7 @@ public class SellerController {
         if (checkShift() == true) {
             for (Button product_button : PRODUCT_BUTTONS) {
                 product_button.setDisable(true);
+                startSync = false;
             }
             closeShiftButton.setDisable(true);
             allSales.setDisable(true);

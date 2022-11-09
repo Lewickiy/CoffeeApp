@@ -92,8 +92,8 @@ public class ShiftLog {
     }
 
     /**
-     * Данный метод реализует синхронизацию таблиц shift_log (сетевой с локальной)<br>
-     * в локальной базе данных выгруженные данные помечаются отметкой loaded,<br>
+     * Данный метод реализует синхронизацию таблиц shift_log (сетевой с локальной).<br>
+     * В локальной базе данных выгруженные данные помечаются отметкой loaded,<br>
      * после чего в сетевую базу данных эти строки повторно не выгружаются.<br>
      * @throws SQLException - прерывает выполнение метода, не продолжая какие-либо действия break;<br>
      * @throws ParseException - не обрабатывается.
@@ -151,5 +151,26 @@ public class ShiftLog {
             conLocal.close();
             break;
         }
+    }
+
+    /**
+     * Очистка строк, которые уже были загружены в сетевую базу данных.
+     * Незагруженные строки или строки относящиеся к другим точкам продаж не удаляются из таблицы.
+     * @throws SQLException - не обработано.
+     */
+    public static void clearLoadedShiftLog() throws SQLException {
+        Connection con;
+        try {
+            con = getConnection("local_database");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        String query = "DELETE FROM shift_log WHERE outlet_id = " + currentOutlet.getOutletId() + " AND loaded = 1;";
+
+        Statement statement = con.createStatement();
+        statement.executeUpdate(query);
+
+        statement.close();
+        con.close();
     }
 }
