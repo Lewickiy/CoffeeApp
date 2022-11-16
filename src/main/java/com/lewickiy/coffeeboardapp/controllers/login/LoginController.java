@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.logging.Level;
 
+import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncOutletsList;
 import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncUsersList;
@@ -49,10 +51,14 @@ public class LoginController {
 
     @FXML
     void initialize() throws SQLException, ParseException {
+        LOGGER.log(Level.INFO,"Start Sync...");
+
         Connection conNetworkUserDB;
         try {
             conNetworkUserDB = getConnection("network_database");
+            LOGGER.log(Level.FINE,"Connection to network database established");
         } catch (SQLException sqlEx) {
+            LOGGER.log(Level.WARNING,"Connection to network database failed");
             conNetworkUserDB = null;
         }
 
@@ -62,38 +68,45 @@ public class LoginController {
             isOnline(true);
             syncUsersList(conNetworkUserDB, conLocalUserDB);
             conNetworkUserDB.close();
+            LOGGER.log(Level.INFO,"Network connection closed");
 
         } else {
             isOnline(false);
         }
         createUsersList(conLocalUserDB);
         conLocalUserDB.close();
+        LOGGER.log(Level.INFO,"Local database connection closed\n");
 
         Connection conNetworkOutletDB;
         try {
             conNetworkOutletDB = getConnection("network_database");
+            LOGGER.log(Level.FINE,"Connection to network database established");
         } catch (SQLException sqlEx) {
+            LOGGER.log(Level.WARNING,"Connection to network database failed");
             conNetworkOutletDB = null;
         }
 
         Connection conLocalOutletDB = getConnection("local_database");
 
         if (conNetworkOutletDB != null) {
+            LOGGER.log(Level.FINE,"Connection to local database established");
             isOnline(true);
             syncOutletsList(conNetworkOutletDB, conLocalOutletDB);
             conNetworkOutletDB.close();
+            LOGGER.log(Level.INFO,"Network connection closed");
         } else {
             isOnline(false);
         }
         createOutletList(conLocalOutletDB);
         conLocalOutletDB.close();
+        LOGGER.log(Level.INFO,"Local database connection closed\n");
+        LOGGER.log(Level.FINE,"Synchronization completed...\n");
         outletChoiceBox.setItems(outletsObservableList);
 
-        /* Это Listener для outletChoiceBox. Он следит за изменениями в выборе и создаёт
-        из них объект currentOutlet класса Outlet.*/
         outletChoiceBox.getSelectionModel().selectedItemProperty().addListener((observableValue, outlet, t1)
                 -> {
             currentOutlet = outletChoiceBox.getValue();
+            LOGGER.log(Level.INFO,"Outlet: \"" + currentOutlet.getOutlet() + "\" id: " + currentOutlet.getOutletId() + " selected");
             acceptOutletChoice.setDisable(false);
         });
         usernameTextField.textProperty().addListener((observable, oldValue, newValue)
@@ -105,6 +118,7 @@ public class LoginController {
     @FXML
     void escapeKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ESCAPE)  {
+            LOGGER.log(Level.INFO,"Escape key pressed. Logged out...");
             Stage stage = (Stage) usernameTextField.getScene().getWindow();
             stage.close();
         }
@@ -128,6 +142,7 @@ public class LoginController {
         }
     }
     public void cancelButtonOnAction() {
+        LOGGER.log(Level.INFO,"Cancel button pressed. Logged out...");
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
@@ -168,6 +183,8 @@ public class LoginController {
 
         Stage stage = (Stage) loginButton.getScene().getWindow();
         Stage stageSeller = new Stage();
+        LOGGER.log(Level.INFO,"Preparing to close Login Controller...");
+        LOGGER.log(Level.INFO,"Start Seller Controller...");
         FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("seller.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stageSeller.initStyle(StageStyle.UNDECORATED);
@@ -177,6 +194,7 @@ public class LoginController {
 
         stageSeller.show();
         stage.close();
+        LOGGER.log(Level.INFO,"Login Controller closed\n");
     }
     private void isOnline(boolean status) {
         if (status) {

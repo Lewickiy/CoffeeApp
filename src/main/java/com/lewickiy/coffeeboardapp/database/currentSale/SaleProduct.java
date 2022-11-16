@@ -16,6 +16,7 @@ public class SaleProduct {
     private int discount;
     private int amount;
     private double sum;
+    private boolean loaded;
 
     public SaleProduct() {
     }
@@ -106,6 +107,14 @@ public class SaleProduct {
 
     public void setSum(double sum) {
         this.sum = sum;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
     }
 
     public static void addSaleProductsToLocalDB(Connection con, ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) throws SQLException {

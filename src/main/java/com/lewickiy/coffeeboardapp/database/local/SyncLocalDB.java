@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
 
+import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 import static com.lewickiy.coffeeboardapp.database.Query.*;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
@@ -25,6 +27,7 @@ public class SyncLocalDB {
     static final String NETWORK_DB = "network_database";
 
     public static void syncUsersList(Connection networkCon, Connection localCon) throws SQLException {
+        int count = 0;
         ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"user");
         while(resultSet.next()) {
             int userId = resultSet.getInt("user_id");
@@ -38,12 +41,15 @@ public class SyncLocalDB {
             boolean administrator = resultSet.getBoolean("administrator");
             boolean activeStuff = resultSet.getBoolean("active_stuff");
             users.add(new User(userId, login, password, firstName, lastName, patronymic, birthday, phone, administrator, activeStuff));
-
+            count++;
         }
+        LOGGER.log(Level.INFO,count + " users loaded to users array from network database");
+        count = 0;
         resultSet.close();
 
-        deleteFromSql(localCon, LOCAL_DB, "user", "delete");
+        deleteFromSql(localCon, "user", "delete");
 
+        LOGGER.log(Level.INFO,"Start loading users to sqlite from array");
         for (User user : users) {
             insertToSql(localCon, LOCAL_DB,"user", "user_id, "
                     + "login, "
@@ -66,7 +72,9 @@ public class SyncLocalDB {
                     + user.isAdministrator() + "', '"
                     + user.isActiveStuff() + "'");
         }
+        LOGGER.log(Level.INFO,"Users added to SQLite");
         users.clear();
+        LOGGER.log(Level.INFO,"Users array cleared");
     }
 
     public static void syncOutletsList(Connection networkCon, Connection localCon) throws SQLException {
@@ -79,7 +87,7 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(localCon, LOCAL_DB, "outlet", "delete");
+        deleteFromSql(localCon, "outlet", "delete");
 
         for (Outlet outlet : outlets) {
             insertToSql(localCon, LOCAL_DB,"outlet", "outlet_id, "
@@ -99,7 +107,7 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(localCon, LOCAL_DB, "paymenttype", "delete");
+        deleteFromSql(localCon, "paymenttype", "delete");
 
         for (PaymentType paymentType : paymentTypes) {
             insertToSql(localCon, LOCAL_DB,"paymenttype", "paymenttype_id, "
@@ -119,7 +127,7 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(localCon, LOCAL_DB, "product_category", "delete");
+        deleteFromSql(localCon, "product_category", "delete");
 
         for (ProductCategory productCategory : productCategories) {
             insertToSql(localCon, LOCAL_DB,"product_category", "product_category_id, "
@@ -144,7 +152,7 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(localCon, LOCAL_DB, "product", "delete");
+        deleteFromSql(localCon, "product", "delete");
 
         for (Product product : products) {
             insertToSql(localCon, LOCAL_DB,"product", "product_id, "
@@ -175,7 +183,7 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(localCon, LOCAL_DB, "discount", "delete");
+        deleteFromSql(localCon, "discount", "delete");
 
         for (Discount discount : discounts) {
             int isActive = 1;

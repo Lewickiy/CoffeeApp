@@ -100,6 +100,7 @@ public class ShiftLog {
      */
     public static void syncShiftLog() throws SQLException, ParseException {
         boolean start = true;
+
         while(start) {
             Connection conNetwork;
             Connection conLocal;

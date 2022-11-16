@@ -18,6 +18,17 @@ public class CurrentSale {
 
     private boolean loaded;
 
+    public CurrentSale(int saleId, int userId, int outletId, Date currentDate, Time currentTime, int paymentTypeId, int clientId, boolean loaded) {
+        this.saleId = saleId;
+        this.userId = userId;
+        this.outletId = outletId;
+        this.currentDate = currentDate;
+        this.currentTime = currentTime;
+        this.paymentTypeId = paymentTypeId;
+        this.clientId = clientId;
+        this.loaded = loaded;
+    }
+
     public CurrentSale(int saleId, int userId, int outletId) {
         this.saleId = saleId;
         this.userId = userId;
@@ -42,6 +53,14 @@ public class CurrentSale {
     }
 
     public void setSaleOutletId(int outletId) {
+        this.outletId = outletId;
+    }
+
+    public int getOutletId() {
+        return outletId;
+    }
+
+    public void setOutletId(int outletId) {
         this.outletId = outletId;
     }
 
@@ -72,6 +91,14 @@ public class CurrentSale {
 
     public void setClientId(int clientId) {
         this.clientId = clientId;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
     }
 
     public static void addSaleToLocalDB(Connection con, CurrentSale currentSale) throws SQLException {

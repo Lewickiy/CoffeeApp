@@ -23,12 +23,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -40,7 +43,9 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
+import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 import static com.lewickiy.coffeeboardapp.controllers.seller.DiscountNameButton.discountNameButtons;
 import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
@@ -63,16 +68,21 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 import static com.lewickiy.coffeeboardapp.database.query.CheckShift.checkShift;
 import static com.lewickiy.coffeeboardapp.database.query.OpenCloseShift.updateShiftSql;
 import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.*;
+import static com.lewickiy.coffeeboardapp.database.query.SyncProductSales.syncSalesProduct;
+import static com.lewickiy.coffeeboardapp.database.query.SyncSales.syncSales;
 
 public class SellerController {
+
+    //TODO ArrayLists зафиксировать изначальный размер
+    //TODO Исключения залогировать и выдать пользователю user friendly сообщение.
     private boolean newSale = true; //boolean значение необходимости создания нового чека
-    private int saleId; //Идентификатор текущей продажи. Создаётся в классе UniqueIdGenerator
+    private int saleId;
     private boolean startSync = true;
     @FXML
     private Label timeLabel;
     private int positionsCount;
-    private CurrentSale currentSale; //объект - текущая продажа.
-    private SaleProduct currentProduct; //объект - зона сбора данных.
+    private CurrentSale currentSale;
+    private SaleProduct currentProduct;
     static ObservableList<SaleProduct> saleProductsObservableList = FXCollections.observableList(currentSaleProducts);
     static ObservableList<SaleProduct> todaySalesObservableList = FXCollections.observableList(todaySalesArrayList);
     @FXML
@@ -95,19 +105,13 @@ public class SellerController {
     @FXML
     private Button allSales;
     @FXML
-    private Label userEarnings; //Не действует. Должно помещаться на отдельном окне при закрытии смены.
-    @FXML
     private Label cashDepositLabel;
     @FXML
     private Label allCashLabel;
     @FXML
     private Label litresLabel;
-
-    /**
-     * Если панель скрыта, она открывается, если открыта - скрывается.
-     */
     @FXML
-    void allSalesOnAction() throws SQLException {
+    void allSalesOnAction() throws SQLException, ParseException {
         Connection con = getConnection("local_database");
         addAllSalesToArray(con);
         con.close();
@@ -115,16 +119,15 @@ public class SellerController {
         allSalesTable.refresh();
         cashSumSaleLabel.setText(sumCash() + " руб.");
         cardSumSaleLabel.setText(sumCard() + " руб.");
-        allSumSaleLabel.setText(sumAll() + " руб."); //getCashDeposit();
+        allSumSaleLabel.setText(sumAll() + " руб.");
         cashDepositLabel.setText(getCashDeposit() + " руб.");
         allCashLabel.setText((sumCash() + getCashDeposit()) + " руб.");
         if (allSalesPane.isVisible()) {
             todaySalesArrayList.clear();
         }
         litresLabel.setText(String.valueOf(litresSum()));
-        allSalesPane.setVisible(!allSalesPane.isVisible()); //если панель со всеми продажами выключена, она включается, если включена - выключается.
+        allSalesPane.setVisible(!allSalesPane.isVisible());
     }
-    //Действие при нажатии на кнопку Закрытия смены.
     @FXML
     void closeShiftButtonOnAction() {
         closeShiftPane.setVisible(true);
@@ -134,9 +137,6 @@ public class SellerController {
     void openShiftButtonOnAction() {
         openShiftPane.setVisible(true);
     }
-    /*____________________________________˄˄˄_____________________________________________
-     *___________________________________the end__________________________________________*/
-
     @FXML
     private Pane openShiftPane;
     @FXML
@@ -147,6 +147,15 @@ public class SellerController {
     private TextField cashDepositTextField;
     @FXML
     void okOpenShiftButtonOnAction() throws SQLException {
+        openShiftAction();
+    }
+    @FXML
+    private void okOpenShiftOnEnterKey(KeyEvent okEvent) throws SQLException {
+        if (okEvent.getCode() == KeyCode.ENTER)  {
+            openShiftAction();
+        }
+    }
+    public void openShiftAction() throws SQLException {
         String cashDepositString = cashDepositTextField.getText().replace(',', '.');
         cashDepositString = cashDepositString.replace(" ", "");
         double cashDeposit = Double.parseDouble(cashDepositString);
@@ -154,7 +163,7 @@ public class SellerController {
         for (Button product_button : PRODUCT_BUTTONS) {
             product_button.setDisable(false);
         }
-        shiftLog(false); //смена открыта
+        shiftLog(false);
         startSync = true;
         closeShiftButton.setDisable(false);
         openShiftButton.setDisable(true);
@@ -163,12 +172,18 @@ public class SellerController {
     }
     @FXML
     void cancelOpenShiftButtonOnAction() {
-        boolean start = false;
+        Stage stage = (Stage) cancelOpenShiftButton.getScene().getWindow();
+        stage.close();
+    }
+    @FXML
+    void cancelOpenShiftOnEscapeKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ESCAPE)  {
+            LOGGER.log(Level.INFO,"Escape key pressed. Logged out...");
+            Stage stage = (Stage) cancelOpenShiftButton.getScene().getWindow();
+            stage.close();
+        }
     }
 
-    /*____________________________________start___________________________________________
-     * Панель подтверждения закрытия смены.
-     *_____________________________________˅˅˅____________________________________________*/
     @FXML
     private Pane closeShiftPane;
     @FXML
@@ -182,8 +197,8 @@ public class SellerController {
         allSalesTable.refresh();
 
         Connection con = getConnection("local_database");
-        deleteFromSql(con, "local_database", "sale_product", "DELETE");
-        deleteFromSql(con, "local_database", "sale", "DELETE");
+        deleteFromSql(con, "sale_product", "DELETE");
+        deleteFromSql(con, "sale", "DELETE");
         updateShiftSql(true, 0.00);
         shiftLog(true);
         try {
@@ -220,34 +235,28 @@ public class SellerController {
         closeShiftPane.setVisible(false);
     }
 
-    /*____________________________________˄˄˄_____________________________________________
-     *___________________________________the end__________________________________________*/
-
-    /*____________________________________start___________________________________________
-     * Панель сегодняшних продаж
-     *_____________________________________˅˅˅____________________________________________*/
     @FXML
     private AnchorPane allSalesPane;
     @FXML
-    private TableView<SaleProduct> allSalesTable; //таблица продажи (текущий чек)
+    private TableView<SaleProduct> allSalesTable;
     @FXML
-    private TableColumn<TodaySales, Time> timeSalesColumn; //колонка с наименованием продукта
+    private TableColumn<TodaySales, Time> timeSalesColumn;
     @FXML
-    private TableColumn<TodaySales, String> productSalesColumn; //колонка с продуктом
+    private TableColumn<TodaySales, String> productSalesColumn;
     @FXML
-    private TableColumn<TodaySales, Integer> numberOfUnit; //единиц
+    private TableColumn<TodaySales, Integer> numberOfUnit;
     @FXML
     private TableColumn<TodaySales, String> unitOfMeasurement;
     @FXML
-    private TableColumn<TodaySales, Double> priceSalesColumn; //количество продукта
+    private TableColumn<TodaySales, Double> priceSalesColumn;
     @FXML
     private TableColumn<TodaySales, Integer> amountSalesColumn;
     @FXML
     private TableColumn<TodaySales, Integer> discountSalesColumn;
     @FXML
-    private TableColumn<TodaySales, Double> sumSalesColumn; //сумма стоимости продукта исходя из количества
+    private TableColumn<TodaySales, Double> sumSalesColumn;
     @FXML
-    private TableColumn<TodaySales, String> paymentTypeColumn; //тип оплаты
+    private TableColumn<TodaySales, String> paymentTypeColumn;
 
     @FXML
     private Label cashSumSaleLabel;
@@ -256,33 +265,24 @@ public class SellerController {
     @FXML
     private Label allSumSaleLabel;
 
-    /*____________________________________˄˄˄_____________________________________________
-     *___________________________________the end__________________________________________*/
-
-    /*____________________________________start___________________________________________
-     * Панель кнопок продуктов
-     *_____________________________________˅˅˅____________________________________________*/
     @FXML
     private GridPane mainGridPane;
-    private final ArrayList <Button> PRODUCT_BUTTONS = new ArrayList<>(); //ArrayList объектов Button
+    private final ArrayList <Button> PRODUCT_BUTTONS = new ArrayList<>();
 
-    EventHandler<ActionEvent> eventProductButtons = new EventHandler<ActionEvent>() { //Поведение по нажатию кнопки с Продуктом
+    EventHandler<ActionEvent> eventProductButtons = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            Button button = (Button) event.getSource(); //Получить данные от нажатой кнопки
+            Button button = (Button) event.getSource();
             startSync = false;
             cashReceiptButton.setDisable(true);
-            int idProductButton = Integer.parseInt(button.getAccessibleText()); //Записывается id нажатой кнопки (Продукт)
+            int idProductButton = Integer.parseInt(button.getAccessibleText());
 
-            if (newSale) { //Если данный продукт в Чеке первый, то...
+            if (newSale) {
                 cancelCashReceiptButton.setDisable(false);
                 saleId = UniqueIdGenerator.getId(); //получаем новый уникальный идентификатор продажи (Создаётся уникальный идентификатор нового чека)
                 currentSale = new CurrentSale(saleId, UserList.currentUser.getUserId(), currentOutlet.getOutletId()); //Создаётся текущий Чек.
                 newSale = false; //Значение boolean true меняется на false. Последующие действия уже не создают новую продажу до момента нажатия на "+" в Панели Текущего продукта.
-                /*
-                 * Здесь мы будем вставлять позицию в SaleProductList ПРИ СОЗДАНИИ НОВОГО ЧЕКА. Пока без загрузки в базу.
-                 * Циклом перебираются все продукты из products ArrayList, соответствующий условию (совпадение по id) передаётся currentProduct
-                 */
+
                 for (Product product : products) {
                     if (product.getProductId() == idProductButton) { //Если id продукта соответствует id нажатой кнопки продукта,
                         createCurrentProduct(product);
@@ -320,32 +320,17 @@ public class SellerController {
                     , product.getPrice());
         }
     };
-    /*____________________________________˄˄˄_____________________________________________
-     ___________________________________the end__________________________________________*/
 
-    /*____________________________________start___________________________________________
-     * Панель цифровых кнопок
-     * Набор кнопок от 1 до 0 для использования при выборе количества продуктов.
-     * Также содержит логику при нажатии на Цифровую кнопку.
-     _____________________________________˅˅˅____________________________________________*/
     @FXML
-    private GridPane numbersGridPane; //Цифровые кнопки, как в случае с кнопками Продуктов и Скидками, помещены в GridPane
-    private final ArrayList <Button> NUMBER_BUTTONS = new ArrayList<>(); //Для этого создан ArrayList содержащий список объектов Button.
-    //Непосредственное создание кнопок и распределение их по GridPane производится в методе initialization.
+    private GridPane numbersGridPane;
+    private final ArrayList <Button> NUMBER_BUTTONS = new ArrayList<>();
 
     EventHandler<ActionEvent> eventNumberButtons = new EventHandler<>() { //Действие, запускаемое при нажатии на одну из цифровых кнопок.
         @Override
         public void handle(ActionEvent event) {
             Button button = (Button) event.getSource();
             cashReceiptButton.setDisable(true);
-            /*
-             *При нажатии на Цифровую кнопку происходит обновление данных в amountLabel, отражающем выбранное количество Продукта
-             * Также происходит пересчёт суммы Текущего продукта исходя из выбранного количества.
-             * После чего Цифровые кнопки становятся недоступными, а кнопки с операциями над currentProduct становятся доступными.
-             * TODO изменить логику. Возможно, при нажатии на 1 и потом снова на 1 количество должно становиться 11.
-             *  Надо продумать этот момент. Или цифровые кнопки должны быть доступны до момента нажатия на "+" расположенной в Панели Текущего Продукта,
-             *  который добавляет позицию в текущий Чек.
-             */
+
             if (Integer.parseInt(button.getAccessibleText()) != 0) {
                 amountLabel.setText(button.getAccessibleText()); //Label количества берёт данные из AccessibleText цифровой кнопки.
                 amountLabel.setVisible(true);
@@ -373,20 +358,7 @@ public class SellerController {
             }
         }
     };
-    /*____________________________________˄˄˄_____________________________________________
-     ___________________________________the end__________________________________________*/
 
-    /*____________________________________start___________________________________________
-     * Панель таблицы текущего чека
-     * Таблица содержит в себе несколько столбцов:
-     * Продукт - здесь отображаются добавленные продукты
-     * Цена - цена отражённая в прайсе
-     * Количество - количество добавленного продукта.
-     * На данный момент редактирование данных по нажатию на ячейку не реализовано
-     * //TODO создать редактирование данных в таблице по нажатию на ячейку с данными
-     * Также присутствует Label с отображением суммы заказа sumLabel
-     * //TODO добавить отображение суммы чека со скидкой
-     _____________________________________˅˅˅____________________________________________*/
     @FXML
     private TableView<SaleProduct> saleTable; //таблица продажи (текущий чек)
     @FXML
@@ -466,20 +438,14 @@ public class SellerController {
         saleTable.setItems(saleProductsObservableList);
         saleTable.refresh();
 
-        //Подсчёт суммы продажи под таблицей текущей продажи.
-        double total = 0.0;
-
-        for (SaleProduct saleProduct : saleTable.getItems()) {
-            total = total + saleProduct.getSum();
-        }
-        productCategoryIco.setVisible(false); //Картинка Продукта перестаёт быть видимой
-        xLabel.setVisible(false); //Символ количества перестаёт отображаться
-        sumLabel.setText(String.valueOf(total)); //Сумма устанавливается в sumLabel
-        productNameLabel.setVisible(false); //Название продукта перестаёт отображаться
-        amountLabel.setVisible(false); //Количество продукта перестаёт отображаться
-        addProduct.setDisable(true); //Кнопка добавления продукта становится неактивной
+        productCategoryIco.setVisible(false);
+        xLabel.setVisible(false);
+        sumLabelRefresh();
+        productNameLabel.setVisible(false);
+        amountLabel.setVisible(false);
+        addProduct.setDisable(true);
         productOperationButtonsIsDisable(true);
-        buttonsIsDisable(PRODUCT_BUTTONS, false); //Кнопки с Продуктами становятся активными.
+        buttonsIsDisable(PRODUCT_BUTTONS, false);
     }
     @FXML
     void cashReceiptOnAction() {
@@ -515,16 +481,22 @@ public class SellerController {
         @Override
         public void handle(ActionEvent event) {
             Button button = (Button) event.getSource();
-            discountPanel.setVisible(false); // Скрываем панель скидок
-            currentProduct.setDiscountId(Integer.parseInt(button.getAccessibleText()));
-            for (Discount discount : discounts) {
-                if (currentProduct.getDiscountId() == discount.getDiscountId()) {
-                    currentProduct.setDiscount(discount.getDiscount());
+            discountPanel.setVisible(false);
+
+            for (SaleProduct currentSaleProduct : currentSaleProducts) {
+                currentSaleProduct.setDiscountId(Integer.parseInt(button.getAccessibleText()));
+                for (Discount discount : discounts) {
+                    if (currentSaleProduct.getDiscountId() == discount.getDiscountId()) {
+                        currentSaleProduct.setDiscount(discount.getDiscount());
+                    }
                 }
+                currentSaleProduct.setSum(currentSaleProduct.getPrice()
+                - (currentSaleProduct.getPrice() * currentSaleProduct.getDiscount() / 100)
+                        * currentSaleProduct.getAmount());
             }
-            currentProduct.setSum((currentProduct.getPrice() //Устанавливаем текущему продукту сумму исходя из количества и скидки
-                    - (currentProduct.getPrice() * currentProduct.getDiscount() / 100))
-                    * currentProduct.getAmount());
+            saleTable.setItems(saleProductsObservableList);
+            saleTable.refresh();
+            sumLabelRefresh();
         }
     };
     /*____________________________________˄˄˄_____________________________________________
@@ -593,6 +565,9 @@ public class SellerController {
             sumLabel.setText("0.00");
             saleTable.refresh();
             paymentTypePanel.setVisible(false);
+            renameCashReceiptButton();
+
+
         }
     }
     @FXML
@@ -636,6 +611,7 @@ public class SellerController {
         saleTable.refresh();
         changePane.setVisible(false);
         paymentTypePanel.setVisible(false);
+        renameCashReceiptButton();
     }
 
     @FXML
@@ -684,26 +660,19 @@ public class SellerController {
         sumLabel.setText("0.00");
         saleTable.refresh();
 
+        renameCashReceiptButton();
+
         withChangePane.setVisible(false);
         sumChangeTextField.clear();
         changeLabel.setText("0.00");
     }
 
-    /*____________________________________˄˄˄_____________________________________________
-     ___________________________________the end__________________________________________*/
-
-    /*____________________________________start___________________________________________
-     * Панель корректировки
-     _____________________________________˅˅˅____________________________________________*/
     @FXML
     private AnchorPane correctionPane;
-
     @FXML
     private Button correctionButton;
-
     @FXML
     private Button cancelOupsButton;
-
     @FXML
     private TextField correctionTextField;
 
@@ -746,25 +715,21 @@ public class SellerController {
      * Инициализация
      _____________________________________˅˅˅____________________________________________*/
     @FXML
-    void initialize() throws SQLException, ParseException {
-        //Часы висящие в панели.
-        Thread timerThread = new Thread(() -> {
+    void initialize() throws SQLException {
+        Thread clockThread = new Thread(() -> {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
             while (true) {
                 try {
-                    Thread.sleep(1000); //1 second
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 final String time = simpleDateFormat.format(new java.util.Date());
-                Platform.runLater(() -> {
-                    timeLabel.setText(time);
-                });
+                Platform.runLater(() -> timeLabel.setText(time));
             }
-        });   timerThread.setDaemon(true); //Это закроет поток. Он сообщает JVM, что это фоновый поток, поэтому он завершится при выходе.
-        timerThread.start(); //Запускаем поток.
+        });   clockThread.setDaemon(true);
+        clockThread.start();
 
-        //Тестовый поток для периодической синхронизации продаж. TODO не тестовым.
         Thread syncTestThread = new Thread(() -> {
             while(true) {
                 try {
@@ -780,6 +745,8 @@ public class SellerController {
                             isOnline(true);
                             try {
                                 syncShiftLog();
+                                syncSales();
+                                syncSalesProduct();
                                 con.close();
                             } catch (SQLException | ParseException e) {
                                 throw new RuntimeException(e);
@@ -790,21 +757,19 @@ public class SellerController {
                     }
                 });
             }
-
         });
-        syncTestThread.setDaemon(true); //Это закроет поток. Он сообщает JVM, что это фоновый поток, поэтому он завершится при выходе.
-        syncTestThread.start(); //Запускаем поток.
+        syncTestThread.setDaemon(true);
+        syncTestThread.start();
 
 
         networkIndicator.setFill(Color.YELLOW);
-
         //Синхронизация и загрузка списка продуктов
         Connection conNetworkProductDB = null;
         Connection conLocalProductDB;
         try {
             conNetworkProductDB = getConnection("network_database");
         } catch (SQLException sqlEx) {
-            System.out.println(sqlEx);
+            LOGGER.log(Level.INFO,"Connection to network database failed");
         }
 
         conLocalProductDB = getConnection("local_database");
@@ -825,7 +790,7 @@ public class SellerController {
         try {
             conNetworkCategoryDB = getConnection("network_database");
         } catch (SQLException sqlEx) {
-            System.out.println(sqlEx);
+            LOGGER.log(Level.INFO,"Connection to network database failed");
         }
         conLocalCategoryDB = getConnection("local_database");
         if (conNetworkCategoryDB != null) {
@@ -844,7 +809,7 @@ public class SellerController {
         try {
             conNetworkPaymentTypeDB = getConnection("network_database");
         } catch (SQLException sqlEx) {
-            System.out.println(sqlEx);
+            LOGGER.log(Level.INFO,"Connection to network database failed");
         }
         conLocalPaymentTypeDB = getConnection("local_database");
         if (conNetworkPaymentTypeDB != null) {
@@ -859,13 +824,12 @@ public class SellerController {
             conLocalCategoryDB.close();
         }
 
-        //Синхронизация и загрузка скидок
         Connection conNetworkDiscountDB = null;
         Connection conLocalDiscountDB;
         try {
             conNetworkDiscountDB = getConnection("network_database");
         } catch (SQLException sqlEx) {
-            System.out.println(sqlEx);
+            LOGGER.log(Level.INFO,"Connection to network database failed");
         }
         conLocalDiscountDB = getConnection("local_database");
         if (conNetworkDiscountDB != null) {
@@ -1040,7 +1004,7 @@ public class SellerController {
         allSalesTable.setPlaceholder(new Label("В текущей смене ещё нет продаж"));
 
         //Проверка открыта смена или нет.
-        if (checkShift() == true) {
+        if (checkShift()) {
             for (Button product_button : PRODUCT_BUTTONS) {
                 product_button.setDisable(true);
                 startSync = false;
@@ -1052,22 +1016,24 @@ public class SellerController {
         }
 
         cashDepositTextField.textProperty().addListener(observable -> okOpenShiftButton.setDisable(false));
+
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
 
-    /*____________________________________start___________________________________________
-     * Прочие методы.
-     _____________________________________˅˅˅____________________________________________*/
-    /**
-     * Данный метод делает кнопки с Продуктами/Цифровые кнопки доступными/недоступными.
-     * @param buttons - принимаемый параметр - массив кнопок.
-     * @param res - значение boolean отражающее действие, которое необходимо совершить с кнопками.
-     */
+
     public void buttonsIsDisable(ArrayList<Button> buttons, boolean res) {
         for (Button button : buttons) {
             button.setDisable(res);
         }
+    }
+    void sumLabelRefresh() {
+        double total = 0.0;
+
+        for (SaleProduct saleProduct : saleTable.getItems()) {
+            total = total + saleProduct.getSum();
+        }
+        sumLabel.setText(String.valueOf(total));
     }
 
     /**
@@ -1077,7 +1043,6 @@ public class SellerController {
      */
     public void productOperationButtonsIsDisable(boolean isDisable) {
         addProduct.setDisable(isDisable);
-        discountButtonActivate.setDisable(isDisable);
         delProduct.setDisable(isDisable);
     }
     public void isOnline(boolean status) {
@@ -1088,5 +1053,21 @@ public class SellerController {
             networkIndicatorLabel.setText("не в сети");
             networkIndicator.setFill(Color.YELLOW);
         }
+    }
+    public void renameCashReceiptButton() {
+        cashReceiptButton.setFont(Font.font("", FontWeight.BOLD, 29));
+        cashReceiptButton.setText("Чек сформирован");
+        Thread renameCashReceiptButton = new Thread(() -> {
+            try {
+                Thread.sleep(4000); //4 second
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Platform.runLater(() -> {
+                cashReceiptButton.setText("Чек");
+                cashReceiptButton.setFont(Font.font("System", FontWeight.BOLD, 35));
+            });
+        });   renameCashReceiptButton.setDaemon(true); //Это закроет поток. Он сообщает JVM, что это фоновый поток, поэтому он завершится при выходе.
+        renameCashReceiptButton.start(); //Запускаем поток.
     }
 }

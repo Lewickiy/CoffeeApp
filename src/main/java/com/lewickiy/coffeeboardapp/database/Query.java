@@ -4,41 +4,30 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+
+import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 
 public class Query {
-    /**
-     * Запрос SELECT FROM к таблице sql.
-     * @param tableName - принимаемый параметр типа String - Имя таблицы, к которой обращаемся.
-     * @return - метод возвращает объект resultSet класса ResultSet.
-     * @throws SQLException - TODO проработать, описать.
-     */
+
     public static ResultSet selectAllFromSql(Connection con, String dbName, String tableName) throws SQLException {
-        Statement statement = con.createStatement(); //создаётся подключение
+        Statement statement = con.createStatement();
         String query = null;
         if (dbName.equals("network_database")) {
-            query = "SELECT * FROM " + tableName; //создаётся запрос к базе данных
+            query = "SELECT * FROM " + tableName;
         } else if (dbName.equals("local_database")) {
             query = "SELECT * FROM " + tableName + ";";
         }
         return statement.executeQuery(query);
     }
 
-    public static void deleteFromSql(Connection con, String dbName, String tableName, String action) throws SQLException {
+    public static void deleteFromSql(Connection con, String tableName, String action) throws SQLException {
+        LOGGER.log(Level.INFO,"Start clear " + tableName + "...");
         action = action.toUpperCase();
         String query = action + " FROM " + tableName;
-        Statement statement = con.createStatement(); //создаётся подключение
+        Statement statement = con.createStatement();
         statement.executeUpdate(query);
-        statement.close();
-    }
-
-    public static void showTablesFromSql(Connection con, String dbName, String tableName, String action) throws SQLException {
-        action = action.toUpperCase();
-        String query = action + " tables";
-        Statement statement = con.createStatement(); //создаётся подключение
-        ResultSet rs = statement.executeQuery(query);
-        while(rs.next()) {
-            //TODO
-        }
+        LOGGER.log(Level.INFO,tableName + " cleared");
         statement.close();
     }
 

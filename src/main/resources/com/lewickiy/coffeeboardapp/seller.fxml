@@ -57,22 +57,6 @@
                                     <RowConstraints maxHeight="150.0" minHeight="91.0" percentHeight="0.0" prefHeight="91.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                               </GridPane>
-                              <Label alignment="CENTER_RIGHT" layoutX="425.0" layoutY="256.0" prefHeight="27.0" prefWidth="214.0" snapToPixel="false" text="Сегодня вы заработали:" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="userEarnings" alignment="CENTER_RIGHT" layoutX="478.0" layoutY="302.0" prefHeight="27.0" prefWidth="72.0" snapToPixel="false" text="0.00" textAlignment="RIGHT" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="559.0" layoutY="301.0" prefHeight="27.0" prefWidth="73.0" snapToPixel="false" text="руб." visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Button layoutX="502.0" layoutY="359.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="OK" visible="false" />
                               <Label blendMode="ADD" cache="true" cacheHint="SPEED" focusTraversable="false" layoutX="386.0" layoutY="423.0" opacity="0.31" text="AUTOGRAPH" textFill="#1c2ef2" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                                  <font>
                                     <Font name="Tahoma Bold" size="96.0" />
@@ -205,7 +189,7 @@
                                           <Insets />
                                        </opaqueInsets>
                                     </Button>
-                                    <Button fx:id="cancelOpenShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelOpenShiftButtonOnAction" prefHeight="27.0" prefWidth="110.0" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="45.0" AnchorPane.rightAnchor="45.0">
+                                    <Button fx:id="cancelOpenShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelOpenShiftButtonOnAction" onKeyPressed="#cancelOpenShiftOnEscapeKey" prefHeight="27.0" prefWidth="110.0" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="45.0" AnchorPane.rightAnchor="45.0">
                                        <font>
                                           <Font size="13.0" />
                                        </font>
@@ -218,7 +202,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="cashDepositTextField" layoutX="98.0" layoutY="137.0" prefHeight="46.0" prefWidth="192.0" AnchorPane.bottomAnchor="123.0" AnchorPane.leftAnchor="89.0" AnchorPane.rightAnchor="89.0" AnchorPane.topAnchor="137.0" />
+                                    <TextField fx:id="cashDepositTextField" layoutX="98.0" layoutY="137.0" onKeyPressed="#okOpenShiftOnEnterKey" prefHeight="46.0" prefWidth="192.0" AnchorPane.bottomAnchor="123.0" AnchorPane.leftAnchor="89.0" AnchorPane.rightAnchor="89.0" AnchorPane.topAnchor="137.0" />
                                  </children>
                                  <effect>
                                     <DropShadow offsetX="7.0" offsetY="7.0">
@@ -351,80 +335,56 @@
                <bottom>
                   <AnchorPane BorderPane.alignment="CENTER">
                      <children>
-                        <ImageView fx:id="productCategoryIco" fitHeight="150.0" fitWidth="200.0" layoutX="50.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0">
-                           <image>
-                              <Image url="@image/product/coffeeToGo_1.png" />
-                           </image>
-                        </ImageView>
-                        <Label layoutX="165.0" layoutY="242.0" text="X" fx:id="xLabel">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="productNameLabel" layoutX="164.0" layoutY="271.0" prefHeight="30.0" prefWidth="190.0" text="product" textAlignment="CENTER">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="priceLabel" layoutX="160.0" layoutY="143.0" opacity="0.98" prefHeight="78.0" prefWidth="191.0" text="price" textFill="#060168" visible="false">
-                           <font>
-                              <Font name="System Bold" size="74.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="amountLabel" layoutX="187.0" layoutY="242.0" prefHeight="30.0" prefWidth="71.0" text="amount">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
-                           <font>
-                              <Font name="System Bold" size="35.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="DEFAULT" />
-                           </cursor>
-                        </Button>
-                        <Button fx:id="discountButtonActivate" focusTraversable="false" layoutX="279.0" layoutY="45.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountButtonActivateOnAction" prefHeight="75.0" prefWidth="75.0" text="\%" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
-                           <font>
-                              <Font name="System Bold" size="33.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="delProduct" focusTraversable="false" layoutX="147.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#delProductOnAction" prefHeight="75.0" prefWidth="75.0" text="C" AnchorPane.bottomAnchor="15.0">
-                           <font>
-                              <Font name="System Bold" size="35.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="cashReceiptButton" accessibleHelp="В чеке можно выбрать оплату наличными или картой, а также корректировку суммы чека" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="14.0" layoutY="45.0" maxHeight="75.0" maxWidth="195.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#cashReceiptOnAction" prefHeight="75.0" prefWidth="136.0" text="Чек" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
-                           <font>
-                              <Font name="System Bold" size="35.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="cancelCashReceiptButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="279.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cancelCashReceiptOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                           <font>
-                              <Font name="System Bold" size="35.0" />
-                           </font>
-                        </Button>
-                        <AnchorPane fx:id="discountPanel" layoutY="3.0" minWidth="334.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false">
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <GridPane fx:id="discountGridPane" alignment="CENTER" hgap="13.2" layoutX="13.0" layoutY="39.0" maxHeight="342.0" maxWidth="342.0" minHeight="342.0" minWidth="342.0" prefHeight="342.0" prefWidth="342.0" vgap="13.2" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="39.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                              </GridPane>
-                              <Label layoutX="12.0" layoutY="4.0" text="Скидка">
+                              <Label fx:id="productNameLabel" prefHeight="30.0" prefWidth="190.0" text="product" textAlignment="CENTER" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="272.0">
                                  <font>
-                                    <Font name="System Bold" size="18.0" />
+                                    <Font size="20.0" />
                                  </font>
                               </Label>
+                              <Label fx:id="priceLabel" opacity="0.98" prefHeight="78.0" prefWidth="191.0" text="price" textFill="#060168" visible="false" AnchorPane.leftAnchor="160.0" AnchorPane.topAnchor="130.0">
+                                 <font>
+                                    <Font name="System Bold" size="74.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="amountLabel" prefHeight="30.0" prefWidth="71.0" text="amount" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="242.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                              </Button>
+                              <Button fx:id="cashReceiptButton" accessibleHelp="В чеке можно выбрать оплату наличными или картой, а также корректировку суммы чека" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" maxHeight="75.0" maxWidth="340.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#cashReceiptOnAction" prefHeight="75.0" prefWidth="340.0" text="Чек" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="cancelCashReceiptButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cancelCashReceiptOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                              </Button>
+                              <Label text="X" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="242.0" fx:id="xLabel">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fx:id="productCategoryIco" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="148.0">
+                                 <image>
+                                    <Image url="@image/product/coffeeToGo_1.png" />
+                                 </image>
+                              </ImageView>
+                              <Button fx:id="delProduct" focusTraversable="false" layoutX="151.0" layoutY="327.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#delProductOnAction" prefHeight="75.0" prefWidth="75.0" text="C" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="151.0">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="paymentTypePanel" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false">
@@ -449,11 +409,39 @@
                                     <Font name="System Bold" size="22.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="oups" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#oupsOnAction" prefHeight="75.0" prefWidth="149.0" text="Oups" textAlignment="CENTER" wrapText="true">
+                              <Button fx:id="oups" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#oupsOnAction" prefHeight="75.0" prefWidth="149.0" text="Oups" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="22.0" />
                                  </font>
                               </Button>
+                              <Button fx:id="discountButtonActivate" focusTraversable="false" layoutX="183.0" layoutY="325.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountButtonActivateOnAction" prefHeight="75.0" prefWidth="75.0" text="\%">
+                                 <font>
+                                    <Font name="System Bold" size="33.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="discountPanel" layoutY="3.0" minWidth="334.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false">
+                           <children>
+                              <GridPane fx:id="discountGridPane" alignment="CENTER" hgap="13.2" layoutX="13.0" layoutY="39.0" maxHeight="342.0" maxWidth="342.0" minHeight="342.0" minWidth="342.0" prefHeight="342.0" prefWidth="342.0" vgap="13.2" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="39.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                              <Label layoutX="12.0" layoutY="4.0" text="Скидка">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="correctionPane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
