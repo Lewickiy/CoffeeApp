@@ -14,9 +14,6 @@ public class TodaySales extends SaleProduct {
     private Time saleTime; //И время продажи
     private String paymentType; //А также тип оплаты типа String
 
-    public TodaySales() {
-        super();
-    }
     public TodaySales(int saleProdId
             , int prodSaleId
             , String prodName
@@ -34,15 +31,6 @@ public class TodaySales extends SaleProduct {
                 , discount
                 , amountProdSale
                 , sumProdSale);
-    }
-
-    public TodaySales(int prodSaleId
-            , String prodName
-            , double priceProdSale) {
-
-        super(prodSaleId
-                , prodName
-                , priceProdSale);
     }
 
     public int getOutletId() {
