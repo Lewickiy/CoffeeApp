@@ -3,7 +3,9 @@ package com.lewickiy.coffeeboardapp.database.query;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
 
+import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
@@ -99,20 +101,10 @@ public class ShiftLog {
      * @throws ParseException - не обрабатывается.
      */
     public static void syncShiftLog() throws SQLException, ParseException {
-        boolean start = true;
-
-        while(start) {
             Connection conNetwork;
-            Connection conLocal;
+            Connection conLocal = getConnection("local_database");
             try {
                 conNetwork = getConnection("network_database");
-            } catch (SQLException sqlEx) {
-                break;
-            }
-
-            conLocal = getConnection("local_database");
-
-            if (conNetwork != null) {
                 String selectNotLoaded = "SELECT outlet_id, user_id, date, time, is_closed FROM shift_log WHERE loaded = 0 AND outlet_id = " + currentOutlet.getOutletId() + ";";
                 Statement statement = conLocal.createStatement();
                 ResultSet resultSelectNotLoaded  = statement.executeQuery(selectNotLoaded);
@@ -148,30 +140,9 @@ public class ShiftLog {
                 prepareStatement.setInt(2, currentOutlet.getOutletId());
                 prepareStatement.executeUpdate();
                 prepareStatement.close();
+            } catch (SQLException sqlEx) {
+                LOGGER.log(Level.WARNING,"Error connecting to database while sync ShiftLog");
             }
             conLocal.close();
-            break;
-        }
-    }
-
-    /**
-     * Очистка строк, которые уже были загружены в сетевую базу данных.
-     * Незагруженные строки или строки относящиеся к другим точкам продаж не удаляются из таблицы.
-     * @throws SQLException - не обработано.
-     */
-    public static void clearLoadedShiftLog() throws SQLException {
-        Connection con;
-        try {
-            con = getConnection("local_database");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        String query = "DELETE FROM shift_log WHERE outlet_id = " + currentOutlet.getOutletId() + " AND loaded = 1;";
-
-        Statement statement = con.createStatement();
-        statement.executeUpdate(query);
-
-        statement.close();
-        con.close();
     }
 }

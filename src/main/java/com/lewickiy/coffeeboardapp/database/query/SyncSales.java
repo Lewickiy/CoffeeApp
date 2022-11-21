@@ -5,25 +5,19 @@ import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
 
+import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 
 public class SyncSales {
     public static void syncSales() throws SQLException, ParseException {
-        boolean start = true;
-        while(start) {
-            Connection conNetwork;
-            Connection conLocal;
-            try {
-                conNetwork = getConnection("network_database");
-            } catch (SQLException sqlEx) {
-                break;
-            }
-
-            conLocal = getConnection("local_database");
-
+        Connection conNetwork;
+        Connection conLocal = getConnection("local_database");
+        try {
+            conNetwork = getConnection("network_database");
             if (conNetwork != null) {
                 String selectNotLoaded = "SELECT sale_id, user_id, outlet_id, date, time, paymenttype_id, client_id, loaded FROM sale WHERE loaded = 0 AND outlet_id = " + currentOutlet.getOutletId() + ";";
                 Statement statement = conLocal.createStatement();
@@ -31,10 +25,7 @@ public class SyncSales {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
                 SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
 
-                System.out.println("Load sales from local database");
-
                 while(resultSelectNotLoaded.next()) {
-                    System.out.println("new sale loaded...");
                     CurrentSale currentSale1  = new CurrentSale(resultSelectNotLoaded.getInt("sale_id")
                             , resultSelectNotLoaded.getInt("user_id")
                             , resultSelectNotLoaded.getInt("outlet_id"));
@@ -66,10 +57,7 @@ public class SyncSales {
                             + currentSale1.getCurrentTime() + "', '"
                             + currentSale1.getPaymentTypeId() + "', '"
                             + currentSale1.getClientId()+ "'");
-
                 }
-
-                System.out.println("Insert is ok......................");
 
                 resultSelectNotLoaded.close();
                 conNetwork.close();
@@ -81,8 +69,9 @@ public class SyncSales {
                 prepareStatement.executeUpdate();
                 prepareStatement.close();
             }
-            conLocal.close();
-            break;
+        } catch (SQLException sqlEx) {
+            LOGGER.log(Level.WARNING,"Error connecting to database while sync Sales");
         }
+        conLocal.close();
     }
 }
