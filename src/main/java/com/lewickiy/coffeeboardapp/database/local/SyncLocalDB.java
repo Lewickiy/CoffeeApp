@@ -148,27 +148,34 @@ public class SyncLocalDB {
             String unitOfMeasurement = resultSet.getString("unit_of_measurement");
             int category = resultSet.getInt("product_category_id");
             double price = resultSet.getDouble("price");
-            products.add(new Product(productId, product, description, numberOfUnit, unitOfMeasurement, category, price));
+            boolean fixPrice = resultSet.getBoolean("fix_price");
+            products.add(new Product(productId, product, description, numberOfUnit, unitOfMeasurement, category, price, fixPrice));
         }
         resultSet.close();
 
         deleteFromSql(localCon, "product", "delete");
 
         for (Product product : products) {
+            int fixPrice = 1;
+            if (product.isFixPrice() == false) {
+                fixPrice = 0;
+            }
             insertToSql(localCon, LOCAL_DB,"product", "product_id, "
                     + "product, "
                     + "description, "
                     + "number_of_unit, "
                     + "unit_of_measurement, "
                     + "product_category_id, "
-                    + "price) VALUES ('"
+                    + "price, "
+                    + "fix_price) VALUES ('"
                     + product.getProductId() + "', '"
                     + product.getProduct() + "', '"
                     + product.getDescription() + "', '"
                     + product.getNumberOfUnit() + "', '"
                     + product.getUnitOfMeasurement() + "', '"
                     + product.getCategory() + "', '"
-                    + product.getPrice() + "'");
+                    + product.getPrice() + "', '"
+                    + fixPrice + "'");
         }
         products.clear();
     }
