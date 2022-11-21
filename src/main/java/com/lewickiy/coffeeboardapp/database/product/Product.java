@@ -8,6 +8,7 @@ public class Product {
     private String unitOfMeasurement;
     private int category;
     private double price;
+    private boolean fixPrice;
 
     public Product(int productId
             , String product
@@ -15,7 +16,8 @@ public class Product {
             , int numberOfUnit
             , String unitOfMeasurement
             , int category
-            , double price) {
+            , double price
+            , boolean fixPrice) {
         this.productId = productId;
         this.product = product;
         this.description = description;
@@ -23,6 +25,7 @@ public class Product {
         this.unitOfMeasurement = unitOfMeasurement;
         this.category = category;
         this.price = price;
+        this.fixPrice = fixPrice;
     }
     public Product(String product
             , String description
@@ -88,5 +91,13 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean isFixPrice() {
+        return fixPrice;
+    }
+
+    public void setFixPrice(boolean fixPrice) {
+        this.fixPrice = fixPrice;
     }
 }
