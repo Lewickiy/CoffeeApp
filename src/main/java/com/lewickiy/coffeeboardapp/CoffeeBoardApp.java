@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  * @author - Lewickiy Anatoliy
- * @version - start0.4
+ * @version - start0.9
  */
 
 public class CoffeeBoardApp extends Application {
