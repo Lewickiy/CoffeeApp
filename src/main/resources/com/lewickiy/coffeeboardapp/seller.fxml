@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Point3D?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -11,7 +10,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.effect.MotionBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -32,7 +30,7 @@
          <children>
             <BorderPane>
                <left>
-                <AnchorPane fx:id="productBar" maxHeight="-1.0" maxWidth="-1.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
+                <AnchorPane fx:id="productBar" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
                      <children>
                         <AnchorPane layoutY="112.0" style="-fx-background-color: LIGHTGREY;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0">
                            <children>
@@ -57,17 +55,11 @@
                                     <RowConstraints maxHeight="150.0" minHeight="91.0" percentHeight="0.0" prefHeight="91.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                               </GridPane>
-                              <Label blendMode="ADD" cache="true" cacheHint="SPEED" focusTraversable="false" layoutX="386.0" layoutY="423.0" opacity="0.31" text="AUTOGRAPH" textFill="#1c2ef2" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                                 <font>
-                                    <Font name="Tahoma Bold" size="96.0" />
-                                 </font>
-                                 <effect>
-                                    <MotionBlur />
-                                 </effect>
-                                 <rotationAxis>
-                                    <Point3D z="10.0" />
-                                 </rotationAxis>
-                              </Label>
+                              <ImageView fitHeight="150.0" fitWidth="141.0" opacity="0.52" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="25.0">
+                                 <image>
+                                    <Image url="@image/CoffeeBoard_logo_small.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="159.0" prefWidth="1012.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -145,7 +137,7 @@
                            <children>
                               <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="264.0" prefWidth="375.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="320.0" AnchorPane.topAnchor="202.0">
                                  <children>
-                                    <Button fx:id="okCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okCloseShiftButtonOnAction" prefHeight="75.0" prefWidth="110.0" text="Закрыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                                    <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okCloseShiftButtonOnAction" prefHeight="75.0" prefWidth="110.0" text="Закрыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                                        <font>
                                           <Font size="13.0" />
                                        </font>
@@ -153,7 +145,7 @@
                                           <Insets />
                                        </opaqueInsets>
                                     </Button>
-                                    <Button fx:id="cancelCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelCloseShiftButtonOnAction" prefHeight="75.0" prefWidth="110.0" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                                    <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelCloseShiftButtonOnAction" prefHeight="75.0" prefWidth="110.0" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                                        <font>
                                           <Font size="13.0" />
                                        </font>
@@ -276,7 +268,7 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                        <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" prefHeight="27.0" prefWidth="60.0" text="00:00" textAlignment="CENTER" textFill="#03790b">
+                        <Label fx:id="clockLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="60.0" text="00:00" textAlignment="CENTER" textFill="#03790b">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -307,11 +299,11 @@
                         </Label>
                         <TableView fx:id="saleTable" focusTraversable="false" layoutX="21.0" layoutY="34.0" prefHeight="248.0" prefWidth="341.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0">
                            <columns>
-                              <TableColumn fx:id="productColumn" maxWidth="170.0" minWidth="110.0" prefWidth="147.5" text="Наименование" />
-                              <TableColumn fx:id="priceColumn" maxWidth="70.0" minWidth="11.5" prefWidth="38.0" text="Цена" />
-                              <TableColumn fx:id="amountColumn" maxWidth="66.5" minWidth="26.0" prefWidth="48.5" text="Кол-во" />
-                              <TableColumn fx:id="discountColumn" maxWidth="86.0" minWidth="26.5" prefWidth="50.0" text="Скидка" />
-                              <TableColumn fx:id="sumColumn" maxWidth="94.5" minWidth="50.0" prefWidth="65.0" text="Сумма" />
+                              <TableColumn fx:id="productColumn" maxWidth="170.0" minWidth="110.0" prefWidth="147.5" sortable="false" text="Наименование" />
+                              <TableColumn fx:id="priceColumn" maxWidth="70.0" minWidth="11.5" prefWidth="38.0" sortable="false" text="Цена" />
+                              <TableColumn fx:id="amountColumn" maxWidth="66.5" minWidth="26.0" prefWidth="48.5" sortable="false" text="Кол-во" />
+                              <TableColumn fx:id="discountColumn" maxWidth="86.0" minWidth="26.5" prefWidth="50.0" sortable="false" text="Скидка" />
+                              <TableColumn fx:id="sumColumn" maxWidth="94.5" minWidth="50.0" prefWidth="65.0" sortable="false" text="Сумма" />
                            </columns>
                         </TableView>
                         <Label layoutX="12.0" layoutY="296.0" text="Итого:">
@@ -329,6 +321,16 @@
                               <Font name="Monospaced Regular" size="12.0" />
                            </font></Label>
                         <Circle fx:id="networkIndicator" fill="#fcff00" layoutX="346.0" layoutY="18.0" radius="7.5" stroke="#c9c9c9" strokeType="OUTSIDE" strokeWidth="0.5" AnchorPane.topAnchor="9.0" />
+                        <Label disable="true" layoutX="188.0" layoutY="296.0" text="Скидка:">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="discountSumLabel" disable="true" layoutX="268.0" layoutY="296.0" text="0.0">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
                </top>
@@ -365,11 +367,6 @@
                                     <Font name="System Bold" size="35.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="cancelCashReceiptButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cancelCashReceiptOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="35.0" />
-                                 </font>
-                              </Button>
                               <Label text="X" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="242.0" fx:id="xLabel">
                                  <font>
                                     <Font size="20.0" />
@@ -380,20 +377,10 @@
                                     <Image url="@image/product/coffeeToGo_1.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="delProduct" focusTraversable="false" layoutX="151.0" layoutY="327.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#delProductOnAction" prefHeight="75.0" prefWidth="75.0" text="C" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="151.0">
-                                 <font>
-                                    <Font name="System Bold" size="35.0" />
-                                 </font>
-                              </Button>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="paymentTypePanel" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false">
+                        <AnchorPane fx:id="paymentTypePane" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button fx:id="endThisTaleAnother1" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#endThisTaleAnother1OnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="35.0" />
-                                 </font>
-                              </Button>
                               <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="207.0" text="Выберете  тип оплаты" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
@@ -409,7 +396,7 @@
                                     <Font name="System Bold" size="22.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="oups" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#oupsOnAction" prefHeight="75.0" prefWidth="149.0" text="Oups" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#oupsOnAction" prefHeight="75.0" prefWidth="149.0" text="Oups" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="22.0" />
                                  </font>
@@ -421,7 +408,7 @@
                               </Button>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="discountPanel" layoutY="3.0" minWidth="334.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false">
+                        <AnchorPane fx:id="discountPane" layoutY="3.0" minWidth="334.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <GridPane fx:id="discountGridPane" alignment="CENTER" hgap="13.2" layoutX="13.0" layoutY="39.0" maxHeight="342.0" maxWidth="342.0" minHeight="342.0" minWidth="342.0" prefHeight="342.0" prefWidth="342.0" vgap="13.2" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="39.0">
                                 <columnConstraints>
@@ -451,7 +438,7 @@
                                     <Font name="System Bold" size="36.0" />
                                  </font>
                               </TextField>
-                              <Button fx:id="correctionButton" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#correctionButtonOnAction" prefHeight="75.0" prefWidth="149.0" text="Пересчёт" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#correctionButtonOnAction" prefHeight="75.0" prefWidth="149.0" text="Пересчёт" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="22.0" />
                                  </font>
@@ -461,31 +448,21 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="cancelOupsButton" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cancelOupsButtonOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="35.0" />
-                                 </font>
-                              </Button>
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="changePane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button fx:id="cancelChangeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cancelChangeButtonOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="35.0" />
-                                 </font>
-                              </Button>
                               <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="207.0" text="Нужна ли сдача?" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="noChange" alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="99.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#noChangeOnAction" prefHeight="75.0" prefWidth="242.0" text="Без сдачи" textAlignment="CENTER" wrapText="true">
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="99.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#noChangeOnAction" prefHeight="75.0" prefWidth="242.0" text="Без сдачи" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="22.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="withChangeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#withChangeOnAction" prefHeight="75.0" prefWidth="242.0" text="Нужна сдача" textAlignment="CENTER" wrapText="true">
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#withChangeOnAction" prefHeight="75.0" prefWidth="242.0" text="Нужна сдача" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="22.0" />
                                  </font>
@@ -494,17 +471,12 @@
                         </AnchorPane>
                         <AnchorPane fx:id="withChangePane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button fx:id="cancelWithChangeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="300.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cancelWithChangeOnAction" prefHeight="75.0" prefWidth="75.0" text="X" textAlignment="CENTER" textFill="#ff0404">
-                                 <font>
-                                    <Font name="System Bold" size="35.0" />
-                                 </font>
-                              </Button>
                               <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="262.0" text="С какой суммы нужна сдача?" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="okWithChangeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="301.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#okWithChangeOnAction" prefHeight="75.0" prefWidth="145.0" text="ОК" textAlignment="CENTER" wrapText="true">
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="301.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#okWithChangeOnAction" prefHeight="75.0" prefWidth="145.0" text="ОК" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="22.0" />
                                  </font>
@@ -521,6 +493,11 @@
                               </Label>
                            </children>
                         </AnchorPane>
+                        <Button fx:id="cButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cButtonOnAction" prefHeight="75.0" prefWidth="75.0" text="C" textAlignment="CENTER" textFill="#0903ae" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                           <font>
+                              <Font name="System Bold" size="35.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </bottom>
