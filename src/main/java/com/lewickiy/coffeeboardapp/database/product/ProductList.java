@@ -24,6 +24,12 @@ public class ProductList {
             String unitOfMeasurement = resultSet.getString("unit_of_measurement");
             int category = resultSet.getInt("product_category_id");
             double price = resultSet.getDouble("price");
+            boolean fixPrice;
+            if (resultSet.getInt("fix_price") == 0) {
+                fixPrice = false;
+            } else {
+                fixPrice = true;
+            }
 
             products.add(new Product(productId
                     , product
@@ -31,7 +37,8 @@ public class ProductList {
                     , numberOfUnit
                     , unitOfMeasurement
                     , category
-                    , price));
+                    , price
+                    , fixPrice));
         }
         resultSet.close();
         products.sort(comparing(Product::getCategory));
