@@ -31,27 +31,33 @@ public class SaleProductList {
             addProductIf(currentProduct);
         } else {
             boolean b = true;
-            for (int i = 0; i < currentSaleProducts.size(); i++) {
-                if (currentProduct.getProductId() == currentSaleProducts.get(i).getProductId()
-                        && currentProduct.getDiscountId() == currentSaleProducts.get(i).getDiscountId()) {
-                    currentSaleProducts.get(i).setAmount(
-                            currentSaleProducts.get(i).getAmount()
+
+            for (SaleProduct currentSaleProduct : currentSaleProducts) {
+                if (currentProduct.getProductId() == currentSaleProduct.getProductId()
+                        && currentProduct.getDiscountId() == currentSaleProduct.getDiscountId()) {
+                    currentSaleProduct.setAmount(
+                            currentSaleProduct.getAmount()
                                     + currentProduct.getAmount());
-                    currentSaleProducts.get(i).setSum((
-                            currentSaleProducts.get(i).getPrice()
-                                    - (currentSaleProducts.get(i).getPrice()
-                                    * currentSaleProducts.get(i).getDiscount() / 100))
-                            * currentSaleProducts.get(i).getAmount());
+                    currentSaleProduct.setSum((
+                            currentSaleProduct.getPrice()
+                                    - (currentSaleProduct.getPrice()
+                                    * currentSaleProduct.getDiscount() / 100))
+                            * currentSaleProduct.getAmount());
                     b = false;
                     break;
                 }
             }
-            if (b == true) {
+            if (b) {
                 addProductIf(currentProduct);
             }
         }
     }
 
+    /**
+     * Helper method for the addProductToArray() method.<br>
+     * Adds the entire Product if this product is the first time it appears in the list.<br>
+     * @param currentProduct Takes as parameter the current product from the ArrayList currentSaleProducts.<br>
+     */
     static void addProductIf(SaleProduct currentProduct) {
         addSaleProductsList(currentProduct.getSaleId()
                 , currentProduct.getProductId()
