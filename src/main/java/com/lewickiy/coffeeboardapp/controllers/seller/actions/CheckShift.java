@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.database.query;
+package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
