@@ -203,7 +203,7 @@ public class LoginController {
 
         Stage stage = (Stage) loginButton.getScene().getWindow();
         Stage stageSeller = new Stage();
-        LOGGER.log(Level.INFO,"Preparing to close Login Controller...");
+
         LOGGER.log(Level.INFO,"Start Seller Controller...");
         FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("seller.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
