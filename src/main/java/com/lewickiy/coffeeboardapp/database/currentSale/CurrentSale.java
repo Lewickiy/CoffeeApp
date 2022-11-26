@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 
+import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 
 public class CurrentSale {
@@ -101,7 +102,8 @@ public class CurrentSale {
         this.loaded = loaded;
     }
 
-    public static void addSaleToLocalDB(Connection con, CurrentSale currentSale) throws SQLException {
+    public static void addSaleToLocalDB(CurrentSale currentSale) throws SQLException {
+        Connection con = getConnection("local_database");
         insertToSql(con, "local_database", "sale","sale_id, "
                 + "user_id, "
                 + "outlet_id, "
@@ -118,5 +120,6 @@ public class CurrentSale {
                 + currentSale.getPaymentTypeId() + "', '"
                 + currentSale.getClientId()  + "', '"
                 + 0 + "'");
+        con.close();
     }
 }

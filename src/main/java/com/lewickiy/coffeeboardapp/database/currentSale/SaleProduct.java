@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 
 public class SaleProduct {
@@ -117,7 +118,8 @@ public class SaleProduct {
         this.loaded = loaded;
     }
 
-    public static void addSaleProductsToLocalDB(Connection con, ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) throws SQLException {
+    public static void addSaleProductsToLocalDB(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) throws SQLException {
+        Connection con = getConnection("local_database");
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
             insertToSql(con, "local_database", "sale_product", "sale_id, "
                     + "product_id, "
@@ -133,6 +135,8 @@ public class SaleProduct {
                     + currentSaleProduct.getAmount() + "', '"
                     + currentSaleProduct.getSum() + "', '"
                     + 0 + "'");
+
         }
+        con.close();
     }
 }

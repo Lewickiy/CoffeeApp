@@ -39,6 +39,7 @@ public class SyncLocalDB {
             Date birthday = resultSet.getDate("birthday");
             String phone = resultSet.getString("phone");
             boolean administrator = resultSet.getBoolean("administrator");
+            System.out.println(administrator + " after load from network database");
             boolean activeStuff = resultSet.getBoolean("active_stuff");
             users.add(new User(userId, login, password, firstName, lastName, patronymic, birthday, phone, administrator, activeStuff));
             count++;
@@ -47,10 +48,23 @@ public class SyncLocalDB {
         count = 0;
         resultSet.close();
 
-        deleteFromSql(localCon, "user", "delete");
+        deleteFromLocalSql(localCon, "user");
 
         LOGGER.log(Level.INFO,"Start loading users to sqlite from array");
         for (User user : users) {
+            int administrator;
+            if (user.isAdministrator()) {
+                administrator = 1;
+            } else {
+                administrator = 0;
+            }
+
+            int activeStuff;
+            if (user.isActiveStuff()) {
+                activeStuff = 1;
+            } else {
+                activeStuff = 0;
+            }
             insertToSql(localCon, LOCAL_DB,"user", "user_id, "
                     + "login, "
                     + "first_name, "
@@ -69,8 +83,8 @@ public class SyncLocalDB {
                     + user.getBirthday() + "', '"
                     + user.getPhone() + "', '"
                     + user.getPassword() + "', '"
-                    + user.isAdministrator() + "', '"
-                    + user.isActiveStuff() + "'");
+                    + administrator + "', '"
+                    + activeStuff + "'");
         }
         LOGGER.log(Level.INFO,"Users added to SQLite");
         users.clear();
@@ -87,7 +101,7 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(localCon, "outlet", "delete");
+        deleteFromLocalSql(localCon, "outlet");
 
         for (Outlet outlet : outlets) {
             insertToSql(localCon, LOCAL_DB,"outlet", "outlet_id, "
@@ -107,7 +121,7 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(localCon, "paymenttype", "delete");
+        deleteFromLocalSql(localCon, "paymenttype");
 
         for (PaymentType paymentType : paymentTypes) {
             insertToSql(localCon, LOCAL_DB,"paymenttype", "paymenttype_id, "
@@ -127,7 +141,7 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(localCon, "product_category", "delete");
+        deleteFromLocalSql(localCon, "product_category");
 
         for (ProductCategory productCategory : productCategories) {
             insertToSql(localCon, LOCAL_DB,"product_category", "product_category_id, "
@@ -153,7 +167,7 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(localCon, "product", "delete");
+        deleteFromLocalSql(localCon, "product");
 
         for (Product product : products) {
             int fixPrice = 1;
@@ -190,7 +204,7 @@ public class SyncLocalDB {
         }
         resultSet.close();
 
-        deleteFromSql(localCon, "discount", "delete");
+        deleteFromLocalSql(localCon, "discount");
 
         for (Discount discount : discounts) {
             int isActive = 1;

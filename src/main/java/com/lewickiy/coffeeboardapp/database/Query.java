@@ -21,10 +21,9 @@ public class Query {
         return statement.executeQuery(query);
     }
 
-    public static void deleteFromSql(Connection con, String tableName, String action) throws SQLException {
+    public static void deleteFromLocalSql(Connection con, String tableName) throws SQLException {
         LOGGER.log(Level.INFO,"Start clear " + tableName + "...");
-        action = action.toUpperCase();
-        String query = action + " FROM " + tableName;
+        String query = "DELETE FROM " + tableName;
         Statement statement = con.createStatement();
         statement.executeUpdate(query);
         LOGGER.log(Level.INFO,tableName + " cleared");

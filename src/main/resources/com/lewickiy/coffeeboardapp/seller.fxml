@@ -85,7 +85,7 @@
                         </AnchorPane>
                         <AnchorPane fx:id="allSalesPane" layoutX="10.0" layoutY="5.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <TableView fx:id="allSalesTable" prefHeight="568.0" prefWidth="670.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                              <TableView fx:id="allSalesTable" editable="true" prefHeight="568.0" prefWidth="670.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                 <columns>
                                     <TableColumn fx:id="timeSalesColumn" maxWidth="170.0" minWidth="93.0" prefWidth="102.0" text="Время продажи" />
                                     <TableColumn fx:id="productSalesColumn" maxWidth="201.0" minWidth="110.0" prefWidth="137.0" text="Наименование" />
@@ -260,7 +260,7 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="580.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Admin" textOverrun="CLIP" visible="false">
+                        <Button fx:id="botButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="580.0" layoutY="12.0" mnemonicParsing="false" onAction="#botButtonOnAction" prefHeight="27.0" prefWidth="110.0" style="-fx-background-color: LightGREEN;" text="Telegram" textOverrun="CLIP">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -273,7 +273,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Button fx:id="allSales" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="694.0" layoutY="12.0" mnemonicParsing="false" onAction="#allSalesOnAction" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP">
+                        <Button fx:id="allSales" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="694.0" layoutY="12.0" mnemonicParsing="false" onAction="#allSalesOnAction" prefHeight="27.0" prefWidth="118.0" text="Продажи смены" textOverrun="CLIP">
                            <font>
                               <Font size="13.0" />
                            </font>
