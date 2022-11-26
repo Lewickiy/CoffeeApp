@@ -19,17 +19,23 @@ public class Correction {
         double endSumDouble = Double.parseDouble(endSum);
         double startSum = Double.parseDouble(startSumString);
         int productsInArray = 0;
+        int fixPriceProducts = 0;
 
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
+            for (Product product : products) {
+                if (currentSaleProduct.getProductId() == product.getProductId() && product.isFixPrice()) {
+                    fixPriceProducts = fixPriceProducts + currentSaleProduct.getAmount();
+                }
+            }
             productsInArray = productsInArray + currentSaleProduct.getAmount();
         }
 
-        double correctionDiscount = (startSum - endSumDouble) / productsInArray;
+        double correctionDiscount = (startSum - endSumDouble) / (productsInArray - fixPriceProducts);
 
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
             for (Product product : products) {
                 if (currentSaleProduct.getProductId() == product.getProductId() && !product.isFixPrice()) {
-                    currentSaleProduct.setSum(currentSaleProduct.getSum() - correctionDiscount);
+                    currentSaleProduct.setSum((currentSaleProduct.getSum() - (correctionDiscount) * currentSaleProduct.getAmount()));
                 }
             }
         }
