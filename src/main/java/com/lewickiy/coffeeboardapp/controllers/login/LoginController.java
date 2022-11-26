@@ -125,14 +125,18 @@ public class LoginController {
     }
     @FXML
     private void okButtonEnterKey(KeyEvent okEvent) throws IOException {
-        if (okEvent.getCode() == KeyCode.ENTER && !acceptOutletChoice.isDisable())  {
+        if (okEvent.getCode() == KeyCode.ENTER && !acceptOutletChoice.isDisable() && !currentUser.isAdministrator())  {
             enterToSellerWorkTable();
+        } else if (okEvent.getCode() == KeyCode.ENTER && !acceptOutletChoice.isDisable() && currentUser.isAdministrator()) {
+            enterToAdministratorWorkTable();
         }
     }
     @FXML
     private void acceptOutletChoiceOnAction() throws IOException {
-        if (currentOutlet != null) {
+        if (!acceptOutletChoice.isDisable() && !currentUser.isAdministrator())  {
             enterToSellerWorkTable();
+        } else if (!acceptOutletChoice.isDisable() && currentUser.isAdministrator()) {
+            enterToAdministratorWorkTable();
         }
     }
     @FXML
@@ -176,6 +180,22 @@ public class LoginController {
         if (!acceptOutletChoice.isVisible()) {
             loginMessageLabel.setText("Не правильный логин или имя пользователя");
         }
+    }
+    private void enterToAdministratorWorkTable() throws IOException {
+        System.out.println("You are administrator");
+        Stage stage = (Stage) loginButton.getScene().getWindow();
+        Stage stageSeller = new Stage();
+        LOGGER.log(Level.INFO,"Start Administrator Controller...");
+        FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("administrator.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stageSeller.initStyle(StageStyle.UNDECORATED);
+        stageSeller.setScene(scene);
+        stageSeller.setTitle("CoffeeApp Administrator");
+        stageSeller.setMaximized(true);
+
+        stageSeller.show();
+        stage.close();
+        LOGGER.log(Level.INFO,"Login Controller closed\n");
     }
     private void enterToSellerWorkTable() throws IOException {
         users.clear();
