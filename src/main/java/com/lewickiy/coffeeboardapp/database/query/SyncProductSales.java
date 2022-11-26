@@ -22,7 +22,7 @@ public class SyncProductSales {
         conLocal = getConnection("local_database");
 
         if (conNetwork != null) {
-            String selectNotLoaded = "SELECT sale_id, product_id, discount_id, price, amount, sum, loaded FROM sale_product WHERE loaded = 0;";
+            String selectNotLoaded = "SELECT sale_id, product_id, discount_id, price, amount, sum, loaded, corrected FROM sale_product WHERE loaded = 0;";
             Statement statement = conLocal.createStatement();
             ResultSet resultSelectNotLoaded  = statement.executeQuery(selectNotLoaded);
 
@@ -34,6 +34,12 @@ public class SyncProductSales {
                 tempSaleProduct.setPrice(resultSelectNotLoaded.getDouble("price"));
                 tempSaleProduct.setAmount(resultSelectNotLoaded.getInt("amount"));
                 tempSaleProduct.setSum(resultSelectNotLoaded.getDouble("sum"));
+                int cor = resultSelectNotLoaded.getInt("corrected");
+                if (cor == 0) {
+                    tempSaleProduct.setCorrected(false);
+                } else {
+                    tempSaleProduct.setCorrected(true);
+                }
 
                 int intLoaded = resultSelectNotLoaded.getInt("loaded");
 
@@ -43,18 +49,27 @@ public class SyncProductSales {
                     tempSaleProduct.setLoaded(false);
                 }
 
+                int isCorForNDB = 0;
+
+                if (tempSaleProduct.isCorrected()) {
+                    isCorForNDB = 1;
+                }
+                System.out.println("loaded from Local db");
+
                 insertToSql(conNetwork, "network_database", "sale_product", "sale_id, "
                         + "product_id, "
                         + "discount_id, "
                         + "price, "
                         + "amount, "
-                        + "sum) VALUES ('"
+                        + "sum, "
+                        + "corrected) VALUES ('"
                         + tempSaleProduct.getSaleId() + "', '"
                         + tempSaleProduct.getProductId() + "', '"
                         + tempSaleProduct.getDiscountId() + "', '"
                         + tempSaleProduct.getPrice() + "', '"
                         + tempSaleProduct.getAmount() + "', '"
-                        + tempSaleProduct.getSum() + "'");
+                        + tempSaleProduct.getSum() + "', '"
+                        + isCorForNDB + "'");
             }
             resultSelectNotLoaded.close();
             conNetwork.close();

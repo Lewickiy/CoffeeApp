@@ -12,11 +12,14 @@ public class SaleProduct {
     private int saleId;
     private int productId;
     private String product;
+    private int numberOfUnit;
+    private String unitOfMeasurement;
     private double price;
     private int discountId;
     private int discount;
     private int amount;
     private double sum;
+    private boolean corrected;
     private boolean loaded;
 
     public SaleProduct() {
@@ -44,6 +47,30 @@ public class SaleProduct {
         this.productId = prodSaleId;
         this.product = prodName;
         this.price = priceProdSale;
+    }
+
+    public boolean isCorrected() {
+        return corrected;
+    }
+
+    public void setCorrected(boolean corrected) {
+        this.corrected = corrected;
+    }
+
+    public int getNumberOfUnit() {
+        return numberOfUnit;
+    }
+
+    public void setNumberOfUnit(int numberOfUnit) {
+        this.numberOfUnit = numberOfUnit;
+    }
+
+    public String getUnitOfMeasurement() {
+        return unitOfMeasurement;
+    }
+
+    public void setUnitOfMeasurement(String unitOfMeasurement) {
+        this.unitOfMeasurement = unitOfMeasurement;
     }
 
     public int getSaleId() {

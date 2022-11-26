@@ -11,7 +11,8 @@ public class SaleProductList {
             , int discountId
             , int discount
             , int amountProdSale
-            , double sumProdSale) {
+            , double sumProdSale
+            , boolean corrected) {
 
         currentSaleProducts.add(new SaleProduct(saleProdId
                 , prodSaleId
@@ -66,6 +67,7 @@ public class SaleProductList {
                 , currentProduct.getDiscountId()
                 , currentProduct.getDiscount()
                 , currentProduct.getAmount()
-                , currentProduct.getSum());
+                , currentProduct.getSum()
+                ,false);
     }
 }

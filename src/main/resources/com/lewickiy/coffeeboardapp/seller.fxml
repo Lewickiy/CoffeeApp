@@ -131,6 +131,8 @@
                                     <Line endX="100.0" layoutX="117.0" layoutY="134.0" startX="-100.0" />
                                  </children>
                               </AnchorPane>
+                              <Button fx:id="editButton" disable="true" layoutX="576.0" layoutY="610.0" mnemonicParsing="false" onAction="#editButtonOnAction" text="Удалить" />
+                              <Button fx:id="saveButton" disable="true" layoutX="652.0" layoutY="610.0" mnemonicParsing="false" onAction="#saveButtonOnAction" text="ОК" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="closeShiftPane" layoutX="10.0" layoutY="10.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

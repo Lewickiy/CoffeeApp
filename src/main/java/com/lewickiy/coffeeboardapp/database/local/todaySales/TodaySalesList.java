@@ -108,12 +108,13 @@ public class TodaySalesList {
                 ", discount.discount_id" +
                 ", discount.discount" +
                 ", sale_product.sum" +
+                ", sale_product.corrected" +
                 ", paymenttype.paymenttype" +
                 " FROM sale " +
                 "FULL OUTER JOIN sale_product ON sale.sale_id = sale_product.sale_id " +
                 "FULL OUTER JOIN paymenttype ON sale.paymenttype_id = paymenttype.paymenttype_id " +
                 "FULL OUTER JOIN discount ON sale_product.discount_id = discount.discount_id " +
-                "FULL OUTER JOIN product ON sale_product.product_id = product.product_id";
+                "FULL OUTER JOIN product ON sale_product.product_id = product.product_id" + " WHERE corrected = 0 ";
         ResultSet rs = statement.executeQuery(query);
         //TODO добавить время продажи по аналогии с shift_log
         SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
@@ -132,7 +133,7 @@ public class TodaySalesList {
                 tempSale.setSaleTime(Time.valueOf(timeFormatter.format(timeFormatter.parse(rs.getString(2)))));
                 tempSale.setNumberOfUnit(rs.getInt(5));
                 tempSale.setUnitOfMeasurement(rs.getString(6));
-                tempSale.setPaymentType(rs.getString(12));
+                tempSale.setPaymentType(rs.getString(13));
                 todaySalesArrayList.add(tempSale);
 //                System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5) + " | " + rs.getString(6) + " | " + rs.getString(7) + " | " + rs.getString(8) + " | " + rs.getString(9) + " | " + rs.getString(10) + " | " + rs.getString(11) + " | " + rs.getString(12));
             }

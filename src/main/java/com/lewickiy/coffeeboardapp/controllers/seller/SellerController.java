@@ -87,6 +87,8 @@ public class SellerController {
     private int positionsCount;
     private CurrentSale currentSale;
     private SaleProduct currentProduct;
+
+    private SaleProduct delProduct = new SaleProduct();
     static ObservableList<SaleProduct> saleProductsObservableList = FXCollections.observableList(currentSaleProducts);
     static ObservableList<SaleProduct> todaySalesObservableList = FXCollections.observableList(todaySalesArrayList);
     @FXML
@@ -107,6 +109,46 @@ public class SellerController {
     private Label allCashLabel;
     @FXML
     private Label litresLabel;
+    @FXML
+    private Button editButton;
+    @FXML
+    void editButtonOnAction() {
+        saveButton.setDisable(false);
+        editButton.setDisable(true);
+    }
+    @FXML
+    private Button saveButton;
+    @FXML
+    void saveButtonOnAction() {
+        try (Connection conLocal = getConnection("local_database")) {
+            String update = "UPDATE sale_product SET corrected = ? WHERE sale_id = "
+                    + delProduct.getSaleId()
+                    + " AND " + "product_id = "
+                    + delProduct.getProductId();
+            PreparedStatement prepareStatement = conLocal.prepareStatement(update);
+            prepareStatement.setInt(1, 1);
+            prepareStatement.executeUpdate();
+            prepareStatement.close();
+            todaySalesArrayList.clear();
+            Connection con = getConnection("local_database");
+            addAllSalesToArray(con);
+            con.close();
+            allSalesTable.setItems(todaySalesObservableList);
+            allSalesTable.refresh();
+            cashSumSaleLabel.setText(sumCash() + " руб.");
+            cardSumSaleLabel.setText(sumCard() + " руб.");
+            allSumSaleLabel.setText(sumAll() + " руб.");
+            cashDepositLabel.setText(getCashDeposit() + " руб.");
+            allCashLabel.setText((sumCash() + getCashDeposit()) + " руб.");
+            litresLabel.setText(String.valueOf(litresSum()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        saveButton.setDisable(true);
+        editButton.setDisable(true);
+    }
     @FXML
     void allSalesOnAction() throws SQLException, ParseException {
         Connection con = getConnection("local_database");
@@ -195,7 +237,6 @@ public class SellerController {
         syncSales();
         syncSalesProduct();
 
-        //TODO и чеки с продажами тоже можно оставлять. Только новые будут помечаться как 0, загруженные как 1, а не от этой смены - 2 например
         Connection con = getConnection("local_database");
         deleteFromLocalSql(con, "sale_product");
         deleteFromLocalSql(con, "sale");
@@ -299,8 +340,6 @@ public class SellerController {
             buttonsIsDisable(PRODUCT_BUTTONS, true);
             buttonsIsDisable(NUMBER_BUTTONS, false);
             productCategoryIco.setVisible(true);
-            //TODO в зависимости от категории продукта или от продукта (это сложнее поддерживать в случае смены ассортимента),
-            // иконка Продукта при выборе должна меняться.
             productNameLabel.setText(product.getProduct());
             priceLabel.setText(String.valueOf(product.getPrice()));
             priceLabel.setVisible(true);
@@ -357,7 +396,7 @@ public class SellerController {
     private Label sumLabel;
     @FXML
     private Label discountSumLabel;
-    //TODO добавить сумму Чека без учёта скидки и сумму чека со скидкой (итог)
+
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
 
@@ -836,7 +875,16 @@ public class SellerController {
         numberOfUnit.setCellValueFactory(new PropertyValueFactory<>("numberOfUnit")); //кол-во ед.
         unitOfMeasurement.setCellValueFactory(new PropertyValueFactory<>("unitOfMeasurement")); //ед.
         priceSalesColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        amountSalesColumn.setEditable(true);
         amountSalesColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        TableView.TableViewSelectionModel<SaleProduct> selectionModel = allSalesTable.getSelectionModel();
+        selectionModel.selectedItemProperty().addListener((observableValue, saleProduct, t1) -> {
+            delProduct.setSaleId(t1.getSaleId());
+            delProduct.setProductId(t1.getProductId());
+            System.out.println(t1.getSaleId() + " - sale_id " + t1.getProductId() + " - product_id");
+            editButton.setDisable(false);
+        });
+
         discountSalesColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
         sumSalesColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
         paymentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("paymentType"));
