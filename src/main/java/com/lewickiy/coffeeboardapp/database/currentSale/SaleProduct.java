@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 
 public class SaleProduct {

@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.controllers.seller;
+package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
 import com.lewickiy.coffeeboardapp.database.product.Product;
 import com.lewickiy.coffeeboardapp.database.product.ProductCategory;
@@ -24,7 +24,7 @@ public class ProductNameButton {
      * Также данный метод делает кнопки доступными (productButtons[].setDisable())<br>
      * @param productButtons - это массив кнопок, созданных в SellerController.
      */
-    static void productNameButton(ArrayList<Button> productButtons) {
+    public static void productNameButton(ArrayList<Button> productButtons) {
         int count = 0;
         int temp = 0;
         for (ProductCategory productCategory : productCategories) {

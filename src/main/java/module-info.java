@@ -17,4 +17,8 @@ module com.lewickiy.coffeeboardapp {
     exports com.lewickiy.coffeeboardapp.database.product;
     exports com.lewickiy.coffeeboardapp.database.user;
     exports com.lewickiy.coffeeboardapp.idgenerator;
+    opens com.lewickiy.coffeeboardapp.controllers.seller.actions to javafx.fxml;
+    exports com.lewickiy.coffeeboardapp.database.connection;
+    opens com.lewickiy.coffeeboardapp.controllers.actions to javafx.fxml;
+    opens com.lewickiy.coffeeboardapp.database.product to javafx.fxml;
 }

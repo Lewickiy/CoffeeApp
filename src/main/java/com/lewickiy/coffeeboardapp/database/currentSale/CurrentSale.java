@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 
 public class CurrentSale {

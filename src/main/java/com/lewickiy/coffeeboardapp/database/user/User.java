@@ -13,7 +13,9 @@ public class User {
     private String phone;
     private boolean administrator;
     private boolean activeStuff;
+    public User() {
 
+    }
     public User(int userId
             , String login
             , String password

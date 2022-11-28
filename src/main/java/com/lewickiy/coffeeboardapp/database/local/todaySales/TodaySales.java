@@ -5,7 +5,6 @@ import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
 import java.sql.Date;
 import java.sql.Time;
 
-// Расширенный класс от SaleProduct
 public class TodaySales extends SaleProduct {
     private int outletId;
     private int numberOfUnit;

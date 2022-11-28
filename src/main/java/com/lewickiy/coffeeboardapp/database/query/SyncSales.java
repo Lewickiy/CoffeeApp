@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 
 import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 

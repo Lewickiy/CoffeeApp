@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.controllers.seller;
+package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
 import com.lewickiy.coffeeboardapp.database.discount.Discount;
 import javafx.scene.control.Button;

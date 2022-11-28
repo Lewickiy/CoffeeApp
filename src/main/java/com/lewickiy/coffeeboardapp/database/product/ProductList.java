@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static com.lewickiy.coffeeboardapp.database.Query.selectAllFromSql;
+import static com.lewickiy.coffeeboardapp.database.helper.FalseTrueDecoderDB.decodeIntBoolean;
 import static java.util.Comparator.comparing;
 
 public class ProductList {
@@ -24,12 +25,7 @@ public class ProductList {
             String unitOfMeasurement = resultSet.getString("unit_of_measurement");
             int category = resultSet.getInt("product_category_id");
             double price = resultSet.getDouble("price");
-            boolean fixPrice;
-            if (resultSet.getInt("fix_price") == 0) {
-                fixPrice = false;
-            } else {
-                fixPrice = true;
-            }
+            boolean fixPrice = decodeIntBoolean(resultSet.getInt("fix_price"));
 
             products.add(new Product(productId
                     , product

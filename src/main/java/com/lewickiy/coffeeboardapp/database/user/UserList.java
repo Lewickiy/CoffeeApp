@@ -1,14 +1,15 @@
 package com.lewickiy.coffeeboardapp.database.user;
 
 import java.sql.Connection;
-import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.lewickiy.coffeeboardapp.database.Query.selectAllFromSql;
+import static com.lewickiy.coffeeboardapp.database.helper.FalseTrueDecoderDB.decodeIntBoolean;
 
 public class UserList {
     public static ArrayList<User> users = new ArrayList<>();
@@ -21,22 +22,13 @@ public class UserList {
      * SellerController
      * подсчёта выручки и прочего.
      */
-    public static User currentUser = new User(0
-            , "unknown"
-            , "noPassword"
-            , "noName"
-            , "noSurname"
-            , "noPhone"
-            ,  false
-            , false);
+    public static User currentUser = new User();
 
     public static void createUsersList(Connection con) throws SQLException, ParseException {
 
         ResultSet resultSet = selectAllFromSql(con, "local_database","user");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         while(resultSet.next()) {
-            boolean activeStuff;
-            boolean administrator;
             int userId = resultSet.getInt("user_id");
             String login = resultSet.getString("login");
             String password = resultSet.getString("password");
@@ -45,20 +37,8 @@ public class UserList {
             String patronymic = resultSet.getString("patronymic");
             Date birthday = formatter.parse(resultSet.getString("birthday"));
             String phone = resultSet.getString("phone");
-
-            int administratorInt = resultSet.getInt("administrator");
-            if (administratorInt == 1) {
-                administrator = true;
-            } else {
-                administrator = false;
-            }
-
-            int activeStuffInt = resultSet.getInt("active_stuff");
-            if (activeStuffInt == 1) {
-                activeStuff = true;
-            } else {
-                activeStuff = false;
-            }
+            boolean activeStuff = decodeIntBoolean(resultSet.getInt("active_stuff"));
+            boolean administrator = decodeIntBoolean(resultSet.getInt("administrator"));
             users.add(new User(userId, login, password, firstName, lastName, patronymic, birthday, phone, administrator, activeStuff));
         }
         resultSet.close();

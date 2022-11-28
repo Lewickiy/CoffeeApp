@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 import static com.lewickiy.coffeeboardapp.database.Query.*;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
+import static com.lewickiy.coffeeboardapp.database.helper.FalseTrueDecoderDB.decodeIntBoolean;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
@@ -45,26 +46,12 @@ public class SyncLocalDB {
             count++;
         }
         LOGGER.log(Level.INFO,count + " users loaded to users array from network database");
-        count = 0;
         resultSet.close();
 
         deleteFromLocalSql(localCon, "user");
 
         LOGGER.log(Level.INFO,"Start loading users to sqlite from array");
         for (User user : users) {
-            int administrator;
-            if (user.isAdministrator()) {
-                administrator = 1;
-            } else {
-                administrator = 0;
-            }
-
-            int activeStuff;
-            if (user.isActiveStuff()) {
-                activeStuff = 1;
-            } else {
-                activeStuff = 0;
-            }
             insertToSql(localCon, LOCAL_DB,"user", "user_id, "
                     + "login, "
                     + "first_name, "
@@ -83,8 +70,8 @@ public class SyncLocalDB {
                     + user.getBirthday() + "', '"
                     + user.getPhone() + "', '"
                     + user.getPassword() + "', '"
-                    + administrator + "', '"
-                    + activeStuff + "'");
+                    + decodeIntBoolean(user.isAdministrator()) + "', '"
+                    + decodeIntBoolean(user.isActiveStuff()) + "'");
         }
         LOGGER.log(Level.INFO,"Users added to SQLite");
         users.clear();
@@ -170,10 +157,6 @@ public class SyncLocalDB {
         deleteFromLocalSql(localCon, "product");
 
         for (Product product : products) {
-            int fixPrice = 1;
-            if (product.isFixPrice() == false) {
-                fixPrice = 0;
-            }
             insertToSql(localCon, LOCAL_DB,"product", "product_id, "
                     + "product, "
                     + "description, "
@@ -189,7 +172,7 @@ public class SyncLocalDB {
                     + product.getUnitOfMeasurement() + "', '"
                     + product.getCategory() + "', '"
                     + product.getPrice() + "', '"
-                    + fixPrice + "'");
+                    + decodeIntBoolean(product.isFixPrice()) + "'");
         }
         products.clear();
     }
@@ -200,6 +183,7 @@ public class SyncLocalDB {
             int discountId = resultSet.getInt("discount_id");
             int discount = resultSet.getInt("discount");
             boolean active = resultSet.getBoolean("active");
+
             discounts.add(new Discount(discountId, discount, active));
         }
         resultSet.close();
@@ -207,16 +191,12 @@ public class SyncLocalDB {
         deleteFromLocalSql(localCon, "discount");
 
         for (Discount discount : discounts) {
-            int isActive = 1;
-            if (!discount.isActive()) {
-                isActive = 0;
-            }
             insertToSql(localCon, LOCAL_DB,"discount", "discount_id, "
                     + "discount, "
                     + "active) VALUES ('"
                     + discount.getDiscountId() + "', '"
                     + discount.getDiscount() + "', '"
-                    + isActive + "'");
+                    + decodeIntBoolean(discount.isActive()) + "'");
         }
         discounts.clear();
     }

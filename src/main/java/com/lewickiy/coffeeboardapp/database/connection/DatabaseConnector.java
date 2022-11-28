@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.database;
+package com.lewickiy.coffeeboardapp.database.connection;
 
 import java.io.IOException;
 import java.io.InputStream;

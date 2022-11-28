@@ -16,7 +16,7 @@ public class Outlet {
         return outlet;
     }
 
-    public void setOutlet(String outlet) { //Планируется к использованию в панели администратора
+    public void setOutlet(String outlet) {
         this.outlet = outlet;
     }
     @Override

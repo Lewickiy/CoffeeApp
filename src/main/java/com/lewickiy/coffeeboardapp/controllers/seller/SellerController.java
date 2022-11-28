@@ -1,6 +1,7 @@
 package com.lewickiy.coffeeboardapp.controllers.seller;
 
 import com.lewickiy.coffeeboardapp.CoffeeBoardApp;
+import com.lewickiy.coffeeboardapp.controllers.seller.actions.Direction;
 import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
 import com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList;
@@ -8,7 +9,6 @@ import com.lewickiy.coffeeboardapp.database.discount.Discount;
 import com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySales;
 import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
 import com.lewickiy.coffeeboardapp.database.product.Product;
-import com.lewickiy.coffeeboardapp.database.product.ProductCategory;
 import com.lewickiy.coffeeboardapp.database.user.UserList;
 import com.lewickiy.coffeeboardapp.idgenerator.UniqueIdGenerator;
 import javafx.application.Platform;
@@ -30,33 +30,41 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
 import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
-import static com.lewickiy.coffeeboardapp.controllers.seller.DiscountNameButton.discountNameButtons;
-import static com.lewickiy.coffeeboardapp.controllers.seller.ProductNameButton.productNameButton;
+import static com.lewickiy.coffeeboardapp.controllers.actions.TemporaryRenameButton.tempRenameButton;
+import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ButtonsOnGridPane.buttonsOnGridPane;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.CheckShift.checkShift;
+import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ClockThread.startClockThread;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.Correction.correctionSum;
+import static com.lewickiy.coffeeboardapp.controllers.seller.actions.CurrentSaleSum.currentSaleSum;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.DiscountAction.makeDiscount;
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.controllers.seller.actions.DiscountNameButton.discountNameButtons;
+import static com.lewickiy.coffeeboardapp.controllers.seller.actions.NetworkIndicator.isOnline;
+import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ProductNameButton.productNameButton;
 import static com.lewickiy.coffeeboardapp.database.Query.deleteFromLocalSql;
+import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.addSaleToLocalDB;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addSaleProductsToLocalDB;
 import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.*;
-import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.*;
+import static com.lewickiy.coffeeboardapp.database.local.todaySales.LitersOfDrinks.countLitersOfDrinks;
+import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodayCashDeposit.getCashDeposit;
+import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.todaySalesArrayList;
+import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesListReload.todaySalesListReload;
+import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesSumAll.sumAll;
+import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesSumCard.sumCard;
+import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesSumCash.sumCash;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeList;
@@ -65,6 +73,7 @@ import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.c
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
+import static com.lewickiy.coffeeboardapp.database.product.ProductsInCategory.countingProductsInCategory;
 import static com.lewickiy.coffeeboardapp.database.query.OpenCloseShift.updateShiftSql;
 import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.shiftLog;
 import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.syncShiftLog;
@@ -88,9 +97,9 @@ public class SellerController {
     private CurrentSale currentSale;
     private SaleProduct currentProduct;
 
-    private SaleProduct delProduct = new SaleProduct();
-    static ObservableList<SaleProduct> saleProductsObservableList = FXCollections.observableList(currentSaleProducts);
-    static ObservableList<SaleProduct> todaySalesObservableList = FXCollections.observableList(todaySalesArrayList);
+    private final SaleProduct DELETE_PRODUCT = new SaleProduct();
+    private final ObservableList<SaleProduct> SALE_PRODUCT_OBSERVABLE_LIST = FXCollections.observableList(currentSaleProducts);
+    private final ObservableList<SaleProduct> TODAY_SALES_OBSERVABLE_LIST = FXCollections.observableList(todaySalesArrayList);
     @FXML
     private Label clockLabel;
     @FXML
@@ -122,25 +131,24 @@ public class SellerController {
     void saveButtonOnAction() {
         try (Connection conLocal = getConnection("local_database")) {
             String update = "UPDATE sale_product SET corrected = ? WHERE sale_id = "
-                    + delProduct.getSaleId()
+                    + DELETE_PRODUCT.getSaleId()
                     + " AND " + "product_id = "
-                    + delProduct.getProductId();
+                    + DELETE_PRODUCT.getProductId();
             PreparedStatement prepareStatement = conLocal.prepareStatement(update);
             prepareStatement.setInt(1, 1);
             prepareStatement.executeUpdate();
             prepareStatement.close();
+            conLocal.close();
             todaySalesArrayList.clear();
-            Connection con = getConnection("local_database");
-            addAllSalesToArray(con);
-            con.close();
-            allSalesTable.setItems(todaySalesObservableList);
+            todaySalesListReload();
+            allSalesTable.setItems(TODAY_SALES_OBSERVABLE_LIST);
             allSalesTable.refresh();
             cashSumSaleLabel.setText(sumCash() + " руб.");
             cardSumSaleLabel.setText(sumCard() + " руб.");
             allSumSaleLabel.setText(sumAll() + " руб.");
             cashDepositLabel.setText(getCashDeposit() + " руб.");
             allCashLabel.setText((sumCash() + getCashDeposit()) + " руб.");
-            litresLabel.setText(String.valueOf(litresSum()));
+            litresLabel.setText(countLitersOfDrinks() + " л.");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ParseException e) {
@@ -151,10 +159,8 @@ public class SellerController {
     }
     @FXML
     void allSalesOnAction() throws SQLException, ParseException {
-        Connection con = getConnection("local_database");
-        addAllSalesToArray(con);
-        con.close();
-        allSalesTable.setItems(todaySalesObservableList);
+        todaySalesListReload();
+        allSalesTable.setItems(TODAY_SALES_OBSERVABLE_LIST);
         allSalesTable.refresh();
         cashSumSaleLabel.setText(sumCash() + " руб.");
         cardSumSaleLabel.setText(sumCard() + " руб.");
@@ -164,7 +170,7 @@ public class SellerController {
         if (allSalesPane.isVisible()) {
             todaySalesArrayList.clear();
         }
-        litresLabel.setText(String.valueOf(litresSum()));
+        litresLabel.setText(String.valueOf(countLitersOfDrinks()));
         allSalesPane.setVisible(!allSalesPane.isVisible());
     }
     @FXML
@@ -364,7 +370,7 @@ public class SellerController {
                 currentProduct.setAmount(Integer.parseInt(button.getAccessibleText()));
                 currentProduct.setSum(currentProduct.getPrice() * currentProduct.getAmount());
                 buttonsIsDisable(NUMBER_BUTTONS, true);
-                productOperationButtonsIsDisable(false);
+                addProduct.setDisable(false);
             } else {
                 priceLabel.setVisible(false);
                 currentProduct = null;
@@ -373,7 +379,6 @@ public class SellerController {
                 productNameLabel.setVisible(false);
                 amountLabel.setVisible(false);
                 addProduct.setDisable(true);
-                productOperationButtonsIsDisable(true);
                 buttonsIsDisable(NUMBER_BUTTONS, true);
                 buttonsIsDisable(PRODUCT_BUTTONS,false);
             }
@@ -394,8 +399,6 @@ public class SellerController {
     private TableColumn<SaleProduct, Double> sumColumn;
     @FXML
     private Label sumLabel;
-    @FXML
-    private Label discountSumLabel;
 
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
@@ -418,9 +421,9 @@ public class SellerController {
     @FXML
     private Button discountButtonActivate;
     @FXML
-    private Button cashReceiptButton; //сформировать чек.
+    private Button cashReceiptButton;
     @FXML
-    private Button cButton; //отменить чек.
+    private Button cButton;
 
     @FXML
     void discountButtonActivateOnAction() {
@@ -441,16 +444,15 @@ public class SellerController {
         positionsCount++;
         priceLabel.setVisible(false);
         cashReceiptButton.setDisable(false); //Кнопка Чек становится доступна
-        saleTable.setItems(saleProductsObservableList);
+        saleTable.setItems(SALE_PRODUCT_OBSERVABLE_LIST);
         saleTable.refresh();
 
         productCategoryIco.setVisible(false);
         xLabel.setVisible(false);
-        sumLabelRefresh();
+        sumLabel.setText(String.valueOf(currentSaleSum()));
         productNameLabel.setVisible(false);
         amountLabel.setVisible(false);
         addProduct.setDisable(true);
-        productOperationButtonsIsDisable(true);
         buttonsIsDisable(PRODUCT_BUTTONS, false);
     }
     @FXML
@@ -488,7 +490,7 @@ public class SellerController {
         sumLabel.setText("0.00");
         cButton.setDisable(true);
         saleTable.refresh();
-        sumLabelRefresh();
+        sumLabel.setText(String.valueOf(currentSaleSum()));
     }
     /*____________________________________˄˄˄_____________________________________________
      ___________________________________the end__________________________________________*/
@@ -509,9 +511,9 @@ public class SellerController {
             Button button = (Button) event.getSource();
             discountPane.setVisible(false);
             makeDiscount(button);
-            saleTable.setItems(saleProductsObservableList);
+            saleTable.setItems(SALE_PRODUCT_OBSERVABLE_LIST);
             saleTable.refresh();
-            sumLabelRefresh();
+            sumLabel.setText(String.valueOf(currentSaleSum()));
         }
     };
     /*____________________________________˄˄˄_____________________________________________
@@ -525,7 +527,7 @@ public class SellerController {
     @FXML
     private AnchorPane paymentTypePane;
     @FXML
-    Button[] paymentTypeButtons = new Button[2];
+    private final Button[] PAYMENT_TYPE_BUTTONS = new Button[2];
     @FXML
     private Button paymentType1;
     @FXML
@@ -552,21 +554,7 @@ public class SellerController {
             changePane.setVisible(true);
             paymentTypePane.setVisible(false);
         } else if (Integer.parseInt(button.getAccessibleText()) == 2) {
-            startSync = true;
-            allSalesTable.setItems(todaySalesObservableList);
-            allSalesTable.refresh();
-            addSaleToLocalDB(currentSale);
-            addSaleProductsToLocalDB(currentSaleProducts, currentSale);
-            currentSale = null;
-            newSale = true;
-            positionsCount = 0;
-            currentSaleProducts.clear();
-            sumLabel.setText("0.00");
-            saleTable.refresh();
-            paymentTypePane.setVisible(false);
-            cButton.setDisable(true);
-            buttonsIsDisable(PRODUCT_BUTTONS, false);
-            renameCashReceiptButton(4);
+            endSaleOperation();
         }
     }
     /*____________________________________˄˄˄_____________________________________________
@@ -579,8 +567,12 @@ public class SellerController {
     private Pane changePane;
     @FXML
     void noChangeOnAction() throws SQLException {
+        endSaleOperation();
+    }
+
+    private void endSaleOperation() throws SQLException {
         startSync = true;
-        allSalesTable.setItems(todaySalesObservableList);
+        allSalesTable.setItems(TODAY_SALES_OBSERVABLE_LIST);
         allSalesTable.refresh();
         addSaleToLocalDB(currentSale);
         addSaleProductsToLocalDB(currentSaleProducts, currentSale);
@@ -594,7 +586,7 @@ public class SellerController {
         paymentTypePane.setVisible(false);
         cButton.setDisable(true);
         buttonsIsDisable(PRODUCT_BUTTONS, false);
-        renameCashReceiptButton(4);
+        tempRenameButton(cashReceiptButton, "Чек сформирован", 4);
     }
 
     @FXML
@@ -616,19 +608,8 @@ public class SellerController {
     private Label changeLabel;
     @FXML
     void okWithChangeOnAction() throws SQLException {
-        startSync = true;
-        allSalesTable.setItems(todaySalesObservableList);
-        allSalesTable.refresh();
-        addSaleToLocalDB(currentSale);
-        addSaleProductsToLocalDB(currentSaleProducts, currentSale);
-        currentSale = null;
-        newSale = true;
-        positionsCount = 0;
-        currentSaleProducts.clear();
-        sumLabel.setText("0.00");
-        saleTable.refresh();
+        endSaleOperation();
 
-        renameCashReceiptButton(4);
         cButton.setDisable(true);
         withChangePane.setVisible(false);
         sumChangeTextField.clear();
@@ -646,15 +627,10 @@ public class SellerController {
         correctionSum(sumLabel.getText(), correctionTextField.getText());
         correctionTextField.setText(null);
 
-        saleTable.setItems(saleProductsObservableList);
+        saleTable.setItems(SALE_PRODUCT_OBSERVABLE_LIST);
         saleTable.refresh();
 
-        double total = 0.0;
-
-        for (SaleProduct saleProduct : saleTable.getItems()) {
-            total = total + saleProduct.getSum();
-        }
-        sumLabel.setText(String.valueOf(total));
+        sumLabel.setText(String.valueOf(currentSaleSum()));
         correctionPane.setVisible(false);
     }
 
@@ -666,19 +642,7 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     void initialize() throws SQLException {
-        Thread clockThread = new Thread(() -> {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-            while (true) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                final String time = simpleDateFormat.format(new java.util.Date());
-                Platform.runLater(() -> clockLabel.setText(time));
-            }
-        });   clockThread.setDaemon(true);
-        clockThread.start();
+        startClockThread(clockLabel, 1);
 
         Thread syncThread = new Thread(() -> {
             while(true) {
@@ -693,7 +657,7 @@ public class SellerController {
                         try {
                             con = getConnection("network_database");
                             try {
-                                isOnline(true);
+                                isOnline(networkIndicatorLabel, networkIndicator, true);
                                 con.close();
                                 syncShiftLog();
                                 syncSales();
@@ -702,7 +666,7 @@ public class SellerController {
                                 throw new RuntimeException(e);
                             }
                         } catch (SQLException e) {
-                            isOnline(false);
+                            isOnline(networkIndicatorLabel, networkIndicator,false);
                         }
                     }
                 });
@@ -723,11 +687,11 @@ public class SellerController {
         conLocalProductDB = getConnection("local_database");
 
         if (conNetworkProductDB != null) {
-            isOnline(true);
+            isOnline(networkIndicatorLabel, networkIndicator,true);
             syncProductsList(conNetworkProductDB, conLocalProductDB);
             conNetworkProductDB.close();
         } else {
-            isOnline(false);
+            isOnline(networkIndicatorLabel, networkIndicator,false);
         }
         createProductsList(conLocalProductDB);
         conLocalProductDB.close();
@@ -741,11 +705,11 @@ public class SellerController {
         }
         conLocalCategoryDB = getConnection("local_database");
         if (conNetworkCategoryDB != null) {
-            isOnline(true);
+            isOnline(networkIndicatorLabel, networkIndicator,true);
             syncProductCategoriesList(conNetworkCategoryDB, conLocalCategoryDB);
             conNetworkCategoryDB.close();
         } else {
-            isOnline(false);
+            isOnline(networkIndicatorLabel, networkIndicator,false);
         }
         createProductCategoriesList(conLocalCategoryDB);
         conLocalCategoryDB.close();
@@ -759,13 +723,13 @@ public class SellerController {
         }
         conLocalPaymentTypeDB = getConnection("local_database");
         if (conNetworkPaymentTypeDB != null) {
-            isOnline(true);
+            isOnline(networkIndicatorLabel, networkIndicator,true);
             syncPaymentTypesList(conNetworkPaymentTypeDB, conLocalPaymentTypeDB);
             conNetworkPaymentTypeDB.close();
             createPaymentTypeList(conLocalPaymentTypeDB);
             conLocalPaymentTypeDB.close();
         } else {
-            isOnline(false);
+            isOnline(networkIndicatorLabel, networkIndicator,false);
             createPaymentTypeList(conLocalPaymentTypeDB);
             conLocalCategoryDB.close();
         }
@@ -779,49 +743,30 @@ public class SellerController {
         }
         conLocalDiscountDB = getConnection("local_database");
         if (conNetworkDiscountDB != null) {
-            isOnline(true);
+            isOnline(networkIndicatorLabel, networkIndicator,true);
             syncDiscountsList(conNetworkDiscountDB, conLocalDiscountDB);
             conNetworkDiscountDB.close();
         } else {
-            isOnline(false);
+            isOnline(networkIndicatorLabel, networkIndicator,false);
         }
         createDiscountList(conLocalDiscountDB);
         conLocalDiscountDB.close();
 
         paymentTypePane.setVisible(false);
         closeShiftButton.setDisable(false);
-        paymentTypeButtons[0] = paymentType1;
-        paymentTypeButtons[1] = paymentType2;
+        PAYMENT_TYPE_BUTTONS[0] = paymentType1;
+        PAYMENT_TYPE_BUTTONS[1] = paymentType2;
 
         int count = 0;
         for (PaymentType paymentType : paymentTypes) {
-            paymentTypeButtons[count].setAccessibleText(String.valueOf(paymentType.getPaymentTypeId()));
-            paymentTypeButtons[count].setText(paymentType.getPaymentType());
+            PAYMENT_TYPE_BUTTONS[count].setAccessibleText(String.valueOf(paymentType.getPaymentTypeId()));
+            PAYMENT_TYPE_BUTTONS[count].setText(paymentType.getPaymentType());
             count++;
         }
-        saleProductsObservableList.addListener((ListChangeListener<SaleProduct>) change -> {});
+        SALE_PRODUCT_OBSERVABLE_LIST.addListener((ListChangeListener<SaleProduct>) change -> {});
 
-        for (int i = 0; i < numbersGridPane.getColumnCount(); i++) {
-            Button numberButton = new Button();
-            NUMBER_BUTTONS.add(i, numberButton);
-            int finalI = i;
-            NUMBER_BUTTONS.get(i).layoutBoundsProperty().addListener((observable, oldValue, newValue) -> NUMBER_BUTTONS.get(finalI).setFont(Font.font(Math.sqrt(newValue.getHeight() * 10))));
-            NUMBER_BUTTONS.get(i).setWrapText(true);
-            NUMBER_BUTTONS.get(i).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
-            NUMBER_BUTTONS.get(i).setPrefSize(91.0, 91.0);
-            NUMBER_BUTTONS.get(i).setVisible(true);
-            GridPane.setConstraints(NUMBER_BUTTONS.get(i), i, 0);
-            numbersGridPane.getChildren().add(NUMBER_BUTTONS.get(i));
-            NUMBER_BUTTONS.get(i).setOnAction(eventNumberButtons);
+        buttonsOnGridPane(Direction.HORIZONTAL, numbersGridPane, NUMBER_BUTTONS, eventNumberButtons);
 
-            if (i < 9) {
-                NUMBER_BUTTONS.get(i).setText(String.valueOf(i + 1));
-                NUMBER_BUTTONS.get(i).setAccessibleText(String.valueOf(i + 1));
-            } else {
-                NUMBER_BUTTONS.get(i).setText("0");
-                NUMBER_BUTTONS.get(i).setAccessibleText("0");
-            }
-        }
         addProduct.setTooltip(new Tooltip("Добавить продукт в чек"));
         cButton.setTooltip(new Tooltip("Пока эта кнопка вообще всё отменяет, но будет сделана кнопка с шагом назад"));
 
@@ -829,99 +774,45 @@ public class SellerController {
         xLabel.setVisible(false);
         amountLabel.setVisible(false);
         productNameLabel.setVisible(false);
-        productOperationButtonsIsDisable(true);
+        addProduct.setDisable(true);
         buttonsIsDisable(NUMBER_BUTTONS, true);
         cashReceiptButton.setDisable(true);
         cButton.setDisable(true);
 
-        int countD = 0;
-        discountGridPane.getHgap();
-        discountGridPane.getVgap();
-        for (int l = 0; l < discountGridPane.getColumnCount(); l++) {
-            for (int h = 0; h < discountGridPane.getRowCount(); h++) {
-                Button discountButton = new Button();
-                DISCOUNT_BUTTONS.add(countD, discountButton);
-                int finalDiscountButtonsCount = countD;
-                DISCOUNT_BUTTONS.get(countD).layoutBoundsProperty().addListener((observable, oldValue, newValue) ->
-                        DISCOUNT_BUTTONS.get(finalDiscountButtonsCount).setFont(
-                                Font.font(Math.sqrt(newValue.getHeight() * 1.5))));
-                DISCOUNT_BUTTONS.get(countD).setWrapText(true);
-                DISCOUNT_BUTTONS.get(countD).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
-                DISCOUNT_BUTTONS.get(countD).setPrefSize(75.0, 75.0);
-                DISCOUNT_BUTTONS.get(countD).setVisible(false);
-                GridPane.setConstraints(DISCOUNT_BUTTONS.get(countD), l, h);
-                discountGridPane.getChildren().add(DISCOUNT_BUTTONS.get(countD));
-                DISCOUNT_BUTTONS.get(countD).setOnAction(eventDiscountButtons);
-                countD++;
-            }
-        }
-        discountNameButtons(DISCOUNT_BUTTONS); //именуем кнопки
+        buttonsOnGridPane(Direction.VERTICAL, discountGridPane, DISCOUNT_BUTTONS, eventDiscountButtons);
+        discountNameButtons(DISCOUNT_BUTTONS);
 
-        saleTable.setEditable(true);
-        productColumn.setEditable(true);
         productColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
-        priceColumn.setEditable(true);
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        amountColumn.setEditable(true);
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        saleTable.setItems(saleProductsObservableList);
-        discountColumn.setEditable(true);
         discountColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
-        sumColumn.setEditable(true);
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
+        saleTable.setItems(SALE_PRODUCT_OBSERVABLE_LIST);
+        saleTable.setPlaceholder(new Label("Выберете продукт"));
 
         timeSalesColumn.setCellValueFactory(new PropertyValueFactory<>("saleTime"));
         productSalesColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
-        numberOfUnit.setCellValueFactory(new PropertyValueFactory<>("numberOfUnit")); //кол-во ед.
-        unitOfMeasurement.setCellValueFactory(new PropertyValueFactory<>("unitOfMeasurement")); //ед.
+        numberOfUnit.setCellValueFactory(new PropertyValueFactory<>("numberOfUnit"));
+        unitOfMeasurement.setCellValueFactory(new PropertyValueFactory<>("unitOfMeasurement"));
         priceSalesColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        amountSalesColumn.setEditable(true);
         amountSalesColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        TableView.TableViewSelectionModel<SaleProduct> selectionModel = allSalesTable.getSelectionModel();
-        selectionModel.selectedItemProperty().addListener((observableValue, saleProduct, t1) -> {
-            delProduct.setSaleId(t1.getSaleId());
-            delProduct.setProductId(t1.getProductId());
-            System.out.println(t1.getSaleId() + " - sale_id " + t1.getProductId() + " - product_id");
-            editButton.setDisable(false);
-        });
-
         discountSalesColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
         sumSalesColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
         paymentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("paymentType"));
-        allSalesTable.setItems(todaySalesObservableList);
+        allSalesTable.setItems(TODAY_SALES_OBSERVABLE_LIST);
+        allSalesTable.setPlaceholder(new Label("В текущей смене ещё нет продаж"));
 
-        //Подсчитываем количество Продуктов в каждой категории.
-        for (Product product : products) {
-            for (ProductCategory productCategory : productCategories) {
-                if (product.getCategory() == productCategory.getProductCategoryId()) {
-                    productCategory.setAmountProducts(productCategory.getAmountProducts() + 1);
-                }
-            }
-        }
-        //Размещаем кнопки Продуктов в GridPane
-        int countP = 0;
-        for (int l = 0; l < mainGridPane.getColumnCount(); l++) {
+        TableView.TableViewSelectionModel<SaleProduct> selectionModel = allSalesTable.getSelectionModel();
+        selectionModel.selectedItemProperty().addListener((observableValue, saleProduct, t1) -> {
+            DELETE_PRODUCT.setSaleId(t1.getSaleId());
+            DELETE_PRODUCT.setProductId(t1.getProductId());
+            editButton.setDisable(false);
+        });
 
-            for (int h = 0; h < mainGridPane.getRowCount(); h++) {
-                Button productButton = new Button();
-                PRODUCT_BUTTONS.add(countP, productButton);
-                int finalProdButtonsCount = countP;
-                PRODUCT_BUTTONS.get(countP).layoutBoundsProperty().addListener((observable, oldValue, newValue) ->
-                        PRODUCT_BUTTONS.get(finalProdButtonsCount).setFont(
-                                Font.font(Math.sqrt(newValue.getHeight() * 1.5))));
-                PRODUCT_BUTTONS.get(countP).setWrapText(true);
-                PRODUCT_BUTTONS.get(countP).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
-                PRODUCT_BUTTONS.get(countP).setPrefSize(91.0, 91.0);
-                PRODUCT_BUTTONS.get(countP).setVisible(false);
-                GridPane.setConstraints(PRODUCT_BUTTONS.get(countP), l, h);
-                mainGridPane.getChildren().add(PRODUCT_BUTTONS.get(countP));
-                PRODUCT_BUTTONS.get(countP).setOnAction(eventProductButtons);
-                countP++;
-            }
-        }
+        countingProductsInCategory();
+
+        buttonsOnGridPane(Direction.VERTICAL, mainGridPane, PRODUCT_BUTTONS, eventProductButtons);
         productNameButton(PRODUCT_BUTTONS);
-
-        discountSumLabel.setVisible(false);
 
         sumChangeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             String changeSumString = newValue.replace(',', '.');
@@ -938,8 +829,7 @@ public class SellerController {
                 changeLabel.setText(String.valueOf(change));
             }
         });
-        saleTable.setPlaceholder(new Label("Выберете продукт"));
-        allSalesTable.setPlaceholder(new Label("В текущей смене ещё нет продаж"));
+
         //Проверка открыта смена или нет.
         if (checkShift()) {
             for (Button product_button : PRODUCT_BUTTONS) {
@@ -958,59 +848,5 @@ public class SellerController {
         for (Button button : buttons) {
             button.setDisable(res);
         }
-    }
-    void sumLabelRefresh() {
-        double total = 0.0;
-
-        for (SaleProduct saleProduct : saleTable.getItems()) {
-            total = total + saleProduct.getSum();
-        }
-        sumLabel.setText(String.valueOf(total));
-    }
-    /**
-     * Данный метод делает кнопки с действиями с Добавляемым продуктом активными/неактивными
-     * Например: кнопки Работы с Выбранным продуктом недоступны пока не выбран продукт.
-     * @param isDisable - тип boolean, который работает как переключатель доступности.
-     */
-    public void productOperationButtonsIsDisable(boolean isDisable) {
-        addProduct.setDisable(isDisable);
-    }
-    /**
-     * Method toggle network status indicator changes<br>
-     * networkIndicatorLabel and networkIndicator (online/offline)<br>
-     * @param status Takes a boolean parameter as an answer to the question<br>
-     *               in the isOnline method name.
-     */
-    void isOnline(boolean status) {
-        if (status) {
-            networkIndicatorLabel.setText("в сети");
-            networkIndicator.setFill(Color.GREEN);
-        } else {
-            networkIndicatorLabel.setText("не в сети");
-            networkIndicator.setFill(Color.YELLOW);
-        }
-    }
-    /**
-     * Temporarily renames the "Receipt" button to "Receipt generated".<br>
-     * @param sec takes a time in seconds as a parameter.<br>
-     */
-    public void renameCashReceiptButton(int sec) {
-        int millis = sec * 1000;
-        cashReceiptButton.setFont(Font.font("", FontWeight.BOLD, 29));
-        cashReceiptButton.setText("Чек сформирован");
-        Thread renameCashReceiptButton = new Thread(() -> {
-
-            try {
-                Thread.sleep(millis);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            Platform.runLater(() -> {
-                cashReceiptButton.setText("Чек");
-                cashReceiptButton.setFont(Font.font("System", FontWeight.BOLD, 35));
-            });
-        });   renameCashReceiptButton.setDaemon(true);
-        renameCashReceiptButton.start();
     }
 }

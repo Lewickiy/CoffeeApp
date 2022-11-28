@@ -11,8 +11,7 @@ public class SaleProductList {
             , int discountId
             , int discount
             , int amountProdSale
-            , double sumProdSale
-            , boolean corrected) {
+            , double sumProdSale) {
 
         currentSaleProducts.add(new SaleProduct(saleProdId
                 , prodSaleId
@@ -53,7 +52,6 @@ public class SaleProductList {
             }
         }
     }
-
     /**
      * Helper method for the addProductToArray() method.<br>
      * Adds the entire Product if this product is the first time it appears in the list.<br>
@@ -67,7 +65,6 @@ public class SaleProductList {
                 , currentProduct.getDiscountId()
                 , currentProduct.getDiscount()
                 , currentProduct.getAmount()
-                , currentProduct.getSum()
-                ,false);
+                , currentProduct.getSum());
     }
 }

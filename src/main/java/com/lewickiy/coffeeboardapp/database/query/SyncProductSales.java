@@ -5,7 +5,7 @@ import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
 import java.sql.*;
 import java.text.ParseException;
 
-import static com.lewickiy.coffeeboardapp.database.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 
 public class SyncProductSales {
