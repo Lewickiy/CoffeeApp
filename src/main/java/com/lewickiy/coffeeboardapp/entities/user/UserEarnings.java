@@ -22,7 +22,6 @@ public class UserEarnings {
         double userEarnings = 0;
         long nowDate = System.currentTimeMillis(); //Дата сейчас.
         java.sql.Date currentDate = new java.sql.Date(nowDate);
-        System.out.println(currentDate);
         Statement statement = getConnection("network_database").createStatement(); //создаётся подключение
         String query = "SELECT * FROM `sale` WHERE `user_id` = " + currentUser.getUserId() +" AND `date` = '" + currentDate + "'"; //создаётся запрос к базе данных
         ResultSet resultSet = statement.executeQuery(query);

@@ -41,8 +41,6 @@ public class SyncSales {
                         currentSale1.setLoaded(false);
                     }
 
-                    System.out.println("Insert to NetworkDatabase");
-
                     insertToSql(conNetwork, "network_database", "sale", "sale_id, "
                             + "user_id, "
                             + "outlet_id, "

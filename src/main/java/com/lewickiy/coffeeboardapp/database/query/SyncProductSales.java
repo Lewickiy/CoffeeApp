@@ -4,9 +4,12 @@ import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
 
 import java.sql.*;
 import java.text.ParseException;
+import java.util.logging.Level;
 
+import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
+import static com.lewickiy.coffeeboardapp.database.helper.FalseTrueDecoderDB.decodeIntBoolean;
 
 public class SyncProductSales {
     public static void syncSalesProduct() throws SQLException, ParseException {
@@ -16,7 +19,7 @@ public class SyncProductSales {
         try {
             conNetwork = getConnection("network_database");
         } catch (SQLException sqlEx) {
-            System.out.println(sqlEx);
+            LOGGER.log(Level.WARNING,"Connection to network database failed");
         }
 
         conLocal = getConnection("local_database");
@@ -34,27 +37,8 @@ public class SyncProductSales {
                 tempSaleProduct.setPrice(resultSelectNotLoaded.getDouble("price"));
                 tempSaleProduct.setAmount(resultSelectNotLoaded.getInt("amount"));
                 tempSaleProduct.setSum(resultSelectNotLoaded.getDouble("sum"));
-                int cor = resultSelectNotLoaded.getInt("corrected");
-                if (cor == 0) {
-                    tempSaleProduct.setCorrected(false);
-                } else {
-                    tempSaleProduct.setCorrected(true);
-                }
-
-                int intLoaded = resultSelectNotLoaded.getInt("loaded");
-
-                if (intLoaded == 1) {
-                    tempSaleProduct.setLoaded(true);
-                } else {
-                    tempSaleProduct.setLoaded(false);
-                }
-
-                int isCorForNDB = 0;
-
-                if (tempSaleProduct.isCorrected()) {
-                    isCorForNDB = 1;
-                }
-                System.out.println("loaded from Local db");
+                tempSaleProduct.setCorrected(decodeIntBoolean(resultSelectNotLoaded.getInt("corrected")));
+                tempSaleProduct.setLoaded(decodeIntBoolean(resultSelectNotLoaded.getInt("loaded")));
 
                 insertToSql(conNetwork, "network_database", "sale_product", "sale_id, "
                         + "product_id, "
@@ -69,7 +53,7 @@ public class SyncProductSales {
                         + tempSaleProduct.getPrice() + "', '"
                         + tempSaleProduct.getAmount() + "', '"
                         + tempSaleProduct.getSum() + "', '"
-                        + isCorForNDB + "'");
+                        + decodeIntBoolean(tempSaleProduct.isCorrected()) + "'");
             }
             resultSelectNotLoaded.close();
             conNetwork.close();

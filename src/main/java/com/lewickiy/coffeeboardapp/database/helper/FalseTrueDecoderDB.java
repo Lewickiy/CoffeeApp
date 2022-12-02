@@ -6,9 +6,9 @@ import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 
 public class FalseTrueDecoderDB {
     /**
-     * Декодер для boolean в базах данных
-     * @param incomingInt - в формате int от базы данных
-     * @return boolean.
+     * Декодер для boolean в базах данных при использовании в синхронизации между sql и sqlite
+     * @param incomingInt - в формате int от базы данных 0/1
+     * @return boolean значение false/true.
      */
     public static boolean decodeIntBoolean(int incomingInt) {
         boolean decoded;
@@ -22,6 +22,11 @@ public class FalseTrueDecoderDB {
         }
         return decoded;
     }
+    /**
+     * Декодер для boolean в базах данных при использовании в синхронизации между sql и sqlite
+     * @param incomingBoolean - в формате boolean от базы данных false/true
+     * @return int значение 0/1.
+     */
     public static int decodeIntBoolean(boolean incomingBoolean) {
         int decoded;
         if (incomingBoolean) {

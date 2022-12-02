@@ -2,13 +2,12 @@ package com.lewickiy.coffeeboardapp.controllers.seller;
 
 import com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTableChoice;
 import com.lewickiy.coffeeboardapp.controllers.seller.actions.Direction;
-import com.lewickiy.coffeeboardapp.entities.currentSale.CurrentSale;
-import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
-import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList;
 import com.lewickiy.coffeeboardapp.database.discount.Discount;
 import com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySales;
-import com.lewickiy.coffeeboardapp.entities.paymentType.PaymentType;
 import com.lewickiy.coffeeboardapp.database.product.Product;
+import com.lewickiy.coffeeboardapp.entities.currentSale.CurrentSale;
+import com.lewickiy.coffeeboardapp.entities.paymentType.PaymentType;
+import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
 import com.lewickiy.coffeeboardapp.entities.user.UserList;
 import com.lewickiy.coffeeboardapp.idgenerator.UniqueIdGenerator;
 import javafx.application.Platform;
@@ -49,9 +48,6 @@ import static com.lewickiy.coffeeboardapp.controllers.seller.actions.NetworkIndi
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ProductNameButton.productNameButton;
 import static com.lewickiy.coffeeboardapp.database.Query.deleteFromLocalSql;
 import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
-import static com.lewickiy.coffeeboardapp.entities.currentSale.CurrentSale.addSaleToLocalDB;
-import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct.addSaleProductsToLocalDB;
-import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.*;
@@ -64,8 +60,6 @@ import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesSu
 import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesSumCash.sumCash;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
-import static com.lewickiy.coffeeboardapp.entities.paymentType.PaymentTypeList.createPaymentTypeList;
-import static com.lewickiy.coffeeboardapp.entities.paymentType.PaymentTypeList.paymentTypes;
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.createProductCategoriesList;
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
@@ -76,6 +70,12 @@ import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.shiftLog;
 import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.syncShiftLog;
 import static com.lewickiy.coffeeboardapp.database.query.SyncProductSales.syncSalesProduct;
 import static com.lewickiy.coffeeboardapp.database.query.SyncSales.syncSales;
+import static com.lewickiy.coffeeboardapp.entities.currentSale.CurrentSale.addSaleToLocalDB;
+import static com.lewickiy.coffeeboardapp.entities.paymentType.PaymentTypeList.createPaymentTypeList;
+import static com.lewickiy.coffeeboardapp.entities.paymentType.PaymentTypeList.paymentTypes;
+import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct.addSaleProductsToLocalDB;
+import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.addProductToArray;
+import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.entities.user.UserList.users;
 
 public class SellerController {
@@ -426,7 +426,7 @@ public class SellerController {
                 }
             }
         }
-        SaleProductList.addProductToArray(positionsCount, currentProduct);
+        addProductToArray(positionsCount, currentProduct);
         positionsCount++;
         priceLabel.setVisible(false);
         cashReceiptButton.setDisable(false); //Кнопка Чек становится доступна
@@ -468,6 +468,7 @@ public class SellerController {
         addProduct.setDisable(true);
         currentSale = null;
         newSale = true;
+        startSync = true;
         positionsCount = 0;
         currentSaleProducts.clear();
         saleTable.refresh();

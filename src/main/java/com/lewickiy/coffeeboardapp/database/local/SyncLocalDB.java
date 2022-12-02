@@ -51,7 +51,6 @@ public class SyncLocalDB {
 
         LOGGER.log(Level.INFO,"Start loading users to sqlite from array");
         for (User user : users) {
-            System.out.println(user.getPhone() + " - phone, " + user.getBirthday() + " - birthday, " + user.getFirstName() + " " + ". Is active stuff? - " + user.isActiveStuff());
             insertToSql(localCon, LOCAL_DB,"user", "user_id, "
                     + "login, "
                     + "first_name, "
