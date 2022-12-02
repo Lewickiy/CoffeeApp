@@ -1,7 +1,8 @@
 package com.lewickiy.coffeeboardapp.controllers.login;
 
+import com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTableChoice;
 import com.lewickiy.coffeeboardapp.database.outlet.Outlet;
-import com.lewickiy.coffeeboardapp.database.user.User;
+import com.lewickiy.coffeeboardapp.entities.user.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,7 +19,7 @@ import java.text.ParseException;
 import java.util.logging.Level;
 
 import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
-import static com.lewickiy.coffeeboardapp.controllers.login.actions.WorkTable.enterToWorkTable;
+import static com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTable.enterToWorkTable;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.NetworkIndicator.isOnline;
 import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncOutletsList;
@@ -26,7 +27,7 @@ import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncUsersLi
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.createOutletList;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
-import static com.lewickiy.coffeeboardapp.database.user.UserList.*;
+import static com.lewickiy.coffeeboardapp.entities.user.UserList.*;
 
 public class LoginController {
     static ObservableList<Outlet> outletsObservableList = FXCollections.observableList(outlets);
@@ -110,17 +111,17 @@ public class LoginController {
     @FXML
     private void okButtonEnterKey(KeyEvent okEvent) {
         if (okEvent.getCode() == KeyCode.ENTER && !acceptOutletChoice.isDisable() && !currentUser.isAdministrator())  {
-            enterToWorkTable("seller.fxml", loginButton);
+            enterToWorkTable(WorkTableChoice.SELLER, loginButton);
         } else if (okEvent.getCode() == KeyCode.ENTER && !acceptOutletChoice.isDisable() && currentUser.isAdministrator()) {
-            enterToWorkTable("administrator.fxml", loginButton);
+            enterToWorkTable(WorkTableChoice.ADMINISTRATOR, loginButton);
         }
     }
     @FXML
     private void acceptOutletChoiceOnAction() {
         if (!acceptOutletChoice.isDisable() && !currentUser.isAdministrator())  {
-            enterToWorkTable("seller.fxml", loginButton);
+            enterToWorkTable(WorkTableChoice.SELLER, loginButton);
         } else if (!acceptOutletChoice.isDisable() && currentUser.isAdministrator()) {
-            enterToWorkTable("administrator.fxml", loginButton);
+            enterToWorkTable(WorkTableChoice.ADMINISTRATOR, loginButton);
         }
     }
     @FXML

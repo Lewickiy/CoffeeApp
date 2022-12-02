@@ -2,15 +2,15 @@ package com.lewickiy.coffeeboardapp.database.local;
 
 import com.lewickiy.coffeeboardapp.database.discount.Discount;
 import com.lewickiy.coffeeboardapp.database.outlet.Outlet;
-import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
+import com.lewickiy.coffeeboardapp.entities.paymentType.PaymentType;
 import com.lewickiy.coffeeboardapp.database.product.Product;
 import com.lewickiy.coffeeboardapp.database.product.ProductCategory;
-import com.lewickiy.coffeeboardapp.database.user.User;
+import com.lewickiy.coffeeboardapp.entities.user.User;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.logging.Level;
 
 import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
@@ -18,10 +18,10 @@ import static com.lewickiy.coffeeboardapp.database.Query.*;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.helper.FalseTrueDecoderDB.decodeIntBoolean;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
-import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
+import static com.lewickiy.coffeeboardapp.entities.paymentType.PaymentTypeList.paymentTypes;
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
-import static com.lewickiy.coffeeboardapp.database.user.UserList.users;
+import static com.lewickiy.coffeeboardapp.entities.user.UserList.users;
 
 public class SyncLocalDB {
     static final String LOCAL_DB = "local_database";
@@ -40,7 +40,6 @@ public class SyncLocalDB {
             Date birthday = resultSet.getDate("birthday");
             String phone = resultSet.getString("phone");
             boolean administrator = resultSet.getBoolean("administrator");
-            System.out.println(administrator + " after load from network database");
             boolean activeStuff = resultSet.getBoolean("active_stuff");
             users.add(new User(userId, login, password, firstName, lastName, patronymic, birthday, phone, administrator, activeStuff));
             count++;
@@ -52,6 +51,7 @@ public class SyncLocalDB {
 
         LOGGER.log(Level.INFO,"Start loading users to sqlite from array");
         for (User user : users) {
+            System.out.println(user.getPhone() + " - phone, " + user.getBirthday() + " - birthday, " + user.getFirstName() + " " + ". Is active stuff? - " + user.isActiveStuff());
             insertToSql(localCon, LOCAL_DB,"user", "user_id, "
                     + "login, "
                     + "first_name, "
@@ -140,7 +140,7 @@ public class SyncLocalDB {
     }
 
     public static void syncProductsList(Connection networkCon, Connection localCon) throws SQLException {
-        ResultSet resultSet = selectAllFromSql(networkCon, NETWORK_DB,"product");
+        ResultSet resultSet = selectProductsFromNDB(networkCon);
         while(resultSet.next()) {
             int productId = resultSet.getInt("product_id");
             String product = resultSet.getString("product");

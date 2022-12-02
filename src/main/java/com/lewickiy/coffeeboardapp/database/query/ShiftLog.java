@@ -9,7 +9,7 @@ import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
-import static com.lewickiy.coffeeboardapp.database.user.UserList.currentUser;
+import static com.lewickiy.coffeeboardapp.entities.user.UserList.currentUser;
 
 /**
  * Класс работы с логом открытия/закрытия смен

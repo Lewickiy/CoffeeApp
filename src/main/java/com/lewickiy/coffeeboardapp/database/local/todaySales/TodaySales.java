@@ -1,6 +1,6 @@
 package com.lewickiy.coffeeboardapp.database.local.todaySales;
 
-import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
+import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
 
 import java.sql.Date;
 import java.sql.Time;

@@ -1,11 +1,11 @@
-package com.lewickiy.coffeeboardapp.database.user;
+package com.lewickiy.coffeeboardapp.entities.user;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
-import static com.lewickiy.coffeeboardapp.database.user.UserList.currentUser;
+import static com.lewickiy.coffeeboardapp.entities.user.UserList.currentUser;
 
 /**
  * Класс, отвечающий за подсчёт заработка текущего Пользователя за сегодняшний день.

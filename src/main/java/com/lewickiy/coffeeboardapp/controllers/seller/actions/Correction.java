@@ -1,9 +1,9 @@
 package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
-import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
+import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
 import com.lewickiy.coffeeboardapp.database.product.Product;
 
-import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
+import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 
 public class Correction {

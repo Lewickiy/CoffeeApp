@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.database.currentSale;
+package com.lewickiy.coffeeboardapp.entities.currentSale;
 
 import java.sql.Connection;
 import java.sql.Date;

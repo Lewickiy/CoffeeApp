@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.database.user;
+package com.lewickiy.coffeeboardapp.entities.user;
 
 import java.util.Date;
 

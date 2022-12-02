@@ -1,4 +1,6 @@
-package com.lewickiy.coffeeboardapp.database.currentSale;
+package com.lewickiy.coffeeboardapp.entities.saleProduct;
+
+import com.lewickiy.coffeeboardapp.entities.currentSale.CurrentSale;
 
 import java.sql.Connection;
 import java.sql.SQLException;

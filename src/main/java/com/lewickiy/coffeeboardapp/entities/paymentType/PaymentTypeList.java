@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.database.paymentType;
+package com.lewickiy.coffeeboardapp.entities.paymentType;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

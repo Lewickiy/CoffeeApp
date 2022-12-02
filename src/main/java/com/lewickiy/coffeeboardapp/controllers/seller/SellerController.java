@@ -1,15 +1,15 @@
 package com.lewickiy.coffeeboardapp.controllers.seller;
 
-import com.lewickiy.coffeeboardapp.CoffeeBoardApp;
+import com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTableChoice;
 import com.lewickiy.coffeeboardapp.controllers.seller.actions.Direction;
-import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
-import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
-import com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList;
+import com.lewickiy.coffeeboardapp.entities.currentSale.CurrentSale;
+import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
+import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList;
 import com.lewickiy.coffeeboardapp.database.discount.Discount;
 import com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySales;
-import com.lewickiy.coffeeboardapp.database.paymentType.PaymentType;
+import com.lewickiy.coffeeboardapp.entities.paymentType.PaymentType;
 import com.lewickiy.coffeeboardapp.database.product.Product;
-import com.lewickiy.coffeeboardapp.database.user.UserList;
+import com.lewickiy.coffeeboardapp.entities.user.UserList;
 import com.lewickiy.coffeeboardapp.idgenerator.UniqueIdGenerator;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -18,8 +18,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -31,9 +29,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -41,6 +37,7 @@ import java.util.logging.Level;
 
 import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 import static com.lewickiy.coffeeboardapp.controllers.actions.TemporaryRenameButton.tempRenameButton;
+import static com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTable.enterToWorkTable;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ButtonsOnGridPane.buttonsOnGridPane;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.CheckShift.checkShift;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ClockThread.startClockThread;
@@ -52,9 +49,9 @@ import static com.lewickiy.coffeeboardapp.controllers.seller.actions.NetworkIndi
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ProductNameButton.productNameButton;
 import static com.lewickiy.coffeeboardapp.database.Query.deleteFromLocalSql;
 import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
-import static com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale.addSaleToLocalDB;
-import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct.addSaleProductsToLocalDB;
-import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
+import static com.lewickiy.coffeeboardapp.entities.currentSale.CurrentSale.addSaleToLocalDB;
+import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct.addSaleProductsToLocalDB;
+import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.*;
@@ -67,8 +64,8 @@ import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesSu
 import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesSumCash.sumCash;
 import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
-import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.createPaymentTypeList;
-import static com.lewickiy.coffeeboardapp.database.paymentType.PaymentTypeList.paymentTypes;
+import static com.lewickiy.coffeeboardapp.entities.paymentType.PaymentTypeList.createPaymentTypeList;
+import static com.lewickiy.coffeeboardapp.entities.paymentType.PaymentTypeList.paymentTypes;
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.createProductCategoriesList;
 import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
@@ -79,6 +76,7 @@ import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.shiftLog;
 import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.syncShiftLog;
 import static com.lewickiy.coffeeboardapp.database.query.SyncProductSales.syncSalesProduct;
 import static com.lewickiy.coffeeboardapp.database.query.SyncSales.syncSales;
+import static com.lewickiy.coffeeboardapp.entities.user.UserList.users;
 
 public class SellerController {
     @FXML
@@ -96,7 +94,6 @@ public class SellerController {
     private int positionsCount;
     private CurrentSale currentSale;
     private SaleProduct currentProduct;
-
     private final SaleProduct DELETE_PRODUCT = new SaleProduct();
     private final ObservableList<SaleProduct> SALE_PRODUCT_OBSERVABLE_LIST = FXCollections.observableList(currentSaleProducts);
     private final ObservableList<SaleProduct> TODAY_SALES_OBSERVABLE_LIST = FXCollections.observableList(todaySalesArrayList);
@@ -128,7 +125,7 @@ public class SellerController {
     @FXML
     private Button saveButton;
     @FXML
-    void saveButtonOnAction() {
+    void saveButtonOnAction() throws ParseException {
         try (Connection conLocal = getConnection("local_database")) {
             String update = "UPDATE sale_product SET corrected = ? WHERE sale_id = "
                     + DELETE_PRODUCT.getSaleId()
@@ -150,8 +147,6 @@ public class SellerController {
             allCashLabel.setText((sumCash() + getCashDeposit()) + " руб.");
             litresLabel.setText(countLitersOfDrinks() + " л.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
         saveButton.setDisable(true);
@@ -232,7 +227,7 @@ public class SellerController {
     @FXML
     private Pane closeShiftPane;
     @FXML
-    void okCloseShiftButtonOnAction() throws IOException, SQLException, ParseException {
+    void okCloseShiftButtonOnAction() throws SQLException, ParseException {
         //TODO проверка. Если данные не загрузились в network database, не очищать соответствующие таблицы local database.
         todaySalesArrayList.clear();
         allSalesTable.refresh();
@@ -256,17 +251,8 @@ public class SellerController {
         discounts.clear();
         paymentTypes.clear();
         outlets.clear();
-
-        Stage stage = (Stage) closeShiftButton.getScene().getWindow();
-        stage.close();
-        FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("login.fxml"));
-        Stage stageLogin = new Stage();
-        Scene sceneLogin = new Scene(fxmlLoader.load());
-        stageLogin.initStyle(StageStyle.UNDECORATED);
-        stageLogin.setTitle("CoffeeApp");
-        stageLogin.setScene(sceneLogin);
-        closeShiftPane.setVisible(false);
-        stageLogin.show();
+        users.clear();
+        enterToWorkTable(WorkTableChoice.LOGIN, closeShiftButton);
     }
     @FXML
     void cancelCloseShiftButtonOnAction() {
@@ -841,7 +827,8 @@ public class SellerController {
         } else {
             openShiftButton.setDisable(true);
         }
-        cashDepositTextField.textProperty().addListener(observable -> okOpenShiftButton.setDisable(false));
+        cashDepositTextField.textProperty().addListener(observable
+                -> okOpenShiftButton.setDisable(false));
     }
 
     public void buttonsIsDisable(ArrayList<Button> buttons, boolean res) {

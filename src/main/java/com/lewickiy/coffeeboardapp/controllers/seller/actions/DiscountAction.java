@@ -1,10 +1,10 @@
 package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
-import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
+import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
 import com.lewickiy.coffeeboardapp.database.product.Product;
 import javafx.scene.control.Button;
 
-import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
+import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
 import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
 

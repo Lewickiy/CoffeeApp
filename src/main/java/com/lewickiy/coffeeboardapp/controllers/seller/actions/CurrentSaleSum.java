@@ -1,8 +1,8 @@
 package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
-import com.lewickiy.coffeeboardapp.database.currentSale.SaleProduct;
+import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
 
-import static com.lewickiy.coffeeboardapp.database.currentSale.SaleProductList.currentSaleProducts;
+import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.currentSaleProducts;
 
 public class CurrentSaleSum {
     public static double currentSaleSum() {

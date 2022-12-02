@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.database.user;
+package com.lewickiy.coffeeboardapp.entities.user;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -25,7 +25,6 @@ public class UserList {
     public static User currentUser = new User();
 
     public static void createUsersList(Connection con) throws SQLException, ParseException {
-
         ResultSet resultSet = selectAllFromSql(con, "local_database","user");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         while(resultSet.next()) {

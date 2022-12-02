@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.database.paymentType;
+package com.lewickiy.coffeeboardapp.entities.paymentType;
 
 public class PaymentType {
     private int paymentTypeId;

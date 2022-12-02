@@ -1,6 +1,6 @@
 package com.lewickiy.coffeeboardapp.database.query;
 
-import com.lewickiy.coffeeboardapp.database.currentSale.CurrentSale;
+import com.lewickiy.coffeeboardapp.entities.currentSale.CurrentSale;
 
 import java.sql.*;
 import java.text.ParseException;
