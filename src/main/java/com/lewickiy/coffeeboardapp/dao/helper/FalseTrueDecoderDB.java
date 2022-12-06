@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.database.helper;
+package com.lewickiy.coffeeboardapp.dao.helper;
 
 import java.util.logging.Level;
 

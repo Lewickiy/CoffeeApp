@@ -1,15 +1,17 @@
-package com.lewickiy.coffeeboardapp.entities.currentSale;
+package com.lewickiy.coffeeboardapp.entities.currentsale;
+
+import com.lewickiy.coffeeboardapp.dao.connector.Database;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 
-import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
-import static com.lewickiy.coffeeboardapp.database.Query.insertToSql;
+import static com.lewickiy.coffeeboardapp.dao.connector.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.dao.query.Query.insertToSql;
 
 public class CurrentSale {
-    private int saleId;
+    private long saleId;
     private int userId;
     private int outletId;
     private Date currentDate;
@@ -19,27 +21,16 @@ public class CurrentSale {
 
     private boolean loaded;
 
-    public CurrentSale(int saleId, int userId, int outletId, Date currentDate, Time currentTime, int paymentTypeId, int clientId, boolean loaded) {
-        this.saleId = saleId;
-        this.userId = userId;
-        this.outletId = outletId;
-        this.currentDate = currentDate;
-        this.currentTime = currentTime;
-        this.paymentTypeId = paymentTypeId;
-        this.clientId = clientId;
-        this.loaded = loaded;
-    }
-
-    public CurrentSale(int saleId, int userId, int outletId) {
+    public CurrentSale(long saleId, int userId, int outletId) {
         this.saleId = saleId;
         this.userId = userId;
         this.outletId = outletId;
     }
 
-    public int getSaleId() {
+    public long getSaleId() {
         return saleId;
     }
-    public void setSaleId(int saleId) {
+    public void setSaleId(long saleId) {
         this.saleId = saleId;
     }
     public int getUserId() {
@@ -103,7 +94,7 @@ public class CurrentSale {
     }
 
     public static void addSaleToLocalDB(CurrentSale currentSale) throws SQLException {
-        Connection con = getConnection("local_database");
+        Connection con = getConnection(Database.LOCAL_DB);
         insertToSql(con, "local_database", "sale","sale_id, "
                 + "user_id, "
                 + "outlet_id, "
