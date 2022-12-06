@@ -2,15 +2,17 @@ package com.lewickiy.coffeeboardapp.controllers.seller;
 
 import com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTableChoice;
 import com.lewickiy.coffeeboardapp.controllers.seller.actions.Direction;
-import com.lewickiy.coffeeboardapp.database.discount.Discount;
-import com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySales;
-import com.lewickiy.coffeeboardapp.database.product.Product;
-import com.lewickiy.coffeeboardapp.entities.currentSale.CurrentSale;
-import com.lewickiy.coffeeboardapp.entities.paymentType.PaymentType;
-import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
+import com.lewickiy.coffeeboardapp.dao.connector.Database;
+import com.lewickiy.coffeeboardapp.dao.todaySales.TodaySales;
+import com.lewickiy.coffeeboardapp.entities.currentsale.CurrentSale;
+import com.lewickiy.coffeeboardapp.entities.discount.Discount;
+import com.lewickiy.coffeeboardapp.entities.paymenttype.PaymentType;
+import com.lewickiy.coffeeboardapp.entities.product.Product;
+import com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProduct;
 import com.lewickiy.coffeeboardapp.entities.user.UserList;
 import com.lewickiy.coffeeboardapp.idgenerator.UniqueIdGenerator;
-import javafx.application.Platform;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -28,10 +30,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
@@ -46,36 +50,38 @@ import static com.lewickiy.coffeeboardapp.controllers.seller.actions.DiscountAct
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.DiscountNameButton.discountNameButtons;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.NetworkIndicator.isOnline;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ProductNameButton.productNameButton;
-import static com.lewickiy.coffeeboardapp.database.Query.deleteFromLocalSql;
-import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
-import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.createDiscountList;
-import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
-import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.*;
-import static com.lewickiy.coffeeboardapp.database.local.todaySales.LitersOfDrinks.countLitersOfDrinks;
-import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodayCashDeposit.getCashDeposit;
-import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesList.todaySalesArrayList;
-import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesListReload.todaySalesListReload;
-import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesSumAll.sumAll;
-import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesSumCard.sumCard;
-import static com.lewickiy.coffeeboardapp.database.local.todaySales.TodaySalesSumCash.sumCash;
-import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
-import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
-import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.createProductCategoriesList;
-import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
-import static com.lewickiy.coffeeboardapp.database.product.ProductList.createProductsList;
-import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
-import static com.lewickiy.coffeeboardapp.database.product.ProductsInCategory.countingProductsInCategory;
-import static com.lewickiy.coffeeboardapp.database.query.OpenCloseShift.updateShiftSql;
-import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.shiftLog;
-import static com.lewickiy.coffeeboardapp.database.query.ShiftLog.syncShiftLog;
-import static com.lewickiy.coffeeboardapp.database.query.SyncProductSales.syncSalesProduct;
-import static com.lewickiy.coffeeboardapp.database.query.SyncSales.syncSales;
-import static com.lewickiy.coffeeboardapp.entities.currentSale.CurrentSale.addSaleToLocalDB;
-import static com.lewickiy.coffeeboardapp.entities.paymentType.PaymentTypeList.createPaymentTypeList;
-import static com.lewickiy.coffeeboardapp.entities.paymentType.PaymentTypeList.paymentTypes;
-import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct.addSaleProductsToLocalDB;
-import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.addProductToArray;
-import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.currentSaleProducts;
+import static com.lewickiy.coffeeboardapp.dao.connector.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.dao.SyncLocalDB.*;
+import static com.lewickiy.coffeeboardapp.dao.info.syncInfo.getInfoMessage;
+import static com.lewickiy.coffeeboardapp.dao.query.OpenCloseShift.updateShiftSql;
+import static com.lewickiy.coffeeboardapp.dao.query.Query.deleteFromLocalSql;
+import static com.lewickiy.coffeeboardapp.dao.query.ShiftLog.shiftLog;
+import static com.lewickiy.coffeeboardapp.dao.query.ShiftLog.syncShiftLog;
+import static com.lewickiy.coffeeboardapp.dao.query.SyncCorrected.syncCorrectedSales;
+import static com.lewickiy.coffeeboardapp.dao.query.SyncProductSales.syncSalesProduct;
+import static com.lewickiy.coffeeboardapp.dao.query.SyncSales.syncSales;
+import static com.lewickiy.coffeeboardapp.dao.todaySales.LitersOfDrinks.countLitersOfDrinks;
+import static com.lewickiy.coffeeboardapp.dao.todaySales.TodayCashDeposit.getCashDeposit;
+import static com.lewickiy.coffeeboardapp.dao.todaySales.TodaySalesList.todaySalesArrayList;
+import static com.lewickiy.coffeeboardapp.dao.todaySales.TodaySalesListReload.todaySalesListReload;
+import static com.lewickiy.coffeeboardapp.dao.todaySales.TodaySalesSumAll.sumAll;
+import static com.lewickiy.coffeeboardapp.dao.todaySales.TodaySalesSumCard.sumCard;
+import static com.lewickiy.coffeeboardapp.dao.todaySales.TodaySalesSumCash.sumCash;
+import static com.lewickiy.coffeeboardapp.entities.currentsale.CurrentSale.addSaleToLocalDB;
+import static com.lewickiy.coffeeboardapp.entities.discount.DiscountList.createDiscountList;
+import static com.lewickiy.coffeeboardapp.entities.discount.DiscountList.discounts;
+import static com.lewickiy.coffeeboardapp.entities.outlet.Outlet.currentOutlet;
+import static com.lewickiy.coffeeboardapp.entities.outlet.OutletList.outlets;
+import static com.lewickiy.coffeeboardapp.entities.paymenttype.PaymentTypeList.createPaymentTypeList;
+import static com.lewickiy.coffeeboardapp.entities.paymenttype.PaymentTypeList.paymentTypes;
+import static com.lewickiy.coffeeboardapp.entities.productcategory.ProductCategoryList.createProductCategoriesList;
+import static com.lewickiy.coffeeboardapp.entities.productcategory.ProductCategoryList.productCategories;
+import static com.lewickiy.coffeeboardapp.entities.product.ProductList.createProductsList;
+import static com.lewickiy.coffeeboardapp.entities.product.ProductList.products;
+import static com.lewickiy.coffeeboardapp.entities.product.ProductsInCategory.countingProductsInCategory;
+import static com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProduct.addSaleProductsToLocalDB;
+import static com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProductList.addProductToArray;
+import static com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProductList.currentSaleProducts;
 import static com.lewickiy.coffeeboardapp.entities.user.UserList.users;
 
 public class SellerController {
@@ -89,8 +95,8 @@ public class SellerController {
 
     //___________________Временная реализация кнопки с ботом выше #bot______________________________
     private boolean newSale = true;
-    private int saleId;
-    private boolean startSync = true;
+    private long saleId;
+    public static boolean startSync = true;
     private int positionsCount;
     private CurrentSale currentSale;
     private SaleProduct currentProduct;
@@ -126,7 +132,7 @@ public class SellerController {
     private Button saveButton;
     @FXML
     void saveButtonOnAction() throws ParseException {
-        try (Connection conLocal = getConnection("local_database")) {
+        try (Connection conLocal = getConnection(Database.LOCAL_DB)) {
             String update = "UPDATE sale_product SET corrected = ? WHERE sale_id = "
                     + DELETE_PRODUCT.getSaleId()
                     + " AND " + "product_id = "
@@ -137,15 +143,7 @@ public class SellerController {
             prepareStatement.close();
             conLocal.close();
             todaySalesArrayList.clear();
-            todaySalesListReload();
-            allSalesTable.setItems(TODAY_SALES_OBSERVABLE_LIST);
-            allSalesTable.refresh();
-            cashSumSaleLabel.setText(sumCash() + " руб.");
-            cardSumSaleLabel.setText(sumCard() + " руб.");
-            allSumSaleLabel.setText(sumAll() + " руб.");
-            cashDepositLabel.setText(getCashDeposit() + " руб.");
-            allCashLabel.setText((sumCash() + getCashDeposit()) + " руб.");
-            litresLabel.setText(countLitersOfDrinks() + " л.");
+            allSalesPaneRefresh();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -154,18 +152,11 @@ public class SellerController {
     }
     @FXML
     void allSalesOnAction() throws SQLException, ParseException {
-        todaySalesListReload();
-        allSalesTable.setItems(TODAY_SALES_OBSERVABLE_LIST);
-        allSalesTable.refresh();
-        cashSumSaleLabel.setText(sumCash() + " руб.");
-        cardSumSaleLabel.setText(sumCard() + " руб.");
-        allSumSaleLabel.setText(sumAll() + " руб.");
-        cashDepositLabel.setText(getCashDeposit() + " руб.");
-        allCashLabel.setText((sumCash() + getCashDeposit()) + " руб.");
-        if (allSalesPane.isVisible()) {
+        if (!allSalesPane.isVisible()) {
+            allSalesPaneRefresh();
+        } else {
             todaySalesArrayList.clear();
         }
-        litresLabel.setText(String.valueOf(countLitersOfDrinks()));
         allSalesPane.setVisible(!allSalesPane.isVisible());
     }
     @FXML
@@ -186,16 +177,16 @@ public class SellerController {
     @FXML
     private TextField cashDepositTextField;
     @FXML
-    void okOpenShiftButtonOnAction() throws SQLException {
+    void okOpenShiftButtonOnAction() throws SQLException, ParseException {
         openShiftAction();
     }
     @FXML
-    private void okOpenShiftOnEnterKey(KeyEvent okEvent) throws SQLException {
+    private void okOpenShiftOnEnterKey(KeyEvent okEvent) throws SQLException, ParseException {
         if (okEvent.getCode() == KeyCode.ENTER)  {
             openShiftAction();
         }
     }
-    public void openShiftAction() throws SQLException {
+    public void openShiftAction() throws SQLException, ParseException {
         String cashDepositString = cashDepositTextField.getText().replace(',', '.');
         cashDepositString = cashDepositString.replace(" ", "");
         double cashDeposit = Double.parseDouble(cashDepositString);
@@ -204,6 +195,12 @@ public class SellerController {
             product_button.setDisable(false);
         }
         shiftLog(false);
+
+        syncShiftLog();
+        syncSales();
+        syncSalesProduct();
+        syncCorrectedSales();
+
         startSync = true;
         closeShiftButton.setDisable(false);
         openShiftButton.setDisable(true);
@@ -227,32 +224,46 @@ public class SellerController {
     @FXML
     private Pane closeShiftPane;
     @FXML
-    void okCloseShiftButtonOnAction() throws SQLException, ParseException {
-        //TODO проверка. Если данные не загрузились в network database, не очищать соответствующие таблицы local database.
+    private Button okCloseShiftButton;
+    @FXML
+    void okCloseShiftButtonOnAction() throws ParseException {
+        Stage stage = (Stage) okCloseShiftButton.getScene().getWindow();
         todaySalesArrayList.clear();
         allSalesTable.refresh();
 
-        updateShiftSql(true, 0.00);
-        shiftLog(true);
-        syncShiftLog();
-        syncSales();
-        syncSalesProduct();
+        Connection conNDB;
+        try {
+            conNDB = getConnection(Database.NETWORK_DB);
+            conNDB.close();
+            updateShiftSql(true, 0.00);
+            shiftLog(true);
+            syncShiftLog();
+            syncSales();
+            syncSalesProduct();
+            syncCorrectedSales();
+            Connection con = getConnection(Database.LOCAL_DB);
+            deleteFromLocalSql(con, "sale_product");
+            deleteFromLocalSql(con, "sale");
+            PRODUCT_BUTTONS.clear();
+            NUMBER_BUTTONS.clear();
 
-        Connection con = getConnection("local_database");
-        deleteFromLocalSql(con, "sale_product");
-        deleteFromLocalSql(con, "sale");
+            productCategories.clear();
+            currentSaleProducts.clear();
+            products.clear();
+            discounts.clear();
+            paymentTypes.clear();
+            outlets.clear();
+            users.clear();
 
-        PRODUCT_BUTTONS.clear();
-        NUMBER_BUTTONS.clear();
+            enterToWorkTable(WorkTableChoice.LOGIN, closeShiftButton);
 
-        productCategories.clear();
-        currentSaleProducts.clear();
-        products.clear();
-        discounts.clear();
-        paymentTypes.clear();
-        outlets.clear();
-        users.clear();
-        enterToWorkTable(WorkTableChoice.LOGIN, closeShiftButton);
+        }catch (SQLException sqlException) {
+            LOGGER.log(Level.WARNING,"Failed to connect to network database when closing shift. Database synchronization failed.");
+            stage.close();
+        }
+
+
+
     }
     @FXML
     void cancelCloseShiftButtonOnAction() {
@@ -629,118 +640,75 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     void initialize() throws SQLException {
+        networkIndicator.setFill(Color.GOLD);
+
         startClockThread(clockLabel, 1);
 
-        Thread syncThread = new Thread(() -> {
-            while(true) {
-                try {
-                    Thread.sleep(300000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Platform.runLater(() -> {
-                    if (startSync) {
-                        Connection con;
-                        try {
-                            con = getConnection("network_database");
-                            try {
-                                isOnline(networkIndicatorLabel, networkIndicator, true);
-                                con.close();
-                                syncShiftLog();
-                                syncSales();
-                                syncSalesProduct();
-                            } catch (SQLException | ParseException e) {
-                                throw new RuntimeException(e);
+        AtomicInteger tempCount = new AtomicInteger(); //Временно. Удалить.
+
+        Timeline syncTimeLine = new Timeline(
+                new KeyFrame(Duration.seconds(300),
+                        event -> {
+                            LOGGER.log(Level.INFO,"startSync is " + startSync);
+                            if (startSync) {
+                                Connection con;
+                                try {
+                                    con = getConnection(Database.NETWORK_DB);
+                                    try {
+                                        isOnline(networkIndicatorLabel, networkIndicator, true);
+                                        con.close();
+                                        getInfoMessage();
+                                        syncCorrectedSales();
+                                        syncShiftLog();
+                                        syncSales();
+                                        syncSalesProduct();
+                                        System.out.println(tempCount.getAndIncrement()); //Временно. Удалить.
+                                    } catch (SQLException sqlEx) {
+                                        isOnline(networkIndicatorLabel, networkIndicator,false);
+                                        System.out.println("sqlEx");
+                                    } catch (ParseException pEx) {
+                                        System.out.println("pex");
+                                        isOnline(networkIndicatorLabel, networkIndicator,false);
+
+                                    }
+                                } catch (SQLException e) {
+                                    isOnline(networkIndicatorLabel, networkIndicator,false);
+                                }
                             }
-                        } catch (SQLException e) {
-                            isOnline(networkIndicatorLabel, networkIndicator,false);
-                        }
-                    }
-                });
-            }
-        });
-        syncThread.setDaemon(true);
-        syncThread.start();
+                        }));
+        syncTimeLine.setCycleCount(Timeline.INDEFINITE);
+        syncTimeLine.play();
 
-        networkIndicator.setFill(Color.YELLOW);
-        Connection conNetworkProductDB = null;
-        Connection conLocalProductDB;
+        Connection conNDB;
+        Connection conLDB = getConnection(Database.LOCAL_DB);
         try {
-            conNetworkProductDB = getConnection("network_database");
-        } catch (SQLException sqlEx) {
-            LOGGER.log(Level.INFO,"Connection to network database failed");
-        }
-
-        conLocalProductDB = getConnection("local_database");
-
-        if (conNetworkProductDB != null) {
+            LOGGER.log(Level.INFO,"Start network database synchronization on Seller desktop startup");
+            conNDB = getConnection(Database.NETWORK_DB);
             isOnline(networkIndicatorLabel, networkIndicator,true);
-            syncProductsList(conNetworkProductDB, conLocalProductDB);
-            conNetworkProductDB.close();
-        } else {
+            syncProductsList(conNDB, conLDB);
+            syncProductCategoriesList(conNDB, conLDB);
+            syncPaymentTypesList(conNDB, conLDB);
+            syncDiscountsList(conNDB, conLDB);
+            createProductsList(conLDB);
+            createProductCategoriesList(conLDB);
+            createPaymentTypeList(conLDB);
+            createDiscountList(conLDB);
+            // При появлении синхронизации каких-либо дополнительных данных. Метод вносить сюда, ниже* и в отдельный поток синхронизации.
+            conNDB.close();
+            LOGGER.log(Level.FINE, "Synchronization completed successfully");
+        } catch (SQLException sqlException) {
+            LOGGER.log(Level.WARNING,"When starting to synchronize with the network database at Seller desktop startup, it was not possible to connect to the network. Data is taken from local database");
             isOnline(networkIndicatorLabel, networkIndicator,false);
-        }
-        createProductsList(conLocalProductDB);
-        conLocalProductDB.close();
-
-        Connection conNetworkCategoryDB = null;
-        Connection conLocalCategoryDB;
-        try {
-            conNetworkCategoryDB = getConnection("network_database");
-        } catch (SQLException sqlEx) {
-            LOGGER.log(Level.INFO,"Connection to network database failed");
-        }
-        conLocalCategoryDB = getConnection("local_database");
-        if (conNetworkCategoryDB != null) {
-            isOnline(networkIndicatorLabel, networkIndicator,true);
-            syncProductCategoriesList(conNetworkCategoryDB, conLocalCategoryDB);
-            conNetworkCategoryDB.close();
-        } else {
-            isOnline(networkIndicatorLabel, networkIndicator,false);
-        }
-        createProductCategoriesList(conLocalCategoryDB);
-        conLocalCategoryDB.close();
-
-        Connection conNetworkPaymentTypeDB = null;
-        Connection conLocalPaymentTypeDB;
-        try {
-            conNetworkPaymentTypeDB = getConnection("network_database");
-        } catch (SQLException sqlEx) {
-            LOGGER.log(Level.INFO,"Connection to network database failed");
-        }
-        conLocalPaymentTypeDB = getConnection("local_database");
-        if (conNetworkPaymentTypeDB != null) {
-            isOnline(networkIndicatorLabel, networkIndicator,true);
-            syncPaymentTypesList(conNetworkPaymentTypeDB, conLocalPaymentTypeDB);
-            conNetworkPaymentTypeDB.close();
-            createPaymentTypeList(conLocalPaymentTypeDB);
-            conLocalPaymentTypeDB.close();
-        } else {
-            isOnline(networkIndicatorLabel, networkIndicator,false);
-            createPaymentTypeList(conLocalPaymentTypeDB);
-            conLocalCategoryDB.close();
+            createProductsList(conLDB);
+            createProductCategoriesList(conLDB);
+            createPaymentTypeList(conLDB);
+            createDiscountList(conLDB);
+            //*
+            LOGGER.log(Level.INFO, "Further work may be carried out with outdated data");
+        } finally {
+            conLDB.close();
         }
 
-        Connection conNetworkDiscountDB = null;
-        Connection conLocalDiscountDB;
-        try {
-            conNetworkDiscountDB = getConnection("network_database");
-        } catch (SQLException sqlEx) {
-            LOGGER.log(Level.INFO,"Connection to network database failed");
-        }
-        conLocalDiscountDB = getConnection("local_database");
-        if (conNetworkDiscountDB != null) {
-            isOnline(networkIndicatorLabel, networkIndicator,true);
-            syncDiscountsList(conNetworkDiscountDB, conLocalDiscountDB);
-            conNetworkDiscountDB.close();
-        } else {
-            isOnline(networkIndicatorLabel, networkIndicator,false);
-        }
-        createDiscountList(conLocalDiscountDB);
-        conLocalDiscountDB.close();
-
-        paymentTypePane.setVisible(false);
-        closeShiftButton.setDisable(false);
         PAYMENT_TYPE_BUTTONS[0] = paymentType1;
         PAYMENT_TYPE_BUTTONS[1] = paymentType2;
 
@@ -750,21 +718,12 @@ public class SellerController {
             PAYMENT_TYPE_BUTTONS[count].setText(paymentType.getPaymentType());
             count++;
         }
+
         SALE_PRODUCT_OBSERVABLE_LIST.addListener((ListChangeListener<SaleProduct>) change -> {});
 
         buttonsOnGridPane(Direction.HORIZONTAL, numbersGridPane, NUMBER_BUTTONS, eventNumberButtons);
 
-        addProduct.setTooltip(new Tooltip("Добавить продукт в чек"));
-        cButton.setTooltip(new Tooltip("Пока эта кнопка вообще всё отменяет, но будет сделана кнопка с шагом назад"));
-
-        productCategoryIco.setVisible(false);
-        xLabel.setVisible(false);
-        amountLabel.setVisible(false);
-        productNameLabel.setVisible(false);
-        addProduct.setDisable(true);
         buttonsIsDisable(NUMBER_BUTTONS, true);
-        cashReceiptButton.setDisable(true);
-        cButton.setDisable(true);
 
         buttonsOnGridPane(Direction.VERTICAL, discountGridPane, DISCOUNT_BUTTONS, eventDiscountButtons);
         discountNameButtons(DISCOUNT_BUTTONS);
@@ -777,6 +736,7 @@ public class SellerController {
         saleTable.setItems(SALE_PRODUCT_OBSERVABLE_LIST);
         saleTable.setPlaceholder(new Label("Выберете продукт"));
 
+        allSalesTable.setEditable(true);
         timeSalesColumn.setCellValueFactory(new PropertyValueFactory<>("saleTime"));
         productSalesColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
         numberOfUnit.setCellValueFactory(new PropertyValueFactory<>("numberOfUnit"));
@@ -794,6 +754,7 @@ public class SellerController {
             DELETE_PRODUCT.setSaleId(t1.getSaleId());
             DELETE_PRODUCT.setProductId(t1.getProductId());
             editButton.setDisable(false);
+            System.out.println(DELETE_PRODUCT.getSaleId() + " " + DELETE_PRODUCT.getProductId());
         });
 
         countingProductsInCategory();
@@ -836,5 +797,17 @@ public class SellerController {
         for (Button button : buttons) {
             button.setDisable(res);
         }
+    }
+
+    public void allSalesPaneRefresh() throws SQLException, ParseException {
+        todaySalesListReload();
+        allSalesTable.setItems(TODAY_SALES_OBSERVABLE_LIST);
+        allSalesTable.refresh();
+        cashSumSaleLabel.setText(sumCash() + " руб.");
+        cardSumSaleLabel.setText(sumCard() + " руб.");
+        allSumSaleLabel.setText(sumAll() + " руб.");
+        cashDepositLabel.setText(getCashDeposit() + " руб.");
+        allCashLabel.setText((sumCash() + getCashDeposit()) + " руб.");
+        litresLabel.setText(countLitersOfDrinks() + " л.");
     }
 }
