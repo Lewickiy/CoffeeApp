@@ -139,7 +139,7 @@
                            <children>
                               <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="264.0" prefWidth="375.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="320.0" AnchorPane.topAnchor="202.0">
                                  <children>
-                                    <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okCloseShiftButtonOnAction" prefHeight="75.0" prefWidth="110.0" text="Закрыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                                    <Button fx:id="okCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okCloseShiftButtonOnAction" prefHeight="75.0" prefWidth="110.0" text="Закрыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                                        <font>
                                           <Font size="13.0" />
                                        </font>
@@ -331,7 +331,7 @@
                      <children>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Label fx:id="productNameLabel" prefHeight="30.0" prefWidth="190.0" text="product" textAlignment="CENTER" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="272.0">
+                              <Label fx:id="productNameLabel" prefHeight="30.0" prefWidth="190.0" text="product" textAlignment="CENTER" visible="false" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="272.0">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -341,12 +341,12 @@
                                     <Font name="System Bold" size="74.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="amountLabel" prefHeight="30.0" prefWidth="71.0" text="amount" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="242.0">
+                              <Label fx:id="amountLabel" prefHeight="30.0" prefWidth="71.0" text="amount" visible="false" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="242.0">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                              <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" disable="true" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="35.0" />
                                  </font>
@@ -354,17 +354,17 @@
                                     <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </Button>
-                              <Button fx:id="cashReceiptButton" accessibleHelp="В чеке можно выбрать оплату наличными или картой, а также корректировку суммы чека" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" maxHeight="75.0" maxWidth="340.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#cashReceiptOnAction" prefHeight="75.0" prefWidth="340.0" text="Чек" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                              <Button fx:id="cashReceiptButton" accessibleHelp="В чеке можно выбрать оплату наличными или картой, а также корректировку суммы чека" alignment="CENTER" contentDisplay="CENTER" disable="true" focusTraversable="false" maxHeight="75.0" maxWidth="340.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#cashReceiptOnAction" prefHeight="75.0" prefWidth="340.0" text="Чек" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                                  <font>
                                     <Font name="System Bold" size="35.0" />
                                  </font>
                               </Button>
-                              <Label text="X" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="242.0" fx:id="xLabel">
+                              <Label text="X" visible="false" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="242.0" fx:id="xLabel">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <ImageView fx:id="productCategoryIco" blendMode="MULTIPLY" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="148.0">
+                              <ImageView fx:id="productCategoryIco" blendMode="MULTIPLY" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="148.0">
                                  <image>
                                     <Image url="@image/product/coffeeToGo_1.png" />
                                  </image>
@@ -485,7 +485,7 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <Button fx:id="cButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cButtonOnAction" prefHeight="75.0" prefWidth="75.0" text="C" textAlignment="CENTER" textFill="#0903ae" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                        <Button fx:id="cButton" alignment="CENTER" contentDisplay="CENTER" disable="true" focusTraversable="false" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cButtonOnAction" prefHeight="75.0" prefWidth="75.0" text="C" textAlignment="CENTER" textFill="#0903ae" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                            <font>
                               <Font name="System Bold" size="35.0" />
                            </font>
