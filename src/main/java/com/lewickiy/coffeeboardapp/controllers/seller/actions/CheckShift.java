@@ -1,12 +1,14 @@
 package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
+import com.lewickiy.coffeeboardapp.dao.connector.Database;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
-import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
+import static com.lewickiy.coffeeboardapp.dao.connector.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.entities.outlet.Outlet.currentOutlet;
 
 public class CheckShift {
     /**
@@ -18,7 +20,7 @@ public class CheckShift {
     public static boolean checkShift() throws SQLException {
         boolean isClosed;
         int outletId = currentOutlet.getOutletId();
-        Connection con = getConnection("local_database");
+        Connection con = getConnection(Database.LOCAL_DB);
         String sqlSearchOutlet = "SELECT outlet_id FROM shift WHERE outlet_id = " + outletId + ";";
         Statement stm = con.createStatement();
         ResultSet rsSearchOutlet = stm.executeQuery(sqlSearchOutlet);

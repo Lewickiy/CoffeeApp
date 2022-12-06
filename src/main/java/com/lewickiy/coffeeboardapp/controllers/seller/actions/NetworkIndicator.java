@@ -19,7 +19,7 @@ public class NetworkIndicator {
             networkIndicator.setFill(Color.GREEN);
         } else {
             networkIndicatorLabel.setText("не в сети");
-            networkIndicator.setFill(Color.FORESTGREEN);
+            networkIndicator.setFill(Color.GOLD);
         }
     }
 }

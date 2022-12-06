@@ -1,11 +1,11 @@
 package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
-import com.lewickiy.coffeeboardapp.database.discount.Discount;
+import com.lewickiy.coffeeboardapp.entities.discount.Discount;
 import javafx.scene.control.Button;
 
 import java.util.ArrayList;
 
-import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
+import static com.lewickiy.coffeeboardapp.entities.discount.DiscountList.discounts;
 
 public class DiscountNameButton {
     public static void discountNameButtons(ArrayList<Button> discountButtons) {

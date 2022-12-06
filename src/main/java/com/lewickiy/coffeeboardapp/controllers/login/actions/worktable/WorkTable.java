@@ -40,4 +40,26 @@ public class WorkTable {
         stageToOpen.show();
         stageToClose.close();
     }
+    public static void enterToWorkTable(WorkTableChoice workTableChoice) {
+        String fxml = null;
+        if (workTableChoice.equals(WorkTableChoice.INFO)) {
+            fxml = "info.fxml";
+        }
+        Stage infoStage = new Stage();
+        FXMLLoader fxmlInfoLoader = new FXMLLoader(CoffeeBoardApp.class.getResource(fxml));
+
+        Scene infoScene;
+        try {
+            infoScene = new Scene(fxmlInfoLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        infoStage.initStyle(StageStyle.UNDECORATED);
+        infoStage.alwaysOnTopProperty();
+        infoStage.setScene(infoScene);
+        infoStage.setTitle("CoffeeApp");
+        infoStage.setMaximized(false);
+        infoStage.setAlwaysOnTop(true);
+        infoStage.show();
+    }
 }

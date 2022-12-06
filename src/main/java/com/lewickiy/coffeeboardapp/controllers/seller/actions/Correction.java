@@ -1,10 +1,10 @@
 package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
-import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
-import com.lewickiy.coffeeboardapp.database.product.Product;
+import com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProduct;
+import com.lewickiy.coffeeboardapp.entities.product.Product;
 
-import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.currentSaleProducts;
-import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
+import static com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProductList.currentSaleProducts;
+import static com.lewickiy.coffeeboardapp.entities.product.ProductList.products;
 
 public class Correction {
     /**

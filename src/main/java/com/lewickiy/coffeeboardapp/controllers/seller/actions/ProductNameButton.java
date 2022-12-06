@@ -1,13 +1,13 @@
 package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
-import com.lewickiy.coffeeboardapp.database.product.Product;
-import com.lewickiy.coffeeboardapp.database.product.ProductCategory;
+import com.lewickiy.coffeeboardapp.entities.product.Product;
+import com.lewickiy.coffeeboardapp.entities.productcategory.ProductCategory;
 import javafx.scene.control.Button;
 
 import java.util.ArrayList;
 
-import static com.lewickiy.coffeeboardapp.database.product.ProductCategoryList.productCategories;
-import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
+import static com.lewickiy.coffeeboardapp.entities.productcategory.ProductCategoryList.productCategories;
+import static com.lewickiy.coffeeboardapp.entities.product.ProductList.products;
 /**
  * Данный класс занимается именованием кнопок с продукцией. Если появится такая необходимость, <br>
  * существует возможность добавлять данные к именам кнопок, например: стоимость товара или любые <br>

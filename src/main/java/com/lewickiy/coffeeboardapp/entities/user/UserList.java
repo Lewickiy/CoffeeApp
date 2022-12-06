@@ -8,8 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.lewickiy.coffeeboardapp.database.Query.selectAllFromSql;
-import static com.lewickiy.coffeeboardapp.database.helper.FalseTrueDecoderDB.decodeIntBoolean;
+import static com.lewickiy.coffeeboardapp.dao.query.Query.selectAllFromSql;
+import static com.lewickiy.coffeeboardapp.dao.helper.FalseTrueDecoderDB.decodeIntBoolean;
 
 public class UserList {
     public static ArrayList<User> users = new ArrayList<>();

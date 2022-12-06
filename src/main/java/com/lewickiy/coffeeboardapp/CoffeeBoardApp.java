@@ -17,6 +17,11 @@ import java.util.logging.Logger;
  */
 
 public class CoffeeBoardApp extends Application {
+    //TODO нет соединения с ndb? в SaleController при закрытии смены не очищается локальная база данных.
+    //TODO вчерашняя смена не закрыта? Предложить закрыть.
+    //TODO qr-код для отправки статистики Администратору? Или в автоматическом режиме через телеграм-Бота?
+    //TODO может идентификация пользователя по лицу?
+    //TODO таблица со всеми продажами (строки) должна нажиматься без предварительного нажатия на заголовки столбцов
     public static Logger LOGGER;
     static {
         try(FileInputStream ins = new FileInputStream("log.config")){

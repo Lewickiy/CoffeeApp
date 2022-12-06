@@ -1,12 +1,12 @@
 package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
-import com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProduct;
-import com.lewickiy.coffeeboardapp.database.product.Product;
+import com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProduct;
+import com.lewickiy.coffeeboardapp.entities.product.Product;
 import javafx.scene.control.Button;
 
-import static com.lewickiy.coffeeboardapp.entities.saleProduct.SaleProductList.currentSaleProducts;
-import static com.lewickiy.coffeeboardapp.database.discount.DiscountList.discounts;
-import static com.lewickiy.coffeeboardapp.database.product.ProductList.products;
+import static com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProductList.currentSaleProducts;
+import static com.lewickiy.coffeeboardapp.entities.discount.DiscountList.discounts;
+import static com.lewickiy.coffeeboardapp.entities.product.ProductList.products;
 
 public class DiscountAction {
     /**
@@ -19,7 +19,7 @@ public class DiscountAction {
             for (Product product : products) {
                 if (!product.isFixPrice() && product.getProductId() == currentSaleProduct.getProductId()) {
                     currentSaleProduct.setDiscountId(Integer.parseInt(button.getAccessibleText()));
-                    for (com.lewickiy.coffeeboardapp.database.discount.Discount discount : discounts) {
+                    for (com.lewickiy.coffeeboardapp.entities.discount.Discount discount : discounts) {
                         if (currentSaleProduct.getDiscountId() == discount.getDiscountId()) {
                             currentSaleProduct.setDiscount(discount.getDiscount());
                             currentSaleProduct.setSum((currentSaleProduct.getPrice()
