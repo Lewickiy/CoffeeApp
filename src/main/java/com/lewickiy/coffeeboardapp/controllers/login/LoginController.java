@@ -1,7 +1,8 @@
 package com.lewickiy.coffeeboardapp.controllers.login;
 
 import com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTableChoice;
-import com.lewickiy.coffeeboardapp.database.outlet.Outlet;
+import com.lewickiy.coffeeboardapp.dao.connector.Database;
+import com.lewickiy.coffeeboardapp.entities.outlet.Outlet;
 import com.lewickiy.coffeeboardapp.entities.user.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,13 +22,14 @@ import java.util.logging.Level;
 import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
 import static com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTable.enterToWorkTable;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.NetworkIndicator.isOnline;
-import static com.lewickiy.coffeeboardapp.database.connection.DatabaseConnector.getConnection;
-import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncOutletsList;
-import static com.lewickiy.coffeeboardapp.database.local.SyncLocalDB.syncUsersList;
-import static com.lewickiy.coffeeboardapp.database.outlet.Outlet.currentOutlet;
-import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.createOutletList;
-import static com.lewickiy.coffeeboardapp.database.outlet.OutletList.outlets;
+import static com.lewickiy.coffeeboardapp.dao.SyncLocalDB.syncOutletsList;
+import static com.lewickiy.coffeeboardapp.dao.SyncLocalDB.syncUsersList;
+import static com.lewickiy.coffeeboardapp.dao.connector.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.entities.outlet.Outlet.currentOutlet;
+import static com.lewickiy.coffeeboardapp.entities.outlet.OutletList.createOutletList;
+import static com.lewickiy.coffeeboardapp.entities.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.entities.user.UserList.*;
+
 
 public class LoginController {
     static ObservableList<Outlet> outletsObservableList = FXCollections.observableList(outlets);
@@ -48,48 +50,31 @@ public class LoginController {
 
     @FXML
     void initialize() throws SQLException, ParseException {
-        Connection conNetworkUserDB;
+        Connection conNDB;
+        Connection conLDB = getConnection(Database.LOCAL_DB);
         try {
-            conNetworkUserDB = getConnection("network_database");
-        } catch (SQLException sqlEx) {
-            LOGGER.log(Level.WARNING,"Connection to network database failed");
-            conNetworkUserDB = null;
-        }
-
-        Connection conLocalUserDB = getConnection("local_database");
-
-        if (conNetworkUserDB != null) {
+            LOGGER.log(Level.INFO,"Start network database synchronization on Login startup");
+            conNDB = getConnection(Database.NETWORK_DB);
             isOnline(networkIndicatorLabel, networkIndicator,true);
-            syncUsersList(conNetworkUserDB, conLocalUserDB);
-            conNetworkUserDB.close();
-
-        } else {
+            syncUsersList(conNDB, conLDB);
+            syncOutletsList(conNDB, conLDB);
+            createUsersList(conLDB);
+            createOutletList(conLDB);
+            // При появлении синхронизации каких-либо дополнительных данных. Метод вносить сюда и ниже*.
+            conNDB.close();
+            LOGGER.log(Level.FINE, "Synchronization completed successfully");
+        } catch (SQLException sqlException) {
+            LOGGER.log(Level.WARNING,"When starting to synchronize with the network database at Login startup, it was not possible to connect to the network. Data is taken from local database");
             isOnline(networkIndicatorLabel, networkIndicator,false);
-        }
-        createUsersList(conLocalUserDB);
-        conLocalUserDB.close();
-
-        Connection conNetworkOutletDB;
-        try {
-            conNetworkOutletDB = getConnection("network_database");
-        } catch (SQLException sqlEx) {
-            LOGGER.log(Level.WARNING,"Connection to network database failed");
-            conNetworkOutletDB = null;
+            createUsersList(conLDB);
+            createOutletList(conLDB);
+            //*
+            LOGGER.log(Level.INFO, "Further work may be carried out with outdated data");
+        } finally {
+            conLDB.close();
         }
 
-        Connection conLocalOutletDB = getConnection("local_database");
-
-        if (conNetworkOutletDB != null) {
-            isOnline(networkIndicatorLabel, networkIndicator,true);
-            syncOutletsList(conNetworkOutletDB, conLocalOutletDB);
-            conNetworkOutletDB.close();
-        } else {
-            isOnline(networkIndicatorLabel, networkIndicator,false);
-        }
-        createOutletList(conLocalOutletDB);
-        conLocalOutletDB.close();
         outletChoiceBox.setItems(outletsObservableList);
-
         outletChoiceBox.getSelectionModel().selectedItemProperty().addListener((observableValue, outlet, t1)
                 -> {
             currentOutlet = outletChoiceBox.getValue();
@@ -153,7 +138,7 @@ public class LoginController {
                         , user.getLastName()
                         , user.getPhone()
                         , user.isAdministrator()
-                        ,user.isActiveStuff());
+                        , user.isActiveStuff());
                 usernameTextField.setDisable(true);
                 passwordField.setDisable(true);
                 outletChoicePane.setVisible(true);
