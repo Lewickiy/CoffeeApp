@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.database.connection;
+package com.lewickiy.coffeeboardapp.dao.connector;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +9,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import static com.lewickiy.coffeeboardapp.dao.connector.Database.*;
+
 public class DatabaseConnector {
-    public static Connection getConnection(String dbName) throws SQLException {
+    public static Connection getConnection(Database database) throws SQLException {
         Properties props = new Properties();
         try (InputStream in = Files.newInputStream(Paths.get("database.properties"))){
             props.load(in);
@@ -18,9 +20,9 @@ public class DatabaseConnector {
             String username = props.getProperty("username");
             String password = props.getProperty("password");
         Connection con = null;
-        if (dbName.equals("network_database")) {
+        if (database.equals(NETWORK_DB)) {
             con = DriverManager.getConnection(url, username, password);
-        } else if (dbName.equals("local_database")) {
+        } else if (database.equals(LOCAL_DB)) {
             con = DriverManager.getConnection("jdbc:sqlite:coffeeapp_local.db");
         }
         return con;
