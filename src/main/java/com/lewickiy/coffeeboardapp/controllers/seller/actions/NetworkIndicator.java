@@ -15,10 +15,10 @@ public class NetworkIndicator {
      */
     public static void isOnline(Label networkIndicatorLabel, Circle networkIndicator, boolean status) {
         if (status) {
-            networkIndicatorLabel.setText("в сети");
+            networkIndicatorLabel.setText("в сети  ");
             networkIndicator.setFill(Color.GREEN);
         } else {
-            networkIndicatorLabel.setText("не в сети");
+            networkIndicatorLabel.setText("не в сети  ");
             networkIndicator.setFill(Color.GOLD);
         }
     }

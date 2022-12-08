@@ -156,6 +156,8 @@ public class SellerController {
             allSalesPaneRefresh();
         } else {
             todaySalesArrayList.clear();
+            saveButton.setDisable(true);
+            editButton.setDisable(true);
         }
         allSalesPane.setVisible(!allSalesPane.isVisible());
     }
@@ -300,7 +302,6 @@ public class SellerController {
     private Label cardSumSaleLabel;
     @FXML
     private Label allSumSaleLabel;
-
     @FXML
     private GridPane mainGridPane;
     private final ArrayList <Button> PRODUCT_BUTTONS = new ArrayList<>();
@@ -404,6 +405,8 @@ public class SellerController {
      * Панель текущего Продукта.
      _____________________________________˅˅˅____________________________________________*/
     @FXML
+    private Pane mainReceiptPane;
+    @FXML
     private ImageView productCategoryIco;
     @FXML
     private Label priceLabel;
@@ -454,12 +457,18 @@ public class SellerController {
     }
     @FXML
     void cashReceiptOnAction() {
+        mainReceiptPane.setVisible(false);
         buttonsIsDisable(PRODUCT_BUTTONS, true);
+        cashReceiptButton.setDisable(true);
+        addProduct.setDisable(true);
         cashReceiptButton.setDisable(false);
         paymentTypePane.setVisible(true);
     }
     @FXML
     void cButtonOnAction() {
+        mainReceiptPane.setVisible(true);
+        sumChangeTextField.clear();
+        changeLabel.setText("0.00");
         paymentTypePane.setVisible(false);
         discountPane.setVisible(false);
         changePane.setVisible(false);
@@ -569,6 +578,7 @@ public class SellerController {
     }
 
     private void endSaleOperation() throws SQLException {
+        mainReceiptPane.setVisible(true);
         startSync = true;
         allSalesTable.setItems(TODAY_SALES_OBSERVABLE_LIST);
         allSalesTable.refresh();
@@ -607,11 +617,10 @@ public class SellerController {
     @FXML
     void okWithChangeOnAction() throws SQLException {
         endSaleOperation();
-
         cButton.setDisable(true);
         withChangePane.setVisible(false);
-        sumChangeTextField.clear();
-        changeLabel.setText("0.00");
+        sumChangeTextField.clear(); //в cButton
+        changeLabel.setText("0.00"); //в cButton
         buttonsIsDisable(PRODUCT_BUTTONS, false);
     }
 
@@ -640,6 +649,11 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     void initialize() throws SQLException {
+        System.out.println(mainGridPane.getLayoutX() + " LayoutX");
+        System.out.println(mainGridPane.getLayoutY() + " LayoutY");
+        System.out.println(mainGridPane.getVgap() + " Vgap");
+        System.out.println(mainGridPane.getHgap() + " Hgap");
+
         networkIndicator.setFill(Color.GOLD);
 
         startClockThread(clockLabel, 1);
@@ -721,11 +735,11 @@ public class SellerController {
 
         SALE_PRODUCT_OBSERVABLE_LIST.addListener((ListChangeListener<SaleProduct>) change -> {});
 
-        buttonsOnGridPane(Direction.HORIZONTAL, numbersGridPane, NUMBER_BUTTONS, eventNumberButtons);
+        buttonsOnGridPane(Direction.HORIZONTAL, numbersGridPane, NUMBER_BUTTONS, 91.0, eventNumberButtons);
 
         buttonsIsDisable(NUMBER_BUTTONS, true);
 
-        buttonsOnGridPane(Direction.VERTICAL, discountGridPane, DISCOUNT_BUTTONS, eventDiscountButtons);
+        buttonsOnGridPane(Direction.VERTICAL, discountGridPane, DISCOUNT_BUTTONS, 75.0, eventDiscountButtons);
         discountNameButtons(DISCOUNT_BUTTONS);
 
         productColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
@@ -759,7 +773,7 @@ public class SellerController {
 
         countingProductsInCategory();
 
-        buttonsOnGridPane(Direction.VERTICAL, mainGridPane, PRODUCT_BUTTONS, eventProductButtons);
+        buttonsOnGridPane(Direction.VERTICAL, mainGridPane, PRODUCT_BUTTONS, 91.0, eventProductButtons);
         productNameButton(PRODUCT_BUTTONS);
 
         sumChangeTextField.textProperty().addListener((observable, oldValue, newValue) -> {

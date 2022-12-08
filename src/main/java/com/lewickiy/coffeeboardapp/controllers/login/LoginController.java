@@ -50,6 +50,7 @@ public class LoginController {
 
     @FXML
     void initialize() throws SQLException, ParseException {
+
         Connection conNDB;
         Connection conLDB = getConnection(Database.LOCAL_DB);
         try {

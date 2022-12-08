@@ -12,11 +12,11 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 1;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.login.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: WHITE; -fx-border-color: GREY; -fx-border-width: 1;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.login.LoginController">
    <left>
-      <AnchorPane prefHeight="407.0" prefWidth="228.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="228.0" fitWidth="286.0" layoutX="22.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="228.0" fitWidth="286.0" layoutX="22.0" layoutY="53.0" opacity="0.75" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@image/CoffeeBoard_logo.jpeg" />
                </image></ImageView>
@@ -44,9 +44,9 @@
       </AnchorPane>
    </left>
    <right>
-      <AnchorPane prefHeight="400.0" prefWidth="351.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="400.0" prefWidth="351.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="145.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="145.0" layoutY="50.0" opacity="0.75" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@image/loginIco.png" />
                </image>

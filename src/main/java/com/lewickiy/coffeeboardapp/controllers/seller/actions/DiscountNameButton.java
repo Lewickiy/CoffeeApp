@@ -15,6 +15,7 @@ public class DiscountNameButton {
                 discountButtons.get(count).setAccessibleText(String.valueOf(discount.getDiscountId()));
                 discountButtons.get(count).setText(discount.getDiscount() + "%");
                 discountButtons.get(count).setVisible(true);
+                discountButtons.get(count).setFocusTraversable(false);
                 count++;
             }
         }

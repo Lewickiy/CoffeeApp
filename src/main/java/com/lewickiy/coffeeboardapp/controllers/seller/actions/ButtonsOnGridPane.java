@@ -17,7 +17,7 @@ public class ButtonsOnGridPane {
      * @param buttons - ArrayList Buttons которых необходимо разместить в GridPane
      * @param event - присваиваемое кнопкам мероприятие.
      */
-    public static void buttonsOnGridPane(Direction var, GridPane gridPane, ArrayList<Button> buttons, EventHandler<ActionEvent> event) {
+    public static void buttonsOnGridPane(Direction var, GridPane gridPane, ArrayList<Button> buttons, double size, EventHandler<ActionEvent> event) {
         //TODO более универсальную систему, которая принимает значения horizontal или vertical,
         // в зависимости от этого выстраивает модель размещения. Сейчас не подходит для горизонтального размещения
         // NUMBER_BUTTONS, например.
@@ -34,8 +34,9 @@ public class ButtonsOnGridPane {
                                     Font.font(Math.sqrt(newValue.getHeight() * 1.5))));
 
                     buttons.get(countP).setWrapText(true);
-                    buttons.get(countP).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
-                    buttons.get(countP).setPrefSize(91.0, 91.0);
+                    buttons.get(countP).setStyle("-fx-text-alignment: CENTER"); //; -fx-font-weight: BOLDER
+
+                    buttons.get(countP).setPrefSize(size, size);
                     buttons.get(countP).setVisible(false);
                     GridPane.setConstraints(buttons.get(countP), column, row);
                     gridPane.getChildren().add(buttons.get(countP));
@@ -50,8 +51,9 @@ public class ButtonsOnGridPane {
                 int finalI = column;
                 buttons.get(column).layoutBoundsProperty().addListener((observable, oldValue, newValue) -> buttons.get(finalI).setFont(Font.font(Math.sqrt(newValue.getHeight() * 10))));
                 buttons.get(column).setWrapText(true);
-                buttons.get(column).setStyle("-fx-text-alignment: CENTER; -fx-font-weight: BOLDER");
-                buttons.get(column).setPrefSize(91.0, 91.0);
+                buttons.get(column).setStyle("-fx-text-alignment: CENTER"); //-fx-font-weight: BOLD
+                buttons.get(column).setPrefSize(size, size);
+
                 buttons.get(column).setVisible(true);
                 GridPane.setConstraints(buttons.get(column), column, 0);
                 gridPane.getChildren().add(buttons.get(column));

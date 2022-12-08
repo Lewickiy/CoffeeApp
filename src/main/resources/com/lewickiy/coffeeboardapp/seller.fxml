@@ -24,477 +24,590 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.seller.SellerController">
-  <children>
-      <HBox>
-         <children>
-            <BorderPane>
-               <left>
-                <AnchorPane fx:id="productBar" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: LIGHTSLATEGREY;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.seller.SellerController">
+   <children>
+      <BorderPane layoutX="-10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                      <children>
-                        <AnchorPane layoutY="112.0" style="-fx-background-color: LIGHTGREY;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0">
+                        <HBox alignment="CENTER" maxHeight="37.0" minHeight="37.0" prefHeight="37.0" VBox.vgrow="NEVER">
                            <children>
-                              <GridPane fx:id="mainGridPane" alignment="TOP_CENTER" focusTraversable="true" hgap="7.5" layoutX="94.0" layoutY="143.0" vgap="7.5" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" prefWidth="91.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" prefWidth="91.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" prefWidth="91.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" prefWidth="91.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" prefWidth="91.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" prefWidth="91.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" prefWidth="91.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" prefWidth="91.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" prefWidth="91.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" prefWidth="91.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints maxHeight="150.0" minHeight="91.0" percentHeight="0.0" prefHeight="91.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="150.0" minHeight="91.0" percentHeight="0.0" prefHeight="91.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="150.0" minHeight="91.0" percentHeight="0.0" prefHeight="91.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="150.0" minHeight="91.0" percentHeight="0.0" prefHeight="91.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="150.0" minHeight="91.0" percentHeight="0.0" prefHeight="91.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
+                              <ToolBar focusTraversable="false" maxHeight="37.0" minHeight="37.0" prefHeight="37.0" style="-fx-background-color: WHITE;" HBox.hgrow="ALWAYS">
+                                 <items>
+                                    <Button fx:id="closeShiftButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" minHeight="27.0" minWidth="120.0" mnemonicParsing="false" onAction="#closeShiftButtonOnAction" prefHeight="27.0" prefWidth="120.0" style="-fx-background-radius: 3;" text="Закрыть смену" textOverrun="CLIP">
+                                       <font>
+                                          <Font name="Courier New" size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Button>
+                                    <Button fx:id="openShiftButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" minHeight="27.0" minWidth="110.0" mnemonicParsing="false" onAction="#openShiftButtonOnAction" prefHeight="27.0" prefWidth="120.0" style="-fx-background-radius: 3;" text="Открыть смену" textOverrun="CLIP">
+                                       <font>
+                                          <Font name="Courier New" size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Button>
+                                 </items>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow height="30.0" radius="7.0" width="0.0" />
+                                 </effect>
+                              </ToolBar>
+                              <ToolBar focusTraversable="false" maxHeight="37.0" minHeight="37.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="37.0" style="-fx-background-color: WHITE;" HBox.hgrow="ALWAYS">
+                                 <items>
+                                    <Button fx:id="allSales" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" minHeight="27.0" minWidth="120.0" mnemonicParsing="false" onAction="#allSalesOnAction" prefHeight="27.0" prefWidth="120.0" style="-fx-background-radius: 3;" text="Продажи смены" textAlignment="CENTER" textOverrun="CLIP">
+                                       <font>
+                                          <Font name="Courier New" size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Button>
+                                    <Label fx:id="clockLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" prefHeight="27.0" prefWidth="70.0" text="00:00" textAlignment="CENTER" textFill="#03790b">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="botButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" minHeight="27.0" minWidth="120.0" mnemonicParsing="false" onAction="#botButtonOnAction" prefHeight="27.0" prefWidth="120.0" style="-fx-background-color: LIGHTGREEN; -fx-background-radius: 3;" text="Telegram" textOverrun="CLIP">
+                                       <font>
+                                          <Font name="Courier New" size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Button>
+                                 </items>
+                                 <effect>
+                                    <DropShadow height="15.0" radius="3.25" width="0.0" />
+                                 </effect>
+                              </ToolBar>
+                           </children>
+                        </HBox>
+                        <AnchorPane maxHeight="1.7976931348623157E308" minHeight="106.0" prefHeight="106.0" prefWidth="952.0">
+                           <children>
+                              <GridPane fx:id="numbersGridPane" alignment="TOP_CENTER" hgap="5.5" layoutX="8.5" layoutY="7.5" vgap="5.5" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="7.5">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="91.0" percentHeight="0.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
                               </GridPane>
-                              <ImageView fitHeight="150.0" fitWidth="141.0" opacity="0.52" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="25.0">
-                                 <image>
-                                    <Image url="@image/CoffeeBoard_logo_small.png" />
-                                 </image>
-                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </AnchorPane>
+                        <AnchorPane fx:id="productBar" style="-fx-background-color: NULL;" VBox.vgrow="ALWAYS">
+                           <children>
+                              <AnchorPane layoutY="145.0" style="-fx-background-radius: 5; -fx-background-color: NULL;" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <GridPane fx:id="mainGridPane" alignment="TOP_CENTER" hgap="5.5" layoutX="30.0" layoutY="7.0" vgap="5.5" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                       <columnConstraints>
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="91.0" percentHeight="0.0" valignment="CENTER" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="91.0" percentHeight="0.0" valignment="CENTER" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="91.0" percentHeight="0.0" valignment="CENTER" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="91.0" percentHeight="0.0" valignment="CENTER" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="91.0" percentHeight="0.0" valignment="CENTER" vgrow="ALWAYS" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                    <ImageView fitHeight="150.0" fitWidth="141.0" opacity="0.4" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="25.0">
+                                       <image>
+                                          <Image url="@image/CoffeeBoard_logo_small.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="allSalesPane" layoutX="-10.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <TableView fx:id="allSalesTable" editable="true" focusTraversable="false" layoutX="27.0" minHeight="487.0" minWidth="558.0" style="-fx-background-radius: 5; -fx-background-color: WHITE;" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                       <columns>
+                                          <TableColumn fx:id="timeSalesColumn" maxWidth="170.0" minWidth="59.0" prefWidth="-1.0" text="Время" />
+                                          <TableColumn fx:id="productSalesColumn" maxWidth="201.0" minWidth="130.0" prefWidth="-1.0" text="Наименование" />
+                                          <TableColumn fx:id="numberOfUnit" maxWidth="201.0" minWidth="45.0" prefWidth="-1.0" text="объём" />
+                                          <TableColumn fx:id="unitOfMeasurement" maxWidth="201.0" minWidth="27.0" prefWidth="-1.0" text="ед." />
+                                          <TableColumn fx:id="priceSalesColumn" maxWidth="196.0" minWidth="56.0" prefWidth="-1.0" text="Цена" />
+                                          <TableColumn fx:id="amountSalesColumn" maxWidth="219.0" minWidth="47.0" prefWidth="-1.0" text="Кол-во" />
+                                          <TableColumn fx:id="discountSalesColumn" maxWidth="192.0" minWidth="50.0" prefWidth="-1.0" text="Скидка" />
+                                          <TableColumn fx:id="sumSalesColumn" maxWidth="307.0" minWidth="51.0" prefWidth="-1.0" text="Сумма" />
+                                          <TableColumn fx:id="paymentTypeColumn" maxWidth="222.0" minWidth="95.0" prefWidth="-1.0" text="Тип оплаты" />
+                                       </columns>
+                                    </TableView>
+                                    <AnchorPane layoutX="668.0" layoutY="16.0" minHeight="204.0" minWidth="280.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="16.0">
+                                       <children>
+                                          <Label focusTraversable="false" text="Продажи сегодня:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Separator focusTraversable="false" layoutX="16.0" layoutY="40.0" prefWidth="200.0" />
+                                          <Label focusTraversable="false" layoutX="16.0" layoutY="55.0" text="Наличные:" />
+                                          <Label fx:id="cashSumSaleLabel" focusTraversable="false" layoutX="94.0" layoutY="55.0" text="0.00" />
+                                          <Label focusTraversable="false" layoutX="16.0" layoutY="82.0" text="Карта:" />
+                                          <Label fx:id="cardSumSaleLabel" focusTraversable="false" layoutX="94.0" layoutY="82.0" text="0.00" />
+                                          <Label focusTraversable="false" layoutX="16.0" layoutY="108.0" text="Всего:" />
+                                          <Label fx:id="allSumSaleLabel" focusTraversable="false" layoutX="94.0" layoutY="108.0" text="0.00" />
+                                          <Label focusTraversable="false" layoutX="16.0" layoutY="145.0" prefHeight="7.0" prefWidth="140.0" text="Внесено при открытии:" wrapText="true" />
+                                          <Label fx:id="cashDepositLabel" focusTraversable="false" layoutX="164.0" layoutY="146.0" prefHeight="17.0" prefWidth="122.0" text="0.00" />
+                                          <Label focusTraversable="false" layoutX="16.0" layoutY="174.0" prefHeight="17.0" prefWidth="147.0" text="Всего наличными в кассе:" wrapText="true" />
+                                          <Label fx:id="allCashLabel" focusTraversable="false" layoutX="164.0" layoutY="174.0" prefHeight="17.0" prefWidth="122.0" text="0.00" />
+                                          <Line endX="100.0" layoutX="117.0" layoutY="134.0" startX="-100.0" />
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="667.0" layoutY="247.0" minHeight="135.0" minWidth="204.0" prefHeight="175.0" prefWidth="218.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="114.0">
+                                       <children>
+                                          <Label focusTraversable="false" prefHeight="17.0" prefWidth="129.0" text="Сегодня продано:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Separator focusTraversable="false" layoutX="16.0" layoutY="40.0" prefWidth="200.0" />
+                                          <Label focusTraversable="false" layoutX="16.0" layoutY="55.0" text="Литров напитков" />
+                                          <Label fx:id="litresLabel" focusTraversable="false" layoutX="119.0" layoutY="55.0" text="0.00" />
+                                          <Line endX="100.0" layoutX="117.0" layoutY="134.0" startX="-100.0" />
+                                       </children>
+                                    </AnchorPane>
+                                    <Button fx:id="editButton" disable="true" focusTraversable="false" layoutX="449.0" layoutY="506.0" mnemonicParsing="false" onAction="#editButtonOnAction" style="-fx-background-radius: 3;" text="Удалить" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="517.0" />
+                                    <Button fx:id="saveButton" disable="true" focusTraversable="false" layoutX="525.0" layoutY="506.0" mnemonicParsing="false" onAction="#saveButtonOnAction" style="-fx-background-radius: 3;" text="ОК" AnchorPane.leftAnchor="544.0" AnchorPane.topAnchor="517.0" />
+                                 </children>
+                                 <effect>
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                       <color>
+                                          <Color opacity="0.4000000059604645" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
+                              </AnchorPane>
+                              <AnchorPane fx:id="closeShiftPane" layoutX="10.0" layoutY="10.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-width: 1; -fx-border-color: GREY;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                 <children>
+                                    <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="264.0" prefWidth="375.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="140.0">
+                                       <children>
+                                          <Button fx:id="okCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okCloseShiftButtonOnAction" prefHeight="27.0" prefWidth="120.0" style="-fx-background-radius: 5;" text="Закрыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                                             <font>
+                                                <Font name="Courier New" size="13.0" />
+                                             </font>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                          </Button>
+                                          <Button alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelCloseShiftButtonOnAction" prefHeight="27.0" prefWidth="120.0" style="-fx-background-radius: 5;" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                                             <font>
+                                                <Font name="Courier New" size="13.0" />
+                                             </font>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                          </Button>
+                                          <Label alignment="TOP_CENTER" focusTraversable="false" layoutX="29.0" layoutY="46.0" prefHeight="91.0" prefWidth="319.0" text="Сейчас произойдёт закрытие смены. В этот момент программа  будет недоступна. Пожалуйста, дождитесь окончания процесса." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="45.0">
+                                             <font>
+                                                <Font name="Courier New" size="17.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <effect>
+                                          <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                             <color>
+                                                <Color opacity="0.4000000059604645" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </AnchorPane>
+                                 </children>
+                                 <effect>
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                       <color>
+                                          <Color opacity="0.4000000059604645" />
+                                       </color></DropShadow>
+                                 </effect>
+                              </AnchorPane>
+                              <AnchorPane fx:id="openShiftPane" layoutX="10.0" layoutY="10.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                 <children>
+                                    <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="264.0" prefWidth="375.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="140.0">
+                                       <children>
+                                          <Button fx:id="okOpenShiftButton" alignment="CENTER" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okOpenShiftButtonOnAction" prefHeight="27.0" prefWidth="120.0" text="Открыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                                             <font>
+                                                <Font name="Courier New" size="13.0" />
+                                             </font>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                          </Button>
+                                          <Button fx:id="cancelOpenShiftButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelOpenShiftButtonOnAction" onKeyPressed="#cancelOpenShiftOnEscapeKey" prefHeight="27.0" prefWidth="120.0" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                                             <font>
+                                                <Font name="Courier New" size="13.0" />
+                                             </font>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                          </Button>
+                                          <Label alignment="TOP_CENTER" focusTraversable="false" layoutX="28.0" layoutY="45.0" prefHeight="69.0" prefWidth="321.0" text="Пожалуйста, введите сумму размена, после чего нажмите на кнопку &quot;Открыть смену&quot;:" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="158.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="44.0">
+                                             <font>
+                                                <Font name="Courier New" size="17.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="cashDepositTextField" alignment="CENTER" focusTraversable="false" layoutX="63.0" layoutY="126.0" maxHeight="86.0" maxWidth="250.0" minHeight="54.0" minWidth="250.0" prefHeight="54.0" prefWidth="250.0" promptText="0.00" style="-fx-background-radius: 5;">
+                                             <font>
+                                                <Font name="Courier New" size="38.0" />
+                                             </font>
+                                          </TextField>
+                                       </children>
+                                       <effect>
+                                          <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                             <color>
+                                                <Color opacity="0.4000000059604645" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </AnchorPane>
+                                 </children>
+                                 <effect>
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                       <color>
+                                          <Color opacity="0.4000000059604645" />
+                                       </color></DropShadow>
+                                 </effect>
+                              </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="159.0" prefWidth="1012.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox minHeight="37.0" prefHeight="37.0" VBox.vgrow="NEVER">
                            <children>
-                              <GridPane fx:id="numbersGridPane" hgap="7.5" vgap="7.5" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="91.0" percentWidth="0.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints maxHeight="115.0" minHeight="91.0" percentHeight="0.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                              </GridPane>
+                              <ToolBar focusTraversable="false" prefHeight="37.0" style="-fx-background-color: WHITE;" HBox.hgrow="ALWAYS">
+                                 <items>
+                                    <Label focusTraversable="false" prefHeight="27.0" prefWidth="87.0" text="Заказ:">
+                                       <font>
+                                          <Font name="Courier New Bold" size="20.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="2.0" />
+                                       </padding>
+                                    </Label>
+                                 </items>
+                                 <effect>
+                                    <DropShadow height="30.0" radius="7.0" width="0.0" />
+                                 </effect>
+                              </ToolBar>
+                              <ToolBar focusTraversable="false" maxHeight="37.0" minHeight="37.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="37.0" style="-fx-background-color: WHITE;" HBox.hgrow="ALWAYS">
+                                <items>
+                                    <Circle fx:id="networkIndicator" fill="YELLOW" radius="7.5" stroke="#c9c9c9" strokeType="OUTSIDE" strokeWidth="0.5" translateX="2.0" />
+                                    <Label fx:id="networkIndicatorLabel" focusTraversable="false" prefHeight="27.0" prefWidth="117.0" text="status  " textAlignment="RIGHT">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="12.0" />
+                                       </font>
+                                    </Label>
+                                </items>
+                                 <effect>
+                                    <DropShadow height="30.0" radius="7.0" width="0.0" />
+                                 </effect>
+                              </ToolBar>
                            </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="allSalesPane" layoutX="10.0" layoutY="5.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        </HBox>
+                        <AnchorPane minHeight="237.0" minWidth="355.0" prefHeight="237.0" prefWidth="355.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="allSalesTable" editable="true" prefHeight="568.0" prefWidth="670.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                <columns>
-                                    <TableColumn fx:id="timeSalesColumn" maxWidth="170.0" minWidth="93.0" prefWidth="102.0" text="Время продажи" />
-                                    <TableColumn fx:id="productSalesColumn" maxWidth="201.0" minWidth="110.0" prefWidth="137.0" text="Наименование" />
-                                    <TableColumn fx:id="numberOfUnit" maxWidth="201.0" minWidth="54.0" prefWidth="60.0" text="объём" />
-                                    <TableColumn fx:id="unitOfMeasurement" maxWidth="201.0" minWidth="44.0" prefWidth="50.0" text="ед." />
-                                    <TableColumn fx:id="priceSalesColumn" maxWidth="196.0" minWidth="23.0" prefWidth="55.0" text="Цена" />
-                                    <TableColumn fx:id="amountSalesColumn" maxWidth="219.0" minWidth="39.0" prefWidth="46.0" text="Кол-во" />
-                                    <TableColumn fx:id="discountSalesColumn" maxWidth="192.0" minWidth="42.0" prefWidth="54.0" text="Скидка" />
-                                    <TableColumn fx:id="sumSalesColumn" maxWidth="307.0" minWidth="29.0" prefWidth="50.0" text="Сумма" />
-                                    <TableColumn fx:id="paymentTypeColumn" maxWidth="222.0" minWidth="70.0" prefWidth="115.0" text="Тип оплаты" />
-                                </columns>
+                              <TableView fx:id="saleTable" focusTraversable="false" layoutX="21.0" layoutY="8.0" minHeight="221.0" minWidth="353.0" prefHeight="224.0" prefWidth="355.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" AnchorPane.bottomAnchor="36.0" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                 <columns>
+                                    <TableColumn fx:id="productColumn" editable="false" maxWidth="170.0" minWidth="110.0" prefWidth="131.0" resizable="false" sortType="DESCENDING" sortable="false" text="Наименование" />
+                                    <TableColumn fx:id="priceColumn" editable="false" maxWidth="70.0" minWidth="11.5" prefWidth="45.0" resizable="false" sortable="false" text="Цена" />
+                                    <TableColumn fx:id="amountColumn" editable="false" maxWidth="68.0" minWidth="26.0" prefWidth="52.0" resizable="false" sortable="false" text="Кол-во" />
+                                    <TableColumn fx:id="discountColumn" editable="false" maxWidth="86.0" minWidth="26.5" prefWidth="51.0" resizable="false" sortable="false" text="Скидка" />
+                                    <TableColumn fx:id="sumColumn" maxWidth="94.5" minWidth="50.0" prefWidth="60.0" resizable="false" sortable="false" text="Сумма" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <effect>
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                       <color>
+                                          <Color opacity="0.4000000059604645" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
                               </TableView>
-                              <AnchorPane layoutX="747.0" layoutY="270.0" prefHeight="226.0" prefWidth="301.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                 <children>
-                                    <Label text="Продажи сегодня:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font></Label>
-                                    <Separator layoutX="16.0" layoutY="40.0" prefWidth="200.0" />
-                                    <Label layoutX="16.0" layoutY="55.0" text="Наличные:" />
-                                    <Label fx:id="cashSumSaleLabel" layoutX="94.0" layoutY="55.0" text="0.00" />
-                                    <Label layoutX="16.0" layoutY="82.0" text="Карта:" />
-                                    <Label fx:id="cardSumSaleLabel" layoutX="94.0" layoutY="82.0" text="0.00" />
-                                    <Label layoutX="16.0" layoutY="108.0" text="Всего:" />
-                                    <Label fx:id="allSumSaleLabel" layoutX="94.0" layoutY="108.0" text="0.00" />
-                                    <Label layoutX="16.0" layoutY="145.0" prefHeight="7.0" prefWidth="140.0" text="Внесено при открытии:" wrapText="true" />
-                                    <Label fx:id="cashDepositLabel" layoutX="164.0" layoutY="146.0" prefHeight="17.0" prefWidth="122.0" text="0.00" />
-                                    <Label layoutX="16.0" layoutY="174.0" prefHeight="17.0" prefWidth="147.0" text="Всего наличными в кассе:" wrapText="true" />
-                                    <Label fx:id="allCashLabel" layoutX="164.0" layoutY="174.0" prefHeight="17.0" prefWidth="122.0" text="0.00" />
-                                    <Line endX="100.0" layoutX="117.0" layoutY="134.0" startX="-100.0" />
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane layoutX="696.0" layoutY="261.0" prefHeight="226.0" prefWidth="301.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="15.0">
-                                 <children>
-                                    <Label prefHeight="17.0" prefWidth="129.0" text="Сегодня продано:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Label>
-                                    <Separator layoutX="16.0" layoutY="40.0" prefWidth="200.0" />
-                                    <Label layoutX="16.0" layoutY="55.0" text="Литров напитков" />
-                                    <Label fx:id="litresLabel" layoutX="119.0" layoutY="55.0" text="0.00" />
-                                    <Line endX="100.0" layoutX="117.0" layoutY="134.0" startX="-100.0" />
-                                 </children>
-                              </AnchorPane>
-                              <Button fx:id="editButton" disable="true" layoutX="576.0" layoutY="610.0" mnemonicParsing="false" onAction="#editButtonOnAction" text="Удалить" />
-                              <Button fx:id="saveButton" disable="true" layoutX="652.0" layoutY="610.0" mnemonicParsing="false" onAction="#saveButtonOnAction" text="ОК" />
+                              <Label focusTraversable="false" layoutX="15.0" layoutY="207.0" text="Итого:" textFill="WHITE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0">
+                                 <font>
+                                    <Font name="Courier New Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="sumLabel" focusTraversable="false" layoutX="89.0" layoutY="205.0" text="0.0" textFill="WHITE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="89.0">
+                                 <font>
+                                    <Font name="Courier New Bold" size="20.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="closeShiftPane" layoutX="10.0" layoutY="10.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane minHeight="437.0" prefHeight="257.0" prefWidth="355.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="264.0" prefWidth="375.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="320.0" AnchorPane.topAnchor="202.0">
+                              <AnchorPane fx:id="mainReceiptPane" style="-fx-background-color: TRANSPARENT;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Button fx:id="okCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okCloseShiftButtonOnAction" prefHeight="75.0" prefWidth="110.0" text="Закрыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                                    <Label fx:id="productNameLabel" prefHeight="30.0" prefWidth="190.0" text="product" textAlignment="CENTER" visible="false" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="272.0">
                                        <font>
-                                          <Font size="13.0" />
+                                          <Font size="20.0" />
                                        </font>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                    </Button>
-                                    <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelCloseShiftButtonOnAction" prefHeight="75.0" prefWidth="110.0" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                                    </Label>
+                                    <Label fx:id="priceLabel" opacity="0.98" prefHeight="78.0" prefWidth="191.0" text="price" textFill="#060168" visible="false" AnchorPane.leftAnchor="160.0" AnchorPane.topAnchor="130.0">
                                        <font>
-                                          <Font size="13.0" />
+                                          <Font name="System Bold" size="74.0" />
                                        </font>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                    </Button>
-                                    <Label alignment="TOP_CENTER" layoutX="17.0" layoutY="24.0" prefHeight="164.0" prefWidth="338.0" text="Сейчас произойдёт закрытие смены. В этот момент программа  будет недоступна. Пожалуйста, дождитесь окончания процесса." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                                    </Label>
+                                    <Label fx:id="amountLabel" prefHeight="30.0" prefWidth="71.0" text="amount" visible="false" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="242.0">
                                        <font>
-                                          <Font size="23.0" />
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" disable="true" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" style="-fx-background-radius: 5;" text="+" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="38.0" />
+                                       </font>
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                    </Button>
+                                    <Button fx:id="cashReceiptButton" accessibleHelp="В чеке можно выбрать оплату наличными или картой, а также корректировку суммы чека" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="15.0" layoutY="16.0" maxHeight="75.0" maxWidth="340.0" minHeight="75.0" mnemonicParsing="false" onAction="#cashReceiptOnAction" prefHeight="75.0" style="-fx-background-radius: 5;" text="Чек" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="38.0" />
+                                       </font>
+                                    </Button>
+                                    <Label text="X" visible="false" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="242.0" fx:id="xLabel">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fx:id="productCategoryIco" blendMode="MULTIPLY" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="138.0">
+                                       <image>
+                                          <Image url="@image/product/coffeeToGo_1.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="paymentTypePane" cache="true" cacheHint="SPEED" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                 <children>
+                                    <Button fx:id="paymentType1" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="62.0" layoutY="8.0" maxHeight="75.0" maxWidth="1.7976931348623157E308" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" style="-fx-background-radius: 5;" text="Наличные" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="paymentType2" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="1.7976931348623157E308" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" style="-fx-background-radius: 5;" text="Карта" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="97.0">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#oupsOnAction" prefHeight="75.0" prefWidth="149.0" style="-fx-background-radius: 5;" text="Oups" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="discountButtonActivate" focusTraversable="false" layoutX="170.0" layoutY="339.5" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountButtonActivateOnAction" prefHeight="75.0" prefWidth="75.0" style="-fx-background-radius: 5;" text="\%" AnchorPane.bottomAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="33.0" />
+                                       </font>
+                                    </Button>
+                                    <Label focusTraversable="false" layoutX="83.0" layoutY="205.0" opacity="0.09" text="ТИП" AnchorPane.rightAnchor="182.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Label focusTraversable="false" layoutX="107.0" layoutY="256.0" opacity="0.09" text="ОПЛАТЫ" AnchorPane.rightAnchor="79.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
                                        </font>
                                     </Label>
                                  </children>
                                  <effect>
-                                    <DropShadow offsetX="7.0" offsetY="7.0">
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
                                        <color>
-                                          <Color opacity="0.3700000047683716" />
+                                          <Color opacity="0.4000000059604645" />
                                        </color>
                                     </DropShadow>
                                  </effect>
                               </AnchorPane>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="openShiftPane" layoutX="10.0" layoutY="10.0" minWidth="580.0" prefHeight="673.0" prefWidth="1012.0" style="-fx-background-color: GREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="264.0" prefWidth="375.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="320.0" AnchorPane.topAnchor="202.0">
+                              <AnchorPane fx:id="discountPane" layoutY="3.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
                                  <children>
-                                    <Button fx:id="okOpenShiftButton" alignment="CENTER" contentDisplay="RIGHT" disable="true" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okOpenShiftButtonOnAction" prefHeight="27.0" prefWidth="110.0" text="Открыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="45.0">
+                                    <GridPane fx:id="discountGridPane" alignment="TOP_CENTER" hgap="7.5" layoutX="13.0" layoutY="39.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                    <Label focusTraversable="false" opacity="0.09" prefHeight="51.0" prefWidth="222.0" text="СКИДКА" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="15.0">
                                        <font>
-                                          <Font size="13.0" />
-                                       </font>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                    </Button>
-                                    <Button fx:id="cancelOpenShiftButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="217.0" layoutY="186.0" mnemonicParsing="false" onAction="#cancelOpenShiftButtonOnAction" onKeyPressed="#cancelOpenShiftOnEscapeKey" prefHeight="27.0" prefWidth="110.0" text="Отмена" textOverrun="CLIP" AnchorPane.bottomAnchor="45.0" AnchorPane.rightAnchor="45.0">
-                                       <font>
-                                          <Font size="13.0" />
-                                       </font>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                    </Button>
-                                    <Label alignment="TOP_CENTER" layoutX="32.0" layoutY="24.0" prefHeight="96.0" prefWidth="316.0" text="Пожалуйста, введите сумму размена, после чего нажмите на кнопку &quot;Открыть смену&quot;:" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="186.0" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="25.0">
-                                       <font>
-                                          <Font size="18.0" />
+                                          <Font name="Monospaced Regular" size="43.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="cashDepositTextField" layoutX="98.0" layoutY="137.0" onKeyPressed="#okOpenShiftOnEnterKey" prefHeight="46.0" prefWidth="192.0" AnchorPane.bottomAnchor="123.0" AnchorPane.leftAnchor="89.0" AnchorPane.rightAnchor="89.0" AnchorPane.topAnchor="137.0" />
                                  </children>
                                  <effect>
-                                    <DropShadow offsetX="7.0" offsetY="7.0">
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
                                        <color>
-                                          <Color opacity="0.3700000047683716" />
+                                          <Color opacity="0.4000000059604645" />
                                        </color>
                                     </DropShadow>
                                  </effect>
                               </AnchorPane>
+                              <AnchorPane fx:id="correctionPane" layoutX="10.0" layoutY="10.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                 <children>
+                                    <TextField fx:id="correctionTextField" alignment="CENTER" focusTraversable="false" layoutX="12.0" layoutY="31.0" maxHeight="86.0" maxWidth="250.0" minHeight="86.0" minWidth="250.0" prefHeight="86.0" prefWidth="250.0" promptText="0.00" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="48.0" />
+                                       </font>
+                                    </TextField>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="73.0" layoutY="135.0" opacity="0.09" prefHeight="51.0" prefWidth="195.0" text="ВВЕДИТЕ" textAlignment="RIGHT" AnchorPane.rightAnchor="72.0" AnchorPane.topAnchor="135.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="73.0" layoutY="186.0" opacity="0.17" prefHeight="51.0" prefWidth="195.0" text="СУММУ" textAlignment="RIGHT" textFill="RED" AnchorPane.rightAnchor="72.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="73.0" layoutY="237.0" opacity="0.09" prefHeight="51.0" prefWidth="195.0" text="ЧЕКА" textAlignment="RIGHT" AnchorPane.rightAnchor="72.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#correctionButtonOnAction" prefHeight="75.0" prefWidth="149.0" style="-fx-background-radius: 5;" text="Пересчёт" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                                 <effect>
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                       <color>
+                                          <Color opacity="0.4000000059604645" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
+                              </AnchorPane>
+                              <AnchorPane fx:id="changePane" layoutX="10.0" layoutY="10.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                 <children>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="67.0" layoutY="99.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#noChangeOnAction" prefHeight="75.0" text="Без сдачи" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="90.0">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="68.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#withChangeOnAction" prefHeight="75.0" text="Сдача нужна" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="75.0" layoutY="205.0" opacity="0.09" prefHeight="51.0" prefWidth="195.0" text="НУЖНА" textAlignment="RIGHT" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="205.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="48.0" layoutY="256.0" opacity="0.17" prefHeight="51.0" prefWidth="55.0" text="ЛИ" textAlignment="RIGHT" textFill="RED" AnchorPane.rightAnchor="237.0" AnchorPane.topAnchor="256.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="75.0" layoutY="256.0" opacity="0.09" prefHeight="51.0" prefWidth="195.0" text="СДАЧА?" textAlignment="RIGHT" AnchorPane.rightAnchor="70.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <effect>
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                       <color>
+                                          <Color opacity="0.4000000059604645" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
+                              </AnchorPane>
+                              <AnchorPane fx:id="withChangePane" layoutX="10.0" layoutY="-4.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                 <children>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="68.0" layoutY="301.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#okWithChangeOnAction" prefHeight="75.0" style="-fx-background-radius: 5;" text="ОК" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
+                                    <TextField fx:id="sumChangeTextField" alignment="CENTER" focusTraversable="false" layoutX="67.0" layoutY="99.0" maxHeight="75.0" minHeight="75.0" minWidth="242.0" prefHeight="75.0" promptText="ПОЛУЧЕНО" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="43.0" />
+                                       </font>
+                                    </TextField>
+                                    <Label fx:id="changeLabel" alignment="CENTER_RIGHT" focusTraversable="false" layoutX="83.0" layoutY="222.0" prefHeight="30.0" prefWidth="132.0" text="0.00" textAlignment="RIGHT" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="222.0">
+                                       <font>
+                                          <Font name="Courier New" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="215.0" layoutY="222.0" opacity="0.09" prefHeight="51.0" prefWidth="66.0" text="РУБ" textAlignment="RIGHT" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="222.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="137.0" layoutY="171.0" opacity="0.09" text="ОТДАТЬ" textAlignment="RIGHT" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="171.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="40.0" layoutY="120.0" opacity="0.21" text="ВАМ НУЖНО" textAlignment="RIGHT" textFill="#f00000" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="120.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <effect>
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                       <color>
+                                          <Color opacity="0.4000000059604645" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
+                              </AnchorPane>
+                              <Button fx:id="cButton" alignment="CENTER" contentDisplay="CENTER" disable="true" focusTraversable="false" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cButtonOnAction" prefHeight="75.0" prefWidth="75.0" style="-fx-background-radius: 5;" text="C" textAlignment="CENTER" textFill="#0903ae" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                                 <font>
+                                    <Font name="Courier New" size="38.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </AnchorPane>
                      </children>
-                </AnchorPane>
-               </left>
-               <top>
-                  <ToolBar prefHeight="40.0" BorderPane.alignment="CENTER">
-                    <items>
-                      <Button fx:id="closeShiftButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" mnemonicParsing="false" onAction="#closeShiftButtonOnAction" prefHeight="27.0" prefWidth="110.0" text="Закрыть смену" textOverrun="CLIP">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Button>
-                        <Button fx:id="openShiftButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="124.0" layoutY="12.0" mnemonicParsing="false" onAction="#openShiftButtonOnAction" prefHeight="27.0" prefWidth="110.0" text="Открыть смену" textOverrun="CLIP">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Button>
-                        <Button alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="10.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Button>
-                        <Button alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="238.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Button>
-                        <Button alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="352.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Button>
-                        <Button alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="466.0" layoutY="12.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Заказы" textOverrun="CLIP" visible="false">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Button>
-                        <Button fx:id="botButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="580.0" layoutY="12.0" mnemonicParsing="false" onAction="#botButtonOnAction" prefHeight="27.0" prefWidth="110.0" style="-fx-background-color: LIGHTGREEN;" text="Telegram" textOverrun="CLIP">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Button>
-                        <Label fx:id="clockLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="60.0" text="00:00" textAlignment="CENTER" textFill="#03790b">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="allSales" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="694.0" layoutY="12.0" mnemonicParsing="false" onAction="#allSalesOnAction" prefHeight="27.0" prefWidth="118.0" text="Продажи смены" textOverrun="CLIP">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Button>
-                    </items>
-                     <BorderPane.margin>
-                        <Insets />
-                     </BorderPane.margin>
-                  </ToolBar>
-               </top>
-            </BorderPane>
-            <BorderPane maxHeight="1080.0" maxWidth="1920.0" minHeight="750.0" minWidth="350.0">
-               <top>
-                  <AnchorPane minWidth="368.0" prefHeight="332.0" prefWidth="368.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <Label layoutX="12.0" layoutY="4.0" prefHeight="20.0" prefWidth="58.0" text="Заказ" AnchorPane.topAnchor="4.0">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <TableView fx:id="saleTable" focusTraversable="false" layoutX="21.0" layoutY="34.0" prefHeight="248.0" prefWidth="341.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0">
-                           <columns>
-                              <TableColumn fx:id="productColumn" maxWidth="170.0" minWidth="110.0" prefWidth="147.5" sortable="false" text="Наименование" />
-                              <TableColumn fx:id="priceColumn" maxWidth="70.0" minWidth="11.5" prefWidth="38.0" sortable="false" text="Цена" />
-                              <TableColumn fx:id="amountColumn" maxWidth="66.5" minWidth="26.0" prefWidth="48.5" sortable="false" text="Кол-во" />
-                              <TableColumn fx:id="discountColumn" maxWidth="86.0" minWidth="26.5" prefWidth="50.0" sortable="false" text="Скидка" />
-                              <TableColumn fx:id="sumColumn" maxWidth="94.5" minWidth="50.0" prefWidth="65.0" sortable="false" text="Сумма" />
-                           </columns>
-                        </TableView>
-                        <Label layoutX="12.0" layoutY="296.0" text="Итого:">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="sumLabel" layoutX="83.0" layoutY="296.0" text="0.0">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="networkIndicatorLabel" alignment="CENTER_RIGHT" layoutX="262.0" layoutY="7.0" prefHeight="18.0" prefWidth="69.0" text="status" textAlignment="RIGHT" AnchorPane.topAnchor="7.0">
-                           <font>
-                              <Font name="Monospaced Regular" size="12.0" />
-                           </font></Label>
-                        <Circle fx:id="networkIndicator" fill="#fcff00" layoutX="346.0" layoutY="18.0" radius="7.5" stroke="#c9c9c9" strokeType="OUTSIDE" strokeWidth="0.5" AnchorPane.topAnchor="9.0" />
-                     </children>
-                  </AnchorPane>
-               </top>
-               <bottom>
-                  <AnchorPane BorderPane.alignment="CENTER">
-                     <children>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label fx:id="productNameLabel" prefHeight="30.0" prefWidth="190.0" text="product" textAlignment="CENTER" visible="false" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="272.0">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="priceLabel" opacity="0.98" prefHeight="78.0" prefWidth="191.0" text="price" textFill="#060168" visible="false" AnchorPane.leftAnchor="160.0" AnchorPane.topAnchor="130.0">
-                                 <font>
-                                    <Font name="System Bold" size="74.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="amountLabel" prefHeight="30.0" prefWidth="71.0" text="amount" visible="false" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="242.0">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                              <Button fx:id="addProduct" alignment="CENTER" contentDisplay="CENTER" disable="true" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#addProductOnAction" prefHeight="75.0" prefWidth="75.0" text="+" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="35.0" />
-                                 </font>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
-                              <Button fx:id="cashReceiptButton" accessibleHelp="В чеке можно выбрать оплату наличными или картой, а также корректировку суммы чека" alignment="CENTER" contentDisplay="CENTER" disable="true" focusTraversable="false" maxHeight="75.0" maxWidth="340.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#cashReceiptOnAction" prefHeight="75.0" prefWidth="340.0" text="Чек" textAlignment="CENTER" textFill="#03790b" wrapText="true" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="35.0" />
-                                 </font>
-                              </Button>
-                              <Label text="X" visible="false" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="242.0" fx:id="xLabel">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fx:id="productCategoryIco" blendMode="MULTIPLY" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="148.0">
-                                 <image>
-                                    <Image url="@image/product/coffeeToGo_1.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="paymentTypePane" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="207.0" text="Выберете  тип оплаты" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Button fx:id="paymentType1" alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="99.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" prefWidth="242.0" text="Наличные" textAlignment="CENTER" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="22.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="paymentType2" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" prefWidth="242.0" text="Карта" textAlignment="CENTER" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="22.0" />
-                                 </font>
-                              </Button>
-                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#oupsOnAction" prefHeight="75.0" prefWidth="149.0" text="Oups" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="22.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="discountButtonActivate" focusTraversable="false" layoutX="183.0" layoutY="325.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#discountButtonActivateOnAction" prefHeight="75.0" prefWidth="75.0" text="\%">
-                                 <font>
-                                    <Font name="System Bold" size="33.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="discountPane" layoutY="3.0" minWidth="334.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <GridPane fx:id="discountGridPane" alignment="CENTER" hgap="13.2" layoutX="13.0" layoutY="39.0" maxHeight="342.0" maxWidth="342.0" minHeight="342.0" minWidth="342.0" prefHeight="342.0" prefWidth="342.0" vgap="13.2" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="39.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="75.0" minHeight="75.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                              </GridPane>
-                              <Label layoutX="12.0" layoutY="4.0" text="Скидка">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="correctionPane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <TextField fx:id="correctionTextField" alignment="CENTER" layoutX="65.0" layoutY="122.0" prefHeight="86.0" prefWidth="250.0" promptText="0.00" AnchorPane.bottomAnchor="210.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="122.0">
-                                 <font>
-                                    <Font name="System Bold" size="36.0" />
-                                 </font>
-                              </TextField>
-                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="300.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="129.0" mnemonicParsing="false" onAction="#correctionButtonOnAction" prefHeight="75.0" prefWidth="149.0" text="Пересчёт" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="22.0" />
-                                 </font>
-                              </Button>
-                              <Label prefHeight="27.0" prefWidth="207.0" text="Введите сумму чека" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="changePane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="207.0" text="Нужна ли сдача?" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="99.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#noChangeOnAction" prefHeight="75.0" prefWidth="242.0" text="Без сдачи" textAlignment="CENTER" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="22.0" />
-                                 </font>
-                              </Button>
-                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#withChangeOnAction" prefHeight="75.0" prefWidth="242.0" text="Нужна сдача" textAlignment="CENTER" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="22.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="withChangePane" layoutX="10.0" layoutY="10.0" prefHeight="415.0" prefWidth="368.0" style="-fx-background-color: LIGHTGREY;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label layoutX="12.0" layoutY="4.0" prefHeight="27.0" prefWidth="262.0" text="С какой суммы нужна сдача?" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="301.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#okWithChangeOnAction" prefHeight="75.0" prefWidth="145.0" text="ОК" textAlignment="CENTER" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="22.0" />
-                                 </font>
-                              </Button>
-                              <TextField fx:id="sumChangeTextField" layoutX="67.0" layoutY="99.0" prefHeight="75.0" prefWidth="242.0" promptText="Введите сумму">
-                                 <font>
-                                    <Font size="28.0" />
-                                 </font>
-                              </TextField>
-                              <Label fx:id="changeLabel" layoutX="169.0" layoutY="202.0" text="0.00">
-                                 <font>
-                                    <Font size="48.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <Button fx:id="cButton" alignment="CENTER" contentDisplay="CENTER" disable="true" focusTraversable="false" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#cButtonOnAction" prefHeight="75.0" prefWidth="75.0" text="C" textAlignment="CENTER" textFill="#0903ae" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                           <font>
-                              <Font name="System Bold" size="35.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </AnchorPane>
-               </bottom>
-            </BorderPane>
-         </children>
-      </HBox>
-  </children>
-</VBox>
+                  </VBox>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

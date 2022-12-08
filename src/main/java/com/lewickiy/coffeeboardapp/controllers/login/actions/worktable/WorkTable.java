@@ -2,8 +2,10 @@ package com.lewickiy.coffeeboardapp.controllers.login.actions.worktable;
 
 import com.lewickiy.coffeeboardapp.CoffeeBoardApp;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -11,6 +13,10 @@ import java.io.IOException;
 
 public class WorkTable {
     public static void enterToWorkTable(WorkTableChoice workTableChoice, Button button) {
+        Rectangle2D bounds = Screen.getPrimary().getBounds();
+        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+        System.out.println("Разрешение экрана: " + bounds.getWidth() + "х" + bounds.getHeight());
+        System.out.println("Рабочее пространство: " + visualBounds.getWidth() + "х" + visualBounds.getHeight());
         String fxml = "";
         boolean setMaximized = false;
         if (workTableChoice.equals(WorkTableChoice.ADMINISTRATOR)) {
@@ -22,6 +28,7 @@ public class WorkTable {
             setMaximized = true;
             fxml = "seller.fxml";
         }
+
         Stage stageToClose = (Stage) button.getScene().getWindow();
         Stage stageToOpen = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource(fxml));
@@ -36,12 +43,11 @@ public class WorkTable {
         stageToOpen.setScene(scene);
         stageToOpen.setTitle("CoffeeApp");
         stageToOpen.setMaximized(setMaximized);
-
         stageToOpen.show();
         stageToClose.close();
     }
     public static void enterToWorkTable(WorkTableChoice workTableChoice) {
-        String fxml = null;
+        String fxml = "";
         if (workTableChoice.equals(WorkTableChoice.INFO)) {
             fxml = "info.fxml";
         }
