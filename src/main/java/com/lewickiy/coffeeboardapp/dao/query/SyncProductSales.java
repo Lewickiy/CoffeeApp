@@ -67,7 +67,7 @@ public class SyncProductSales {
             prepareStatement.executeUpdate();
             prepareStatement.close();
             conLocal.close();
-            LOGGER.log(Level.FINE,"Sync Sale products is ok...");
+            LOGGER.log(Level.FINE,"syncSalesProduct completed");
         }
     }
 }
