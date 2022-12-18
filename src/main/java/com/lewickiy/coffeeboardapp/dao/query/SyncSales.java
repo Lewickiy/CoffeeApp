@@ -16,7 +16,7 @@ import static com.lewickiy.coffeeboardapp.entities.outlet.Outlet.currentOutlet;
 
 public class SyncSales {
     public static void syncSales() throws SQLException, ParseException {
-        LOGGER.log(Level.INFO, "Start sync Sales...");
+        LOGGER.log(Level.INFO, "Start syncSales");
         Connection conNetwork;
         Connection conLocal = getConnection(Database.LOCAL_DB);
         try {
@@ -64,8 +64,8 @@ public class SyncSales {
                 prepareStatement.executeUpdate();
                 prepareStatement.close();
                 conLocal.close();
-                LOGGER.log(Level.FINE,"syncSales ok...");
             }
+            LOGGER.log(Level.FINE,"syncSales completed");
         } catch (SQLException sqlEx) {
             LOGGER.log(Level.WARNING, "Error connecting to database while sync Sales");
         }
