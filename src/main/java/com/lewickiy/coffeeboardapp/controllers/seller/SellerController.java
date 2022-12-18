@@ -9,6 +9,7 @@ import com.lewickiy.coffeeboardapp.entities.discount.Discount;
 import com.lewickiy.coffeeboardapp.entities.paymenttype.PaymentType;
 import com.lewickiy.coffeeboardapp.entities.product.Product;
 import com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProduct;
+import com.lewickiy.coffeeboardapp.entities.user.User;
 import com.lewickiy.coffeeboardapp.entities.user.UserList;
 import com.lewickiy.coffeeboardapp.idgenerator.UniqueIdGenerator;
 import javafx.animation.KeyFrame;
@@ -34,6 +35,8 @@ import javafx.util.Duration;
 
 import java.sql.*;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -43,15 +46,14 @@ import static com.lewickiy.coffeeboardapp.controllers.actions.TemporaryRenameBut
 import static com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTable.enterToWorkTable;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ButtonsOnGridPane.buttonsOnGridPane;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.CheckShift.checkShift;
-import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ClockThread.startClockThread;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.Correction.correctionSum;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.CurrentSaleSum.currentSaleSum;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.DiscountAction.makeDiscount;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.DiscountNameButton.discountNameButtons;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.NetworkIndicator.isOnline;
 import static com.lewickiy.coffeeboardapp.controllers.seller.actions.ProductNameButton.productNameButton;
-import static com.lewickiy.coffeeboardapp.dao.connector.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.dao.SyncLocalDB.*;
+import static com.lewickiy.coffeeboardapp.dao.connector.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.dao.info.syncInfo.getInfoMessage;
 import static com.lewickiy.coffeeboardapp.dao.query.OpenCloseShift.updateShiftSql;
 import static com.lewickiy.coffeeboardapp.dao.query.Query.deleteFromLocalSql;
@@ -74,17 +76,208 @@ import static com.lewickiy.coffeeboardapp.entities.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.entities.outlet.OutletList.outlets;
 import static com.lewickiy.coffeeboardapp.entities.paymenttype.PaymentTypeList.createPaymentTypeList;
 import static com.lewickiy.coffeeboardapp.entities.paymenttype.PaymentTypeList.paymentTypes;
-import static com.lewickiy.coffeeboardapp.entities.productcategory.ProductCategoryList.createProductCategoriesList;
-import static com.lewickiy.coffeeboardapp.entities.productcategory.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.entities.product.ProductList.createProductsList;
 import static com.lewickiy.coffeeboardapp.entities.product.ProductList.products;
 import static com.lewickiy.coffeeboardapp.entities.product.ProductsInCategory.countingProductsInCategory;
+import static com.lewickiy.coffeeboardapp.entities.productcategory.ProductCategoryList.createProductCategoriesList;
+import static com.lewickiy.coffeeboardapp.entities.productcategory.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProduct.addSaleProductsToLocalDB;
 import static com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProductList.addProductToArray;
 import static com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProductList.currentSaleProducts;
+import static com.lewickiy.coffeeboardapp.entities.user.UserList.currentUser;
 import static com.lewickiy.coffeeboardapp.entities.user.UserList.users;
 
 public class SellerController {
+
+    private final ObservableList<User> USERS_OBSERVABLE_LIST = FXCollections.observableList(users);
+    private User selectedUser;
+
+    @FXML
+    private Button adminButton;
+    //************************************************************************************
+    @FXML
+    private CheckBox activeStaffACheckBox;
+
+    @FXML
+    private Button addUserButton;
+
+    @FXML
+    private CheckBox administratorACheckBox;
+
+    @FXML
+    private DatePicker birthdayADatePicker;
+
+    @FXML
+    private Button edtUserButton;
+
+    @FXML
+    private TextField firstNameATextField;
+
+    @FXML
+    private TextField lastNameATextField;
+
+    @FXML
+    private TextField loginATextField;
+
+    @FXML
+    private PasswordField passwordAPasswordField;
+
+    @FXML
+    private TextField patronymicATextField;
+
+    @FXML
+    private TextField phoneATextField;
+
+    @FXML
+    private Button showActiveUsersButton;
+
+    @FXML
+    void addUserButtonOnAction(ActionEvent event) {
+        edtUserButton.setDisable(true);
+        showActiveUsersButton.setDisable(true);
+        usersTable.setDisable(true);
+
+        loginATextField.clear();
+        firstNameATextField.clear();
+        lastNameATextField.clear();
+        patronymicATextField.clear();
+        passwordAPasswordField.clear();
+        phoneATextField.clear();
+        administratorACheckBox.setSelected(false);
+        activeStaffACheckBox.setSelected(false);
+        birthdayADatePicker.setValue(LocalDate.now());
+
+        User newUser = new User();
+
+    }
+
+    @FXML
+    void editUserButtonOnAction(ActionEvent event) {
+        //TODO
+    }
+
+    @FXML
+    void showActiveUsersButtonOnAction(ActionEvent event) {
+        //TODO
+    }
+
+    @FXML
+    private AnchorPane mainAdminPane;
+
+    @FXML
+    private Circle networkIndicatorA;
+
+    @FXML
+    private Label networkIndicatorLabelA;
+
+    @FXML
+    private AnchorPane secondAdminPane;
+
+    @FXML
+    private TableView<User> usersTable;
+
+    @FXML
+    private TableColumn<User, Boolean> userActiveStuffColumn = new TableColumn<>("activeStuff");
+
+    @FXML
+    private TableColumn<User, Boolean> userAdministratorColumn;
+
+    @FXML
+    private TableColumn<User, Date> userBirthdayColumn;
+
+    @FXML
+    private TableColumn<User, String> userFirstNameColumn;
+
+    @FXML
+    private TableColumn<User, String> userLastNameColumn;
+
+    @FXML
+    private TableColumn<User, String> userLoginColumn;
+
+    @FXML
+    private TableColumn<User, String> userPasswordColumn;
+
+    @FXML
+    private TableColumn<User, String> userPatronymicColumn;
+
+    @FXML
+    private TableColumn<User, String> userPhoneColumn;
+
+    @FXML
+    private Button usersButton;
+    @FXML
+    private Pane workAdminPane;
+
+    @FXML
+    private AnchorPane usersPane;
+
+    @FXML
+    private Pane infoAdminPane;
+    @FXML
+    private Label headerLabel;
+    @FXML
+    private Button referenceBooksButton;
+    @FXML
+    void referenceBooksButtonOnAction() {
+        if (!productsAdminPane.isVisible()) {
+            productsAdminPane.setVisible(true);
+        } else {
+            productsAdminPane.setVisible(false);
+        }
+    }
+
+    @FXML
+    private Pane productsAdminPane;
+    @FXML
+    void usersButtonOnAction() {
+        if (!usersPane.isVisible()) {
+            usersPane.setVisible(true);
+        } else {
+            usersPane.setVisible(false);
+        }
+    }
+
+    @FXML
+    void adminButtonOnAction() {
+        if (!mainAdminPane.isVisible()) { //открываем Admin
+            mainAdminPane.setVisible(true);
+            infoAdminPane.setVisible(true);
+            workAdminPane.setVisible(true);
+            cButton.setVisible(false);
+
+            openShiftButton.setDisable(true);
+            closeShiftButton.setDisable(true);
+            botButton.setDisable(true);
+            allSales.setDisable(true);
+            headerLabel.setText("Журнал:");
+
+            cButtonOnAction();
+            buttonsIsDisable(PRODUCT_BUTTONS, true);
+
+            startSync = false;
+
+        } else { //Закрываем Admin
+            mainAdminPane.setVisible(false);
+            infoAdminPane.setVisible(false);
+            workAdminPane.setVisible(false);
+            cButton.setVisible(true);
+
+            openShiftButton.setDisable(false);
+            closeShiftButton.setDisable(false);
+            botButton.setDisable(false);
+            allSales.setDisable(false);
+            headerLabel.setText("Заказ:");
+
+            buttonsIsDisable(PRODUCT_BUTTONS, false);
+
+            startSync = true;
+        }
+    }
+
+
+
+
+    public static long usedBytes;
     @FXML
     private Button botButton;
     @FXML
@@ -123,6 +316,8 @@ public class SellerController {
     private Label litresLabel;
     @FXML
     private Button editButton;
+    @FXML
+    private Label usernameAllSalesLabel;
     @FXML
     void editButtonOnAction() {
         saveButton.setDisable(false);
@@ -164,6 +359,7 @@ public class SellerController {
     @FXML
     void closeShiftButtonOnAction() {
         closeShiftPane.setVisible(true);
+        okCloseShiftButton.requestFocus();
         startSync = false;
     }
     @FXML
@@ -180,12 +376,21 @@ public class SellerController {
     private TextField cashDepositTextField;
     @FXML
     void okOpenShiftButtonOnAction() throws SQLException, ParseException {
+        cashDepositTextField.setDisable(true);
+        okOpenShiftButton.setDisable(true);
+        cancelOpenShiftButton.setDisable(true);
         openShiftAction();
     }
     @FXML
-    private void okOpenShiftOnEnterKey(KeyEvent okEvent) throws SQLException, ParseException {
-        if (okEvent.getCode() == KeyCode.ENTER)  {
+    private void OpenShiftOnKey(KeyEvent okEvent) throws SQLException, ParseException {
+        if (okEvent.getCode() == KeyCode.ENTER && !okOpenShiftButton.isDisable())  {
+            cashDepositTextField.setDisable(true);
+            okOpenShiftButton.setDisable(true);
+            cancelOpenShiftButton.setDisable(true);
             openShiftAction();
+        } else if (okEvent.getCode() == KeyCode.ESCAPE) {
+            Stage stage = (Stage) cashDepositTextField.getScene().getWindow();
+            stage.close();
         }
     }
     public void openShiftAction() throws SQLException, ParseException {
@@ -263,14 +468,53 @@ public class SellerController {
             LOGGER.log(Level.WARNING,"Failed to connect to network database when closing shift. Database synchronization failed.");
             stage.close();
         }
-
-
-
     }
     @FXML
     void cancelCloseShiftButtonOnAction() {
         startSync = true;
         closeShiftPane.setVisible(false);
+    }
+    @FXML
+    void closeShiftOnKey(KeyEvent closeShiftOnKey) {
+        if (closeShiftOnKey.getCode() == KeyCode.ESCAPE)  {
+            startSync = true;
+            closeShiftPane.setVisible(false);
+        } else if (closeShiftOnKey.getCode() == KeyCode.ENTER) {
+            Stage stage = (Stage) okCloseShiftButton.getScene().getWindow();
+            todaySalesArrayList.clear();
+            allSalesTable.refresh();
+
+            Connection conNDB;
+            try {
+                conNDB = getConnection(Database.NETWORK_DB);
+                conNDB.close();
+                updateShiftSql(true, 0.00);
+                shiftLog(true);
+                syncShiftLog();
+                syncSales();
+                syncSalesProduct();
+                syncCorrectedSales();
+                Connection con = getConnection(Database.LOCAL_DB);
+                deleteFromLocalSql(con, "sale_product");
+                deleteFromLocalSql(con, "sale");
+                PRODUCT_BUTTONS.clear();
+                NUMBER_BUTTONS.clear();
+
+                productCategories.clear();
+                currentSaleProducts.clear();
+                products.clear();
+                discounts.clear();
+                paymentTypes.clear();
+                outlets.clear();
+                users.clear();
+
+                enterToWorkTable(WorkTableChoice.LOGIN, closeShiftButton);
+
+            }catch (SQLException | ParseException sqlException) {
+                LOGGER.log(Level.WARNING,"Failed to connect to network database when closing shift. Database synchronization failed.");
+                stage.close();
+            }
+        }
     }
 
     @FXML
@@ -594,7 +838,7 @@ public class SellerController {
         paymentTypePane.setVisible(false);
         cButton.setDisable(true);
         buttonsIsDisable(PRODUCT_BUTTONS, false);
-        tempRenameButton(cashReceiptButton, "Чек сформирован", 4);
+        tempRenameButton(cashReceiptButton, "Чек сформирован", "Чек", 4);
     }
 
     @FXML
@@ -649,22 +893,71 @@ public class SellerController {
      _____________________________________˅˅˅____________________________________________*/
     @FXML
     void initialize() throws SQLException {
-        System.out.println(mainGridPane.getLayoutX() + " LayoutX");
-        System.out.println(mainGridPane.getLayoutY() + " LayoutY");
-        System.out.println(mainGridPane.getVgap() + " Vgap");
-        System.out.println(mainGridPane.getHgap() + " Hgap");
+        if (currentUser.isAdministrator()) {
+            adminButton.setVisible(true);
+        } else {
+            adminButton.setVisible(false);
+        }
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("HH:mm");
+        String time1 = simpleDateFormat1.format(new java.util.Date());
+        clockLabel.setText(time1);
 
+        usersTable.setEditable(true);
+        userFirstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        userLastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        userPatronymicColumn.setCellValueFactory(new PropertyValueFactory<>("patronymic"));
+        userPasswordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+        userLoginColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
+        userBirthdayColumn.setCellValueFactory(new PropertyValueFactory<>("birthday"));
+        userPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        userAdministratorColumn.setCellValueFactory(new PropertyValueFactory<>("administrator"));
+        userActiveStuffColumn.setCellValueFactory(new PropertyValueFactory<>("activeStuff"));
+        usersTable.setItems(USERS_OBSERVABLE_LIST);
+        usersTable.setPlaceholder(new Label("Отсутствуют пользователи. Проверьте подключение."));
+
+        TableView.TableViewSelectionModel<User> selectionModelUsersTable = usersTable.getSelectionModel();
+        selectionModelUsersTable.selectedItemProperty().addListener((observableValue, user, t1) -> {
+            selectedUser = new User();
+            selectedUser.setUserId(t1.getUserId());
+            selectedUser.setLogin(t1.getLogin());
+            loginATextField.setText(selectedUser.getLogin());//
+            selectedUser.setPassword(t1.getPassword());
+            passwordAPasswordField.setText(selectedUser.getPassword());//
+            selectedUser.setFirstName(t1.getFirstName());
+            firstNameATextField.setText(selectedUser.getFirstName());//
+            selectedUser.setLastName(t1.getLastName());
+            lastNameATextField.setText(selectedUser.getLastName());//
+            selectedUser.setPatronymic(t1.getPatronymic());
+            patronymicATextField.setText(selectedUser.getPatronymic());//
+            selectedUser.setPhone(t1.getPhone());
+            phoneATextField.setText(selectedUser.getPhone());
+            selectedUser.setBirthday(t1.getBirthday());
+            //TODO переделать форматы дат. Разобраться с этим. Проблема по всему коду.
+            selectedUser.setAdministrator(t1.isAdministrator());
+            administratorACheckBox.setSelected(selectedUser.isAdministrator());
+            selectedUser.setActiveStuff(t1.isActiveStuff());
+            activeStaffACheckBox.setSelected(selectedUser.isActiveStuff());
+
+            birthdayADatePicker.setOnAction(e -> {
+                LocalDate date = birthdayADatePicker.getValue();
+                System.out.println("Selected date: " + date);
+            });
+
+            System.out.println(selectedUser.getUserId() + ", " + selectedUser.getLogin() + ", " + selectedUser.getFirstName() + " " + selectedUser.getLastName() + " " + selectedUser.getPatronymic() + ", " + selectedUser.getPhone() + ", " + selectedUser.getBirthday() + ", administrator: " + selectedUser.isAdministrator() + ", active stuff: " + selectedUser.isActiveStuff());
+        });
+        usernameAllSalesLabel.setText(currentUser.getFirstName() + "!");
         networkIndicator.setFill(Color.GOLD);
 
-        startClockThread(clockLabel, 1);
-
-        AtomicInteger tempCount = new AtomicInteger(); //Временно. Удалить.
-
+        AtomicInteger syncCount = new AtomicInteger();
         Timeline syncTimeLine = new Timeline(
-                new KeyFrame(Duration.seconds(300),
+                new KeyFrame(Duration.seconds(60), //every minute
                         event -> {
-                            LOGGER.log(Level.INFO,"startSync is " + startSync);
-                            if (startSync) {
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+                            String time = simpleDateFormat.format(new java.util.Date());
+                            clockLabel.setText(time);
+
+                            if (startSync && syncCount.get() % 5 == 0) { //every five minutes
+                                LOGGER.log(Level.FINE,"startSync is " + startSync);
                                 Connection con;
                                 try {
                                     con = getConnection(Database.NETWORK_DB);
@@ -676,19 +969,19 @@ public class SellerController {
                                         syncShiftLog();
                                         syncSales();
                                         syncSalesProduct();
-                                        System.out.println(tempCount.getAndIncrement()); //Временно. Удалить.
                                     } catch (SQLException sqlEx) {
                                         isOnline(networkIndicatorLabel, networkIndicator,false);
-                                        System.out.println("sqlEx");
+                                        LOGGER.log(Level.WARNING, "Sync failed in thread. SQLException " + sqlEx);
                                     } catch (ParseException pEx) {
                                         System.out.println("pex");
                                         isOnline(networkIndicatorLabel, networkIndicator,false);
-
+                                        LOGGER.log(Level.WARNING, "Sync failed in thread " + pEx);
                                     }
                                 } catch (SQLException e) {
                                     isOnline(networkIndicatorLabel, networkIndicator,false);
                                 }
                             }
+                            syncCount.getAndIncrement();
                         }));
         syncTimeLine.setCycleCount(Timeline.INDEFINITE);
         syncTimeLine.play();
@@ -792,7 +1085,6 @@ public class SellerController {
             }
         });
 
-        //Проверка открыта смена или нет.
         if (checkShift()) {
             for (Button product_button : PRODUCT_BUTTONS) {
                 product_button.setDisable(true);
