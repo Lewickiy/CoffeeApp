@@ -34,6 +34,7 @@ public class SyncCorrected {
                 }
                 conNDB.close();
             }
+            LOGGER.log(Level.FINE,"syncCorrectedSales completed");
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "Error connecting to database while syncCorrectedSales");
             throw new RuntimeException(e);
