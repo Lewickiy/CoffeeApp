@@ -133,7 +133,6 @@ public class ShiftLog {
                         + shiftLog.getTime() + "', "
                         + shiftLog.getIsClosed());
             }
-
             resultSelectNotLoaded.close();
             conNetwork.close();
 
@@ -144,7 +143,7 @@ public class ShiftLog {
             prepareStatement.executeUpdate();
             prepareStatement.close();
             conLocal.close();
-            LOGGER.log(Level.FINE,"syncShiftLog ok...");
+            LOGGER.log(Level.FINE,"syncShiftLog completed");
         } catch (SQLException sqlEx) {
             LOGGER.log(Level.WARNING,"Error connecting to database while sync ShiftLog");
         }
