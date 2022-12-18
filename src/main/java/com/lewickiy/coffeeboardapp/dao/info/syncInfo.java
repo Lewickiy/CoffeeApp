@@ -36,11 +36,10 @@ public class syncInfo {
             con.close();
 
             if (info.getInfoId() != 0 && info.getMessage() != null) {
-                LOGGER.log(Level.INFO,"Message not null");
                 startSync = false;
                 enterToWorkTable(WorkTableChoice.INFO);
             }
-
+            LOGGER.log(Level.FINE,"Refresh info messages completed");
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING,"Failed to connect to network database to download new information messages");
             startSync = true;
