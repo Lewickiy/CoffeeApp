@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: WHITE; -fx-border-color: GREY; -fx-border-width: 1;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.login.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: WHITE; -fx-border-color: GREY; -fx-border-width: 1; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewickiy.coffeeboardapp.controllers.login.LoginController">
    <left>
       <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
          <children>
@@ -22,22 +22,22 @@
                </image></ImageView>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="331.0" text="тел. поддержки:" textAlignment="CENTER">
                <font>
-                  <Font name="Tahoma" size="12.0" />
+                  <Font name="Courier New" size="9.0" />
                </font>
             </Label>
             <Label layoutX="137.0" layoutY="332.0" text="+7 (999) 535-42-50" textAlignment="CENTER">
                <font>
-                  <Font size="10.0" />
+                  <Font name="Courier New" size="9.0" />
                </font>
             </Label>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="72.0" layoutY="348.0" text="e-mail:" textAlignment="CENTER">
                <font>
-                  <Font name="Tahoma" size="12.0" />
+                  <Font name="Courier New" size="9.0" />
                </font>
             </Label>
             <Label layoutX="115.0" layoutY="348.0" text="lewickiy@gmail.com" textAlignment="CENTER">
                <font>
-                  <Font size="10.0" />
+                  <Font name="Courier New" size="9.0" />
                </font>
             </Label>
          </children>
@@ -46,29 +46,29 @@
    <right>
       <AnchorPane prefHeight="400.0" prefWidth="351.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="145.0" layoutY="50.0" opacity="0.75" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="145.0" layoutY="50.0" opacity="0.75" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="149.0">
                <image>
                   <Image url="@image/loginIco.png" />
                </image>
             </ImageView>
-            <Label layoutX="67.0" layoutY="135.0" text="Имя пользователя">
+            <Label layoutX="67.0" layoutY="135.0" text="Имя пользователя" AnchorPane.leftAnchor="68.0">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="Courier New Bold" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="usernameTextField" layoutX="67.0" layoutY="156.0" onKeyPressed="#escapeKeyPressed" prefHeight="27.0" prefWidth="212.0" promptText="введите имя пользователя">
+            <TextField fx:id="usernameTextField" layoutX="67.0" layoutY="156.0" onKeyPressed="#escapeKeyPressed" prefHeight="27.0" prefWidth="212.0" promptText="введите имя пользователя" AnchorPane.leftAnchor="68.0" AnchorPane.rightAnchor="68.0">
                <font>
-                  <Font size="13.0" />
+                  <Font name="Courier New" size="13.0" />
                </font>
             </TextField>
-            <PasswordField fx:id="passwordField" layoutX="67.0" layoutY="219.0" onKeyPressed="#loginPasswordEnterKey" prefHeight="27.0" prefWidth="212.0" promptText="введите пароль">
+            <PasswordField fx:id="passwordField" layoutX="67.0" layoutY="219.0" onKeyPressed="#loginPasswordEnterKey" prefHeight="27.0" prefWidth="212.0" promptText="введите пароль" AnchorPane.leftAnchor="68.0" AnchorPane.rightAnchor="68.0">
                <font>
-                  <Font size="13.0" />
+                  <Font name="Courier New" size="13.0" />
                </font>
             </PasswordField>
-            <Button fx:id="loginButton" focusTraversable="false" layoutX="77.0" layoutY="279.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="25.0" prefWidth="77.0" text="Войти">
+            <Button fx:id="loginButton" focusTraversable="false" layoutX="77.0" layoutY="279.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-background-radius: 3;" text="Войти" AnchorPane.bottomAnchor="94.0" AnchorPane.leftAnchor="77.0">
                <font>
-                  <Font size="13.0" />
+                  <Font name="Courier New" size="13.0" />
                </font>
             </Button>
             <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="14.0" layoutY="328.0" prefHeight="52.0" prefWidth="325.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
@@ -76,25 +76,25 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Button fx:id="cancelButton" focusTraversable="false" layoutX="186.0" layoutY="279.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="25.0" prefWidth="77.0" text="Отмена">
+            <Button fx:id="cancelButton" focusTraversable="false" layoutX="186.0" layoutY="279.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-background-radius: 3;" text="Отмена" AnchorPane.bottomAnchor="94.0" AnchorPane.rightAnchor="77.0">
                <font>
-                  <Font size="13.0" />
+                  <Font name="Courier New" size="13.0" />
                </font>
             </Button>
-            <Label layoutX="67.0" layoutY="198.0" text="Пароль">
+            <Label layoutX="67.0" layoutY="198.0" text="Пароль" AnchorPane.leftAnchor="68.0">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="Courier New Bold" size="13.0" />
                </font>
             </Label>
             <AnchorPane fx:id="outletChoicePane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: WHITE;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <ChoiceBox fx:id="outletChoiceBox" layoutX="68.0" layoutY="149.0" onKeyPressed="#okButtonEnterKey" prefHeight="27.0" prefWidth="212.0" AnchorPane.bottomAnchor="216.0" AnchorPane.leftAnchor="68.0" AnchorPane.rightAnchor="68.0" AnchorPane.topAnchor="155.0" />
-                  <Label layoutX="100.0" layoutY="122.0" text="Выберите расположение">
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="92.0" layoutY="122.0" text="Выберите расположение">
                      <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="Courier New Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Button fx:id="acceptOutletChoice" disable="true" focusTraversable="false" layoutX="136.0" layoutY="251.0" mnemonicParsing="false" onAction="#acceptOutletChoiceOnAction" prefHeight="25.0" prefWidth="77.0" text="ok">
+                  <Button fx:id="acceptOutletChoice" disable="true" focusTraversable="false" layoutX="136.0" layoutY="251.0" mnemonicParsing="false" onAction="#acceptOutletChoiceOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-background-radius: 3;" text="OK">
                      <font>
                         <Font size="13.0" />
                      </font>
