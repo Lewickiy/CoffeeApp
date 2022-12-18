@@ -3,7 +3,11 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -86,6 +90,14 @@
                                           <Insets />
                                        </opaqueInsets>
                                     </Button>
+                                    <Button fx:id="adminButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="208.0" layoutY="10.0" minHeight="27.0" minWidth="120.0" mnemonicParsing="false" onAction="#adminButtonOnAction" prefHeight="27.0" prefWidth="120.0" style="-fx-background-radius: 3;" text="Администратор" textOverrun="CLIP">
+                                       <font>
+                                          <Font name="Courier New" size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Button>
                                  </items>
                                  <effect>
                                     <DropShadow height="15.0" radius="3.25" width="0.0" />
@@ -95,7 +107,7 @@
                         </HBox>
                         <AnchorPane maxHeight="1.7976931348623157E308" minHeight="106.0" prefHeight="106.0" prefWidth="952.0">
                            <children>
-                              <GridPane fx:id="numbersGridPane" alignment="TOP_CENTER" hgap="5.5" layoutX="8.5" layoutY="7.5" vgap="5.5" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="7.5">
+                              <GridPane fx:id="numbersGridPane" alignment="TOP_CENTER" hgap="4.5" layoutX="8.5" layoutY="7.5" vgap="4.5" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="7.5">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
@@ -119,9 +131,9 @@
                         </AnchorPane>
                         <AnchorPane fx:id="productBar" style="-fx-background-color: NULL;" VBox.vgrow="ALWAYS">
                            <children>
-                              <AnchorPane layoutY="145.0" style="-fx-background-radius: 5; -fx-background-color: NULL;" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="0.0">
+                              <AnchorPane fx:id="productsPane" layoutY="145.0" style="-fx-background-radius: 5; -fx-background-color: NULL;" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <GridPane fx:id="mainGridPane" alignment="TOP_CENTER" hgap="5.5" layoutX="30.0" layoutY="7.0" vgap="5.5" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                    <GridPane fx:id="mainGridPane" alignment="TOP_CENTER" hgap="4.5" layoutX="30.0" layoutY="7.0" vgap="4.5" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
                                        <columnConstraints>
                                           <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
                                           <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="91.0" percentWidth="0.0" />
@@ -149,7 +161,7 @@
                                     </ImageView>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane fx:id="allSalesPane" layoutX="-10.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="0.0">
+                              <AnchorPane fx:id="allSalesPane" layoutX="-10.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
                                  <children>
                                     <TableView fx:id="allSalesTable" editable="true" focusTraversable="false" layoutX="27.0" minHeight="487.0" minWidth="558.0" style="-fx-background-radius: 5; -fx-background-color: WHITE;" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                        <columns>
@@ -164,7 +176,7 @@
                                           <TableColumn fx:id="paymentTypeColumn" maxWidth="222.0" minWidth="95.0" prefWidth="-1.0" text="Тип оплаты" />
                                        </columns>
                                     </TableView>
-                                    <AnchorPane layoutX="668.0" layoutY="16.0" minHeight="204.0" minWidth="280.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="16.0">
+                                    <AnchorPane layoutX="634.0" layoutY="56.0" minHeight="204.0" minWidth="280.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="56.0">
                                        <children>
                                           <Label focusTraversable="false" text="Продажи сегодня:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                              <font>
@@ -185,7 +197,7 @@
                                           <Line endX="100.0" layoutX="117.0" layoutY="134.0" startX="-100.0" />
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane layoutX="667.0" layoutY="247.0" minHeight="135.0" minWidth="204.0" prefHeight="175.0" prefWidth="218.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="114.0">
+                                    <AnchorPane layoutX="633.0" layoutY="280.0" minHeight="135.0" minWidth="204.0" prefHeight="175.0" prefWidth="218.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="119.0">
                                        <children>
                                           <Label focusTraversable="false" prefHeight="17.0" prefWidth="129.0" text="Сегодня продано:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                              <font>
@@ -200,6 +212,16 @@
                                     </AnchorPane>
                                     <Button fx:id="editButton" disable="true" focusTraversable="false" layoutX="449.0" layoutY="506.0" mnemonicParsing="false" onAction="#editButtonOnAction" style="-fx-background-radius: 3;" text="Удалить" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="517.0" />
                                     <Button fx:id="saveButton" disable="true" focusTraversable="false" layoutX="525.0" layoutY="506.0" mnemonicParsing="false" onAction="#saveButtonOnAction" style="-fx-background-radius: 3;" text="ОК" AnchorPane.leftAnchor="544.0" AnchorPane.topAnchor="517.0" />
+                                    <Label layoutX="642.0" layoutY="16.0" text="Здравствуйте, " AnchorPane.topAnchor="16.0">
+                                       <font>
+                                          <Font name="Courier New Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="usernameAllSalesLabel" layoutX="771.0" layoutY="16.0" text="username" AnchorPane.topAnchor="16.0">
+                                       <font>
+                                          <Font name="Courier New Bold" size="16.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                                  <effect>
                                     <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
@@ -213,7 +235,7 @@
                                  <children>
                                     <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="264.0" prefWidth="375.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="140.0">
                                        <children>
-                                          <Button fx:id="okCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okCloseShiftButtonOnAction" prefHeight="27.0" prefWidth="120.0" style="-fx-background-radius: 5;" text="Закрыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                                          <Button fx:id="okCloseShiftButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="44.0" layoutY="186.0" mnemonicParsing="false" onAction="#okCloseShiftButtonOnAction" onKeyPressed="#closeShiftOnKey" prefHeight="27.0" prefWidth="120.0" style="-fx-background-radius: 5;" text="Закрыть смену" textOverrun="CLIP" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                                              <font>
                                                 <Font name="Courier New" size="13.0" />
                                              </font>
@@ -276,7 +298,7 @@
                                                 <Font name="Courier New" size="17.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="cashDepositTextField" alignment="CENTER" focusTraversable="false" layoutX="63.0" layoutY="126.0" maxHeight="86.0" maxWidth="250.0" minHeight="54.0" minWidth="250.0" prefHeight="54.0" prefWidth="250.0" promptText="0.00" style="-fx-background-radius: 5;">
+                                          <TextField fx:id="cashDepositTextField" alignment="CENTER" layoutX="63.0" layoutY="126.0" maxHeight="86.0" maxWidth="250.0" minHeight="54.0" minWidth="250.0" onKeyPressed="#OpenShiftOnKey" prefHeight="54.0" prefWidth="250.0" promptText="0.00" style="-fx-background-radius: 5;">
                                              <font>
                                                 <Font name="Courier New" size="38.0" />
                                              </font>
@@ -298,6 +320,355 @@
                                        </color></DropShadow>
                                  </effect>
                               </AnchorPane>
+                              <AnchorPane fx:id="workAdminPane" minWidth="800.0" style="-fx-background-radius: 5; -fx-background-color: WHITE;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                 <children>
+                                    <AnchorPane fx:id="productsAdminPane" layoutX="18.0" layoutY="18.0" minWidth="700.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                       <effect>
+                                          <DropShadow height="13.0" offsetY="3.0" radius="6.0" width="13.0" />
+                                       </effect>
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                             <children>
+                                                <TableView editable="true" focusTraversable="false" minHeight="300.0" minWidth="558.0" style="-fx-background-radius: 5; -fx-background-color: WHITE;">
+                                                   <columns>
+                                                      <TableColumn maxWidth="224.0" minWidth="59.0" prefWidth="224.0" resizable="false" text="Продукт" />
+                                                      <TableColumn maxWidth="201.0" minWidth="0.0" prefWidth="56.0" resizable="false" text="кол-во" />
+                                                      <TableColumn maxWidth="201.0" minWidth="26.0" prefWidth="40.0" resizable="false" text="ед." />
+                                                      <TableColumn maxWidth="201.0" minWidth="25.0" prefWidth="55.0" resizable="false" text="Цена" />
+                                                      <TableColumn maxWidth="196.0" minWidth="56.0" prefWidth="74.0" resizable="false" text="Без скидки" />
+                                                      <TableColumn maxWidth="258.0" minWidth="47.0" prefWidth="229.0" resizable="false" text="Точка продаж" />
+                                                   </columns>
+                                                </TableView>
+                                                <AnchorPane prefHeight="112.0" style="-fx-background-color: GREY; -fx-background-radius: 5;" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="15.0" maxHeight="75.0" maxWidth="125.0" minHeight="44.0" minWidth="125.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="125.0" style="-fx-background-radius: 5;" text="Добавить продукт" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                                         <font>
+                                                            <Font name="Courier New" size="12.0" />
+                                                         </font>
+                                                      </Button>
+                                                      <Button contentDisplay="CENTER" layoutX="155.0" layoutY="15.0" maxHeight="75.0" maxWidth="125.0" minHeight="44.0" minWidth="125.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="125.0" style="-fx-background-radius: 5;" text="Редактировать продукт" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="7.5">
+                                                         <font>
+                                                            <Font name="Courier New" size="12.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane prefHeight="300.0" prefWidth="668.0" style="-fx-background-radius: 5;" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <TextField layoutX="43.0" layoutY="41.0" prefHeight="24.0" prefWidth="110.0" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField layoutX="43.0" layoutY="81.0" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField layoutX="204.0" layoutY="41.0" AnchorPane.leftAnchor="204.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField layoutX="204.0" layoutY="85.0" AnchorPane.leftAnchor="204.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <CheckBox layoutX="377.0" layoutY="44.0" mnemonicParsing="false" text="Без скидки">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </CheckBox>
+                                                      <Label layoutX="43.0" layoutY="24.0" text="Продукт" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="43.0" layoutY="66.0" text="Количество" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="204.0" layoutY="24.0" text="Единицы" AnchorPane.leftAnchor="204.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="204.0" layoutY="66.0" text="Цена" AnchorPane.leftAnchor="204.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ChoiceBox layoutX="377.0" layoutY="81.0" prefWidth="150.0" />
+                                                   </children>
+                                                   <opaqueInsets>
+                                                      <Insets top="5.0" />
+                                                   </opaqueInsets>
+                                                </AnchorPane>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane fx:id="usersPane" minWidth="700.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                       <effect>
+                                          <DropShadow height="13.0" offsetY="3.0" radius="6.0" width="13.0" />
+                                       </effect>
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                             <children>
+                                                <TableView fx:id="usersTable" editable="true" focusTraversable="false" minHeight="300.0" minWidth="558.0" style="-fx-background-radius: 5; -fx-background-color: WHITE;">
+                                                   <columns>
+                                                      <TableColumn fx:id="userLoginColumn" maxWidth="170.0" minWidth="59.0" prefWidth="84.0" resizable="false" text="Логин" />
+                                                      <TableColumn fx:id="userFirstNameColumn" maxWidth="201.0" minWidth="76.66667175292969" prefWidth="84.0" resizable="false" text="Имя" />
+                                                      <TableColumn fx:id="userLastNameColumn" maxWidth="201.0" minWidth="45.0" prefWidth="84.0" resizable="false" text="Фамилия" />
+                                                      <TableColumn fx:id="userPatronymicColumn" maxWidth="201.0" minWidth="27.0" prefWidth="84.0" resizable="false" text="Отчество" />
+                                                      <TableColumn fx:id="userBirthdayColumn" maxWidth="196.0" minWidth="56.0" prefWidth="84.0" resizable="false" text="Дата рождения" />
+                                                      <TableColumn fx:id="userPhoneColumn" maxWidth="219.0" minWidth="47.0" prefWidth="84.0" resizable="false" text="Телефон" />
+                                                      <TableColumn fx:id="userPasswordColumn" maxWidth="192.0" minWidth="50.0" prefWidth="84.0" resizable="false" text="Пароль" />
+                                                      <TableColumn fx:id="userAdministratorColumn" maxWidth="307.0" minWidth="51.0" prefWidth="84.0" resizable="false" text="Администратор" />
+                                                      <TableColumn fx:id="userActiveStuffColumn" maxWidth="222.0" minWidth="95.0" prefWidth="84.0" resizable="false" text="Действующий сотрудник" />
+                                                   </columns>
+                                                </TableView>
+                                                <AnchorPane prefHeight="112.0" style="-fx-background-color: GREY; -fx-background-radius: 5;" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <Button fx:id="addUserButton" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="15.0" maxHeight="75.0" maxWidth="125.0" minHeight="44.0" minWidth="125.0" mnemonicParsing="false" onAction="#addUserButtonOnAction" prefHeight="75.0" prefWidth="125.0" style="-fx-background-radius: 5;" text="Добавить нового пользователя" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                                         <font>
+                                                            <Font name="Courier New" size="12.0" />
+                                                         </font>
+                                                      </Button>
+                                                      <Button fx:id="edtUserButton" contentDisplay="CENTER" layoutX="155.0" layoutY="15.0" maxHeight="75.0" maxWidth="125.0" minHeight="44.0" minWidth="125.0" mnemonicParsing="false" onAction="#editUserButtonOnAction" prefHeight="75.0" prefWidth="125.0" style="-fx-background-radius: 5;" text="Редактировать пользователя" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="7.5">
+                                                         <font>
+                                                            <Font name="Courier New" size="12.0" />
+                                                         </font>
+                                                      </Button>
+                                                      <Button fx:id="showActiveUsersButton" alignment="CENTER" contentDisplay="CENTER" layoutX="284.0" layoutY="14.0" maxHeight="75.0" maxWidth="125.0" minHeight="44.0" minWidth="125.0" mnemonicParsing="false" onAction="#showActiveUsersButtonOnAction" prefHeight="75.0" prefWidth="125.0" style="-fx-background-radius: 5;" text="Показать действующих" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="272.5" AnchorPane.topAnchor="7.5">
+                                                         <font>
+                                                            <Font name="Courier New" size="12.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane prefHeight="300.0" prefWidth="668.0" style="-fx-background-radius: 5;" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <TextField fx:id="loginATextField" layoutX="43.0" layoutY="41.0" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField fx:id="firstNameATextField" layoutX="43.0" layoutY="81.0" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField fx:id="lastNameATextField" layoutX="43.0" layoutY="123.0" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField fx:id="patronymicATextField" layoutX="43.0" layoutY="167.0" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <DatePicker fx:id="birthdayADatePicker" layoutX="414.0" layoutY="41.0" />
+                                                      <TextField fx:id="phoneATextField" layoutX="235.0" layoutY="81.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <CheckBox fx:id="administratorACheckBox" layoutX="414.0" layoutY="85.0" mnemonicParsing="false" text="Администратор">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </CheckBox>
+                                                      <CheckBox fx:id="activeStaffACheckBox" layoutX="414.0" layoutY="127.0" mnemonicParsing="false" text="Действующий сотрудник">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </CheckBox>
+                                                      <Label layoutX="43.0" layoutY="24.0" text="Логин" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="43.0" layoutY="66.0" text="Имя" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="43.0" layoutY="106.0" text="Фамилия" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="43.0" layoutY="148.0" text="Отчество" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="235.0" layoutY="24.0" text="Пароль">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <PasswordField fx:id="passwordAPasswordField" layoutX="235.0" layoutY="41.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </PasswordField>
+                                                      <Label layoutX="235.0" layoutY="66.0" text="Телефон">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="414.0" layoutY="24.0" text="Дата рождения">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                   <opaqueInsets>
+                                                      <Insets top="5.0" />
+                                                   </opaqueInsets>
+                                                </AnchorPane>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane fx:id="usersPane1" layoutX="18.0" layoutY="18.0" minWidth="700.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false">
+                                       <effect>
+                                          <DropShadow height="13.0" offsetY="3.0" radius="6.0" width="13.0" />
+                                       </effect>
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                             <children>
+                                                <TableView fx:id="usersTable1" editable="true" focusTraversable="false" minHeight="300.0" minWidth="558.0" style="-fx-background-radius: 5; -fx-background-color: WHITE;">
+                                                   <columns>
+                                                      <TableColumn fx:id="userLoginColumn1" maxWidth="170.0" minWidth="59.0" prefWidth="84.0" resizable="false" text="Логин" />
+                                                      <TableColumn fx:id="userFirstNameColumn1" maxWidth="201.0" minWidth="76.66667175292969" prefWidth="84.0" resizable="false" text="Имя" />
+                                                      <TableColumn fx:id="userLastNameColumn1" maxWidth="201.0" minWidth="45.0" prefWidth="84.0" resizable="false" text="Фамилия" />
+                                                      <TableColumn fx:id="userPatronymicColumn1" maxWidth="201.0" minWidth="27.0" prefWidth="84.0" resizable="false" text="Отчество" />
+                                                      <TableColumn fx:id="userBirthdayColumn1" maxWidth="196.0" minWidth="56.0" prefWidth="84.0" resizable="false" text="Дата рождения" />
+                                                      <TableColumn fx:id="userPhoneColumn1" maxWidth="219.0" minWidth="47.0" prefWidth="84.0" resizable="false" text="Телефон" />
+                                                      <TableColumn fx:id="userPasswordColumn1" maxWidth="192.0" minWidth="50.0" prefWidth="84.0" resizable="false" text="Пароль" />
+                                                      <TableColumn fx:id="userAdministratorColumn1" maxWidth="307.0" minWidth="51.0" prefWidth="84.0" resizable="false" text="Администратор" />
+                                                      <TableColumn fx:id="userActiveStuffColumn1" maxWidth="222.0" minWidth="95.0" prefWidth="84.0" resizable="false" text="Действующий сотрудник" />
+                                                   </columns>
+                                                </TableView>
+                                                <AnchorPane prefHeight="112.0" style="-fx-background-color: GREY; -fx-background-radius: 5;" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <Button fx:id="addUserButton1" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="15.0" maxHeight="75.0" maxWidth="125.0" minHeight="44.0" minWidth="125.0" mnemonicParsing="false" onAction="#addUserButtonOnAction" prefHeight="75.0" prefWidth="125.0" style="-fx-background-radius: 5;" text="Добавить нового пользователя" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                                         <font>
+                                                            <Font name="Courier New" size="12.0" />
+                                                         </font>
+                                                      </Button>
+                                                      <Button fx:id="edtUserButton1" contentDisplay="CENTER" layoutX="155.0" layoutY="15.0" maxHeight="75.0" maxWidth="125.0" minHeight="44.0" minWidth="125.0" mnemonicParsing="false" onAction="#editUserButtonOnAction" prefHeight="75.0" prefWidth="125.0" style="-fx-background-radius: 5;" text="Редактировать пользователя" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="7.5">
+                                                         <font>
+                                                            <Font name="Courier New" size="12.0" />
+                                                         </font>
+                                                      </Button>
+                                                      <Button fx:id="showActiveUsersButton1" alignment="CENTER" contentDisplay="CENTER" layoutX="284.0" layoutY="14.0" maxHeight="75.0" maxWidth="125.0" minHeight="44.0" minWidth="125.0" mnemonicParsing="false" onAction="#showActiveUsersButtonOnAction" prefHeight="75.0" prefWidth="125.0" style="-fx-background-radius: 5;" text="Показать действующих" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="272.5" AnchorPane.topAnchor="7.5">
+                                                         <font>
+                                                            <Font name="Courier New" size="12.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane prefHeight="300.0" prefWidth="668.0" style="-fx-background-radius: 5;" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <TextField fx:id="loginATextField1" layoutX="43.0" layoutY="41.0" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField fx:id="firstNameATextField1" layoutX="43.0" layoutY="81.0" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField fx:id="lastNameATextField1" layoutX="43.0" layoutY="123.0" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField fx:id="patronymicATextField1" layoutX="43.0" layoutY="167.0" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <DatePicker fx:id="birthdayADatePicker1" layoutX="414.0" layoutY="41.0" />
+                                                      <TextField fx:id="phoneATextField1" layoutX="235.0" layoutY="81.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <CheckBox fx:id="administratorACheckBox1" layoutX="414.0" layoutY="85.0" mnemonicParsing="false" text="Администратор">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </CheckBox>
+                                                      <CheckBox fx:id="activeStaffACheckBox1" layoutX="414.0" layoutY="127.0" mnemonicParsing="false" text="Действующий сотрудник">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </CheckBox>
+                                                      <Label layoutX="43.0" layoutY="24.0" text="Логин" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="43.0" layoutY="66.0" text="Имя" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="43.0" layoutY="106.0" text="Фамилия" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="43.0" layoutY="148.0" text="Отчество" AnchorPane.leftAnchor="43.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="235.0" layoutY="24.0" text="Пароль">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <PasswordField fx:id="passwordAPasswordField1" layoutX="235.0" layoutY="41.0">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </PasswordField>
+                                                      <Label layoutX="235.0" layoutY="66.0" text="Телефон">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="414.0" layoutY="24.0" text="Дата рождения">
+                                                         <font>
+                                                            <Font name="Courier New" size="13.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                   <opaqueInsets>
+                                                      <Insets top="5.0" />
+                                                   </opaqueInsets>
+                                                </AnchorPane>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                    <ImageView fitHeight="150.0" fitWidth="141.0" opacity="0.4" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="25.0">
+                                       <image>
+                                          <Image url="@image/CoffeeBoard_logo_small.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </AnchorPane>
                      </children>
@@ -308,7 +679,7 @@
                            <children>
                               <ToolBar focusTraversable="false" prefHeight="37.0" style="-fx-background-color: WHITE;" HBox.hgrow="ALWAYS">
                                  <items>
-                                    <Label focusTraversable="false" prefHeight="27.0" prefWidth="87.0" text="Заказ:">
+                                    <Label fx:id="headerLabel" focusTraversable="false" prefHeight="27.0" prefWidth="87.0" text="Заказ:">
                                        <font>
                                           <Font name="Courier New Bold" size="20.0" />
                                        </font>
@@ -367,6 +738,15 @@
                                     <Font name="Courier New Bold" size="20.0" />
                                  </font>
                               </Label>
+                              <AnchorPane fx:id="infoAdminPane" minHeight="237.0" minWidth="355.0" prefHeight="237.0" prefWidth="355.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                 <effect>
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                       <color>
+                                          <Color opacity="0.4000000059604645" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
+                              </AnchorPane>
                            </children>
                         </AnchorPane>
                         <AnchorPane minHeight="437.0" prefHeight="257.0" prefWidth="355.0" VBox.vgrow="ALWAYS">
@@ -587,6 +967,47 @@
                                           <Font name="Monospaced Regular" size="43.0" />
                                        </font>
                                     </Label>
+                                 </children>
+                                 <effect>
+                                    <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
+                                       <color>
+                                          <Color opacity="0.4000000059604645" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
+                              </AnchorPane>
+                              <AnchorPane fx:id="mainAdminPane" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                 <children>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="9.0" layoutY="14.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" prefHeight="75.0" text="Статистика" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="usersButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="7.0" layoutY="260.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#usersButtonOnAction" prefHeight="75.0" text="Сотрудники" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="172.5">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="55.0" layoutY="290.0" opacity="0.09" prefHeight="51.0" prefWidth="238.0" text="ВЫБЕРЕТЕ" textAlignment="RIGHT" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="290.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="48.0" layoutY="341.0" opacity="0.17" prefHeight="51.0" prefWidth="244.0" text="ДЕЙСТВИЕ" textAlignment="RIGHT" textFill="RED" AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="341.0">
+                                       <font>
+                                          <Font name="Monospaced Regular" size="43.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="referenceBooksButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="7.0" layoutY="96.0" maxHeight="75.0" maxWidth="323.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#referenceBooksButtonOnAction" prefHeight="75.0" prefWidth="323.0" text="Справочники" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="90.0">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="18.0" layoutY="184.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" prefHeight="75.0" text="Клиенты" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="255.0">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
                                  </children>
                                  <effect>
                                     <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
