@@ -12,7 +12,7 @@ public class TemporaryRenameButton {
      * @param tempText - temporarily name.<br>
      * @param sec takes a time in seconds as a parameter.<br>
      */
-    public static void tempRenameButton(Button button, String tempText, int sec) {
+    public static void tempRenameButton(Button button, String tempText, String mainText, int sec) {
         String firstName = button.getText();
         int millis = sec * 1000;
         button.setFont(Font.font("Courier New", FontWeight.NORMAL, 30));
@@ -28,6 +28,7 @@ public class TemporaryRenameButton {
             Platform.runLater(() -> {
                 button.setText(firstName);
                 button.setFont(Font.font("Courier New", FontWeight.NORMAL, 38));
+                button.setText(mainText);
             });
         });   renameCashReceiptButton.setDaemon(true);
         renameCashReceiptButton.start();
