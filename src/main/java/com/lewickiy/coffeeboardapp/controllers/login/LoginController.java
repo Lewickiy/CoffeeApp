@@ -96,18 +96,14 @@ public class LoginController {
     }
     @FXML
     private void okButtonEnterKey(KeyEvent okEvent) {
-        if (okEvent.getCode() == KeyCode.ENTER && !acceptOutletChoice.isDisable() && !currentUser.isAdministrator())  {
+        if (okEvent.getCode() == KeyCode.ENTER && !acceptOutletChoice.isDisable())  {
             enterToWorkTable(WorkTableChoice.SELLER, loginButton);
-        } else if (okEvent.getCode() == KeyCode.ENTER && !acceptOutletChoice.isDisable() && currentUser.isAdministrator()) {
-            enterToWorkTable(WorkTableChoice.ADMINISTRATOR, loginButton);
         }
     }
     @FXML
     private void acceptOutletChoiceOnAction() {
-        if (!acceptOutletChoice.isDisable() && !currentUser.isAdministrator())  {
+        if (!acceptOutletChoice.isDisable())  {
             enterToWorkTable(WorkTableChoice.SELLER, loginButton);
-        } else if (!acceptOutletChoice.isDisable() && currentUser.isAdministrator()) {
-            enterToWorkTable(WorkTableChoice.ADMINISTRATOR, loginButton);
         }
     }
     @FXML
@@ -129,7 +125,7 @@ public class LoginController {
      * Данный метод производит валидацию пользователя по логину и паролю, <br>
      * а также создаёт объект текущего пользователя.
      */
-    private void validateLogin() {
+    private void validateLogin(Button button) {
         for (User user : users) {
             if (user.getLogin().equals(usernameTextField.getText()) && user.getPassword().equals(passwordField.getText())) {
                 currentUser = new User(user.getUserId()
@@ -140,9 +136,9 @@ public class LoginController {
                         , user.getPhone()
                         , user.isAdministrator()
                         , user.isActiveStuff());
-                usernameTextField.setDisable(true);
-                passwordField.setDisable(true);
-                outletChoicePane.setVisible(true);
+                    usernameTextField.setDisable(true);
+                    passwordField.setDisable(true);
+                    outletChoicePane.setVisible(true);
                 break;
             }
         }
@@ -150,10 +146,11 @@ public class LoginController {
             loginMessageLabel.setText("Не правильный логин или имя пользователя");
         }
     }
+
     private void validateActivator() {
         if(!usernameTextField.getText().isBlank()
                 && !passwordField.getText().isBlank()) {
-            validateLogin();
+            validateLogin(loginButton);
         } else {
             loginMessageLabel.setText("Введите имя пользователя и пароль");
         }
