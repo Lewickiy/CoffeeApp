@@ -4,7 +4,6 @@ module com.lewickiy.coffeeboardapp {
     requires java.sql;
 
     opens com.lewickiy.coffeeboardapp to javafx.fxml;
-    opens com.lewickiy.coffeeboardapp.controllers.administrator to javafx.fxml;
     opens com.lewickiy.coffeeboardapp.controllers.login to javafx.fxml;
     opens com.lewickiy.coffeeboardapp.controllers.seller to javafx.fxml;
     opens com.lewickiy.coffeeboardapp.controllers.info to javafx.fxml;
