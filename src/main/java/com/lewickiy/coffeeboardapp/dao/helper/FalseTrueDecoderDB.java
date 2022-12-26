@@ -17,7 +17,7 @@ public class FalseTrueDecoderDB {
         } else if (incomingInt == 0) {
             decoded = false;
         } else {
-            LOGGER.log(Level.WARNING,"Method takes incoming data not 0 or 1.");
+            LOGGER.log(Level.WARNING,"Method takes incoming data not 0 or 1. Returned false");
             decoded = false;
         }
         return decoded;
@@ -28,11 +28,9 @@ public class FalseTrueDecoderDB {
      * @return int значение 0/1.
      */
     public static int decodeIntBoolean(boolean incomingBoolean) {
-        int decoded;
+        int decoded = 0;
         if (incomingBoolean) {
             decoded = 1;
-        } else {
-            decoded = 0;
         }
         return decoded;
     }

@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.controllers.seller.actions;
+package com.lewickiy.coffeeboardapp.controllers.actions;
 
 /**
  * Направление размещения кнопок в GridPane
@@ -6,6 +6,6 @@ package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 public enum Direction {
     VERTICAL,
     HORIZONTAL;
-    private Direction() {
+    Direction() {
     }
 }

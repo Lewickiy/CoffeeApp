@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.controllers.seller.actions;
+package com.lewickiy.coffeeboardapp.controllers.actions;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

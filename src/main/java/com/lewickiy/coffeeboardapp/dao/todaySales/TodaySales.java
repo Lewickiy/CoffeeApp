@@ -1,17 +1,20 @@
 package com.lewickiy.coffeeboardapp.dao.todaySales;
 
 import com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProduct;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Date;
 import java.sql.Time;
-
+@Getter
+@Setter
 public class TodaySales extends SaleProduct {
     private int outletId;
     private int numberOfUnit;
     private String unitOfMeasurement;
-    private Date saleDate; //Помимо полей Продукта имеет Дату продажи
-    private Time saleTime; //И время продажи
-    private String paymentType; //А также тип оплаты типа String
+    private Date saleDate;
+    private Time saleTime;
+    private String paymentType;
 
     public TodaySales(long saleProdId
             , int prodSaleId
@@ -30,53 +33,5 @@ public class TodaySales extends SaleProduct {
                 , discount
                 , amountProdSale
                 , sumProdSale);
-    }
-
-    public int getOutletId() {
-        return outletId;
-    }
-
-    public void setOutletId(int outletId) {
-        this.outletId = outletId;
-    }
-
-    public Date getSaleDate() {
-        return saleDate;
-    }
-
-    public void setSaleDate(Date saleDate) {
-        this.saleDate = saleDate;
-    }
-
-    public Time getSaleTime() {
-        return saleTime;
-    }
-
-    public void setSaleTime(Time saleTime) {
-        this.saleTime = saleTime;
-    }
-
-    public String getPaymentType() {
-        return paymentType;
-    }
-
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
-    }
-
-    public int getNumberOfUnit() {
-        return numberOfUnit;
-    }
-
-    public void setNumberOfUnit(int numberOfUnit) {
-        this.numberOfUnit = numberOfUnit;
-    }
-
-    public String getUnitOfMeasurement() {
-        return unitOfMeasurement;
-    }
-
-    public void setUnitOfMeasurement(String unitOfMeasurement) {
-        this.unitOfMeasurement = unitOfMeasurement;
     }
 }

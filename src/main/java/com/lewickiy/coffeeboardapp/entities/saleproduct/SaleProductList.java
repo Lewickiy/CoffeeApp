@@ -58,7 +58,7 @@ public class SaleProductList {
      * @param currentProduct Takes as parameter the current product from the ArrayList currentSaleProducts.<br>
      */
     static void addProductIf(SaleProduct currentProduct) {
-        addSaleProductsList(currentProduct.getSaleId()
+        addSaleProductsList(currentProduct.getId()
                 , currentProduct.getProductId()
                 , currentProduct.getProduct()
                 , currentProduct.getPrice()

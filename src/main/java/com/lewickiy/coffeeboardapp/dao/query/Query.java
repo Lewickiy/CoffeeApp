@@ -1,15 +1,19 @@
 package com.lewickiy.coffeeboardapp.dao.query;
 
+import com.lewickiy.coffeeboardapp.dao.connector.DataBaseEnum;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
 import java.util.logging.Level;
 
 import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
+import static com.lewickiy.coffeeboardapp.dao.connector.LDBConnector.getConnectionLDB;
+import static com.lewickiy.coffeeboardapp.dao.connector.NDBConnector.getConnectionNDB;
 
 public class Query {
-
     public static ResultSet selectAllFromSql(Connection con, String dbName, String tableName) throws SQLException {
         Statement statement = con.createStatement();
         String query = null;
@@ -20,47 +24,50 @@ public class Query {
         }
         return statement.executeQuery(query);
     }
-    public static ResultSet selectProductsFromNDB(Connection con) throws SQLException {
-        Statement statement = con.createStatement();
-        String query = "SELECT " +
-                "price.price_id AS price_id, " +
-                "product.product AS product, " +
-                "product.description AS description, " +
-                "unit.amount_unit AS number_of_unit, " +
-                "unit.unit AS unit_of_measurement, " +
-                "product.product_category_id AS product_category_id, " +
-                "price.price AS price, " +
-                "price.fix_price AS fix_price " +
-                "FROM " +
-                "product " +
-                "JOIN " +
-                "unit " +
-                "ON " +
-                "product.product_id = unit.product_id " +
-                "JOIN " +
-                "price " +
-                "ON " +
-                "price.unit_id = unit.unit_id " +
-                "WHERE unit.outlet_id = 5 " +
-                "ORDER BY product.product";
-        return statement.executeQuery(query);
-    }
-    public static void deleteFromLocalSql(Connection con, String tableName) throws SQLException {
-        LOGGER.log(Level.INFO,"Start clear " + tableName + "...");
-        String query = "DELETE FROM " + tableName;
-        Statement statement = con.createStatement();
-        statement.executeUpdate(query);
-        LOGGER.log(Level.INFO,tableName + " cleared");
-        statement.close();
-    }
 
-    public static void insertToSql(Connection con, String dbName, String tableName, String sql) throws SQLException {
-        Statement statement = con.createStatement();
-        if (dbName.equals("network_database")) {
-            statement.executeUpdate("INSERT " + tableName + "(" + sql + ")");
-        } else if (dbName.equals("local_database")) {
-            statement.executeUpdate("INSERT INTO " + tableName + "(" + sql + ")");
+    public static void deleteFromLocalSql(String tableName) {
+        String query = "DELETE FROM " + tableName;
+
+        Connection con = getConnectionLDB();
+
+        if (con != null) {
+            Statement statement;
+            try {
+                statement = con.createStatement();
+                statement.executeUpdate(query);
+                LOGGER.log(Level.INFO,tableName + " cleared");
+                statement.close();
+                con.close();
+            } catch (SQLException e) {
+                LOGGER.log(Level.WARNING,tableName + "not cleared. Connection error (" + e + ")");
+            }
+        } else {
+            LOGGER.log(Level.WARNING,tableName + "Not cleared. Connection error");
         }
-        statement.close();
+    }
+    public static void insertToSql(DataBaseEnum dbEnum, String tableName, String sql) {
+        Connection con;
+        Statement statement;
+        if (dbEnum.getDbName().equals("network_database")) {
+            try {
+                con = getConnectionNDB();
+                statement = Objects.requireNonNull(con).createStatement();
+                statement.executeUpdate("INSERT " + tableName + "(" + sql + ")");
+                statement.close();
+                con.close();
+            } catch (SQLException sqlEx) {
+                LOGGER.log(Level.WARNING,"Insert to " + tableName + "(" + dbEnum.getDbName() + ") failed. Connection or statement error");
+            }
+        } else if (dbEnum.getDbName().equals("local_database")) {
+            try {
+                con = getConnectionLDB();
+                statement = Objects.requireNonNull(con).createStatement();
+                statement.executeUpdate("INSERT INTO " + tableName + "(" + sql + ")");
+                statement.close();
+                con.close();
+            } catch (SQLException sqlEx) {
+                LOGGER.log(Level.WARNING,"Insert to " + tableName + "(" + dbEnum.getDbName() + ") failed. Connection or statement error");
+            }
+        }
     }
 }

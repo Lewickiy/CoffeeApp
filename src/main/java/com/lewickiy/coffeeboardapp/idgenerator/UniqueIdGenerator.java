@@ -23,7 +23,7 @@ public class UniqueIdGenerator {
         Time nowTime = new Time(nowTimeLong);
         date = nowDate.toString().replace("-", "");
         time = nowTime.toString().replace(":", "");
-        resLong = Long.parseLong(date + time + currentOutlet.getOutletId() + currentUser.getUserId());
+        resLong = Long.parseLong(date + time + currentOutlet.getOutletId() + currentUser.getId());
         return resLong;
     }
 }

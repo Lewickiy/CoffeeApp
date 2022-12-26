@@ -29,6 +29,8 @@ public class CoffeeBoardApp extends Application {
             ignore.printStackTrace();
         }
     }
+    public static boolean connectionToNDB;
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(CoffeeBoardApp.class.getResource("login.fxml"));

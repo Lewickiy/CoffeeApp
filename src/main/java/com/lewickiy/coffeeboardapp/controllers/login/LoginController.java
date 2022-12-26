@@ -1,7 +1,6 @@
 package com.lewickiy.coffeeboardapp.controllers.login;
 
-import com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTableChoice;
-import com.lewickiy.coffeeboardapp.dao.connector.Database;
+import com.lewickiy.coffeeboardapp.controllers.actions.worktable.WorkTableChoice;
 import com.lewickiy.coffeeboardapp.entities.outlet.Outlet;
 import com.lewickiy.coffeeboardapp.entities.user.User;
 import javafx.collections.FXCollections;
@@ -14,21 +13,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Level;
 
-import static com.lewickiy.coffeeboardapp.CoffeeBoardApp.LOGGER;
-import static com.lewickiy.coffeeboardapp.controllers.login.actions.worktable.WorkTable.enterToWorkTable;
-import static com.lewickiy.coffeeboardapp.controllers.seller.actions.NetworkIndicator.isOnline;
-import static com.lewickiy.coffeeboardapp.dao.SyncLocalDB.syncOutletsList;
-import static com.lewickiy.coffeeboardapp.dao.SyncLocalDB.syncUsersList;
-import static com.lewickiy.coffeeboardapp.dao.connector.DatabaseConnector.getConnection;
+import static com.lewickiy.coffeeboardapp.controllers.actions.worktable.WorkTable.enterToWorkTable;
+import static com.lewickiy.coffeeboardapp.dao.connector.NetworkIndicator.isOnline;
+import static com.lewickiy.coffeeboardapp.dao.sync.StartData.syncStartData;
 import static com.lewickiy.coffeeboardapp.entities.outlet.Outlet.currentOutlet;
-import static com.lewickiy.coffeeboardapp.entities.outlet.OutletList.createOutletList;
 import static com.lewickiy.coffeeboardapp.entities.outlet.OutletList.outlets;
-import static com.lewickiy.coffeeboardapp.entities.user.UserList.*;
+import static com.lewickiy.coffeeboardapp.entities.user.UserList.currentUser;
+import static com.lewickiy.coffeeboardapp.entities.user.UserList.users;
 
 
 public class LoginController {
@@ -50,37 +44,18 @@ public class LoginController {
 
     @FXML
     void initialize() throws SQLException, ParseException {
-
-        Connection conNDB;
-        Connection conLDB = getConnection(Database.LOCAL_DB);
-        try {
-            LOGGER.log(Level.INFO,"Start network database synchronization on Login startup");
-            conNDB = getConnection(Database.NETWORK_DB);
-            isOnline(networkIndicatorLabel, networkIndicator,true);
-            syncUsersList(conNDB, conLDB);
-            syncOutletsList(conNDB, conLDB);
-            createUsersList(conLDB);
-            createOutletList(conLDB);
-            // При появлении синхронизации каких-либо дополнительных данных. Метод вносить сюда и ниже*.
-            conNDB.close();
-            LOGGER.log(Level.FINE, "Synchronization completed successfully");
-        } catch (SQLException sqlException) {
-            LOGGER.log(Level.WARNING,"When starting to synchronize with the network database at Login startup, it was not possible to connect to the network. Data is taken from local database");
-            isOnline(networkIndicatorLabel, networkIndicator,false);
-            createUsersList(conLDB);
-            createOutletList(conLDB);
-            //*
-            LOGGER.log(Level.INFO, "Further work may be carried out with outdated data");
-        } finally {
-            conLDB.close();
-        }
+        networkIndicatorLabel.setText("не в сети  ");
+        isOnline(networkIndicatorLabel, networkIndicator);
+        syncStartData();
 
         outletChoiceBox.setItems(outletsObservableList);
+
         outletChoiceBox.getSelectionModel().selectedItemProperty().addListener((observableValue, outlet, t1)
                 -> {
             currentOutlet = outletChoiceBox.getValue();
             acceptOutletChoice.setDisable(false);
         });
+
         usernameTextField.textProperty().addListener((observable, oldValue, newValue)
                 -> loginMessageLabel.setText(""));
         passwordField.textProperty().addListener((observable, oldValue, newValue)
@@ -95,40 +70,36 @@ public class LoginController {
         }
     }
     @FXML
+    private void acceptOutletChoiceOnAction() {
+        if (!outletChoicePane.isVisible())  {
+            enterToWorkTable(WorkTableChoice.SELLER, loginButton);
+        }
+    }
+    @FXML
     private void okButtonEnterKey(KeyEvent okEvent) {
         if (okEvent.getCode() == KeyCode.ENTER && !acceptOutletChoice.isDisable())  {
             enterToWorkTable(WorkTableChoice.SELLER, loginButton);
         }
     }
     @FXML
-    private void acceptOutletChoiceOnAction() {
-        if (!acceptOutletChoice.isDisable())  {
-            enterToWorkTable(WorkTableChoice.SELLER, loginButton);
-        }
-    }
-    @FXML
-    void loginPasswordEnterKey(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER)  {
-            validateActivator();
-        }
-    }
     public void cancelButtonOnAction() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
-
     @FXML
     public void loginButtonOnAction() {
         validateActivator();
     }
-    /**
-     * Данный метод производит валидацию пользователя по логину и паролю, <br>
-     * а также создаёт объект текущего пользователя.
-     */
-    private void validateLogin(Button button) {
+    @FXML
+    void loginPasswordEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            validateActivator();
+        }
+    }
+    private void validateLogin() {
         for (User user : users) {
             if (user.getLogin().equals(usernameTextField.getText()) && user.getPassword().equals(passwordField.getText())) {
-                currentUser = new User(user.getUserId()
+                currentUser = new User(user.getId()
                         , user.getLogin()
                         , user.getPassword()
                         , user.getFirstName()
@@ -139,18 +110,17 @@ public class LoginController {
                     usernameTextField.setDisable(true);
                     passwordField.setDisable(true);
                     outletChoicePane.setVisible(true);
+
                 break;
             }
         }
-        if (!acceptOutletChoice.isVisible()) {
+        if (!outletChoicePane.isVisible()) {
             loginMessageLabel.setText("Не правильный логин или имя пользователя");
         }
     }
-
     private void validateActivator() {
-        if(!usernameTextField.getText().isBlank()
-                && !passwordField.getText().isBlank()) {
-            validateLogin(loginButton);
+        if(!usernameTextField.getText().isBlank() && !passwordField.getText().isBlank()) {
+            validateLogin();
         } else {
             loginMessageLabel.setText("Введите имя пользователя и пароль");
         }

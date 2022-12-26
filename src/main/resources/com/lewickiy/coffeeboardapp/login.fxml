@@ -71,9 +71,9 @@
                   <Font name="Courier New" size="13.0" />
                </font>
             </Button>
-            <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="14.0" layoutY="328.0" prefHeight="52.0" prefWidth="325.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+            <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="14.0" layoutY="328.0" prefHeight="52.0" prefWidth="325.0" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
                <font>
-                  <Font size="13.0" />
+                  <Font name="Courier New" size="13.0" />
                </font>
             </Label>
             <Button fx:id="cancelButton" focusTraversable="false" layoutX="186.0" layoutY="279.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-background-radius: 3;" text="Отмена" AnchorPane.bottomAnchor="94.0" AnchorPane.rightAnchor="77.0">

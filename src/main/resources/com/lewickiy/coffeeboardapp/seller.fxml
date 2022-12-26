@@ -90,7 +90,7 @@
                                           <Insets />
                                        </opaqueInsets>
                                     </Button>
-                                    <Button fx:id="adminButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="208.0" layoutY="10.0" minHeight="27.0" minWidth="120.0" mnemonicParsing="false" onAction="#adminButtonOnAction" prefHeight="27.0" prefWidth="120.0" style="-fx-background-radius: 3;" text="Администратор" textOverrun="CLIP">
+                                    <Button fx:id="adminButton" alignment="CENTER" contentDisplay="RIGHT" focusTraversable="false" layoutX="208.0" layoutY="10.0" minHeight="27.0" minWidth="120.0" mnemonicParsing="false" onAction="#adminButtonOnAction" prefHeight="27.0" prefWidth="120.0" style="-fx-background-radius: 3;" text="Администратор" textOverrun="CLIP" visible="false">
                                        <font>
                                           <Font name="Courier New" size="13.0" />
                                        </font>
@@ -432,7 +432,7 @@
                                                 </TableView>
                                                 <AnchorPane prefHeight="112.0" style="-fx-background-color: GREY; -fx-background-radius: 5;" VBox.vgrow="ALWAYS">
                                                    <children>
-                                                      <Button fx:id="addUserButton" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="15.0" maxHeight="75.0" maxWidth="125.0" minHeight="44.0" minWidth="125.0" mnemonicParsing="false" onAction="#addUserButtonOnAction" prefHeight="75.0" prefWidth="125.0" style="-fx-background-radius: 5;" text="Добавить нового пользователя" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                                      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="15.0" maxHeight="75.0" maxWidth="125.0" minHeight="44.0" minWidth="125.0" mnemonicParsing="false" onAction="#addUserButtonOnAction" prefHeight="75.0" prefWidth="125.0" style="-fx-background-radius: 5;" text="Добавить нового пользователя" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.topAnchor="7.5">
                                                          <font>
                                                             <Font name="Courier New" size="12.0" />
                                                          </font>
@@ -795,12 +795,12 @@
                               </AnchorPane>
                               <AnchorPane fx:id="paymentTypePane" cache="true" cacheHint="SPEED" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
                                  <children>
-                                    <Button fx:id="paymentType1" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="62.0" layoutY="8.0" maxHeight="75.0" maxWidth="1.7976931348623157E308" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" style="-fx-background-radius: 5;" text="Наличные" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                    <Button fx:id="paymentType1" alignment="CENTER" contentDisplay="CENTER" layoutX="62.0" layoutY="8.0" maxHeight="75.0" maxWidth="1.7976931348623157E308" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" style="-fx-background-radius: 5;" text="Наличные" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
                                        <font>
                                           <Font name="Courier New" size="22.0" />
                                        </font>
                                     </Button>
-                                    <Button fx:id="paymentType2" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="1.7976931348623157E308" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" style="-fx-background-radius: 5;" text="Карта" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="97.0">
+                                    <Button fx:id="paymentType2" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="75.0" maxWidth="1.7976931348623157E308" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#paymentTypeOnAction" prefHeight="75.0" style="-fx-background-radius: 5;" text="Карта" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="90.0">
                                        <font>
                                           <Font name="Courier New" size="22.0" />
                                        </font>
@@ -815,16 +815,21 @@
                                           <Font name="Courier New" size="33.0" />
                                        </font>
                                     </Button>
-                                    <Label focusTraversable="false" layoutX="83.0" layoutY="205.0" opacity="0.09" text="ТИП" AnchorPane.rightAnchor="182.0">
+                                    <Label focusTraversable="false" layoutX="80.0" layoutY="249.0" opacity="0.09" text="ТИП" AnchorPane.rightAnchor="183.0">
                                        <font>
                                           <Font name="Monospaced Regular" size="43.0" />
                                        </font>
                                     </Label>
-                                    <Label focusTraversable="false" layoutX="107.0" layoutY="256.0" opacity="0.09" text="ОПЛАТЫ" AnchorPane.rightAnchor="79.0">
+                                    <Label focusTraversable="false" layoutX="106.0" layoutY="300.0" opacity="0.09" text="ОПЛАТЫ" AnchorPane.rightAnchor="80.0">
                                        <font>
                                           <Font name="Monospaced Regular" size="43.0" />
                                        </font>
                                     </Label>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="15.0" layoutY="193.0" maxHeight="75.0" maxWidth="1.7976931348623157E308" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#regularCustomerButtonOnAction" prefHeight="75.0" style="-fx-background-radius: 5;" text="Постоянный клиент" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="172.5">
+                                       <font>
+                                          <Font name="Courier New" size="22.0" />
+                                       </font>
+                                    </Button>
                                  </children>
                                  <effect>
                                     <DropShadow height="15.0" offsetY="3.0" radius="7.0" width="15.0">
@@ -983,7 +988,7 @@
                                           <Font name="Courier New" size="22.0" />
                                        </font>
                                     </Button>
-                                    <Button fx:id="usersButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="7.0" layoutY="260.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#usersButtonOnAction" prefHeight="75.0" text="Сотрудники" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="172.5">
+                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="7.0" layoutY="260.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#usersButtonOnAction" prefHeight="75.0" text="Сотрудники" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="172.5">
                                        <font>
                                           <Font name="Courier New" size="22.0" />
                                        </font>
@@ -998,7 +1003,7 @@
                                           <Font name="Monospaced Regular" size="43.0" />
                                        </font>
                                     </Label>
-                                    <Button fx:id="referenceBooksButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="7.0" layoutY="96.0" maxHeight="75.0" maxWidth="323.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#referenceBooksButtonOnAction" prefHeight="75.0" prefWidth="323.0" text="Справочники" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="90.0">
+                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="7.0" layoutY="96.0" maxHeight="75.0" maxWidth="323.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#referenceBooksButtonOnAction" prefHeight="75.0" prefWidth="323.0" text="Справочники" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="90.0">
                                        <font>
                                           <Font name="Courier New" size="22.0" />
                                        </font>

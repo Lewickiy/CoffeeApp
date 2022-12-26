@@ -1,4 +1,4 @@
-package com.lewickiy.coffeeboardapp.controllers.seller.actions;
+package com.lewickiy.coffeeboardapp.controllers.actions;
 
 import com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProduct;
 

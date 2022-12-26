@@ -5,7 +5,6 @@ import com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProduct;
 import static com.lewickiy.coffeeboardapp.dao.todaySales.TodaySalesList.todaySalesArrayList;
 
 public class LitersOfDrinks {
-
     /**
      * Подсчёт проданных напитков в литрах
      * @return - возвращается значение double не округлённое.

@@ -1,18 +1,20 @@
 package com.lewickiy.coffeeboardapp.entities.saleproduct;
 
-import com.lewickiy.coffeeboardapp.dao.connector.Database;
+import com.lewickiy.coffeeboardapp.dao.connector.DataBaseEnum;
 import com.lewickiy.coffeeboardapp.entities.currentsale.CurrentSale;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.lewickiy.coffeeboardapp.dao.connector.DatabaseConnector.getConnection;
 import static com.lewickiy.coffeeboardapp.dao.query.Query.insertToSql;
-
+@Getter
+@Setter
+@NoArgsConstructor
 public class SaleProduct {
 
-    private long saleId;
+    private long id;
     private int productId;
     private String product;
     private int numberOfUnit;
@@ -25,9 +27,6 @@ public class SaleProduct {
     private boolean corrected;
     private boolean loaded;
 
-    public SaleProduct() {
-    }
-
     public SaleProduct(long saleProdId
             , int prodSaleId
             , String prodName
@@ -36,7 +35,7 @@ public class SaleProduct {
             , int discount
             , int amountProdSale
             , double sumProdSale) {
-        this.saleId = saleProdId;
+        this.id = saleProdId;
         this.productId = prodSaleId;
         this.product = prodName;
         this.price = priceProdSale;
@@ -52,106 +51,9 @@ public class SaleProduct {
         this.price = priceProdSale;
     }
 
-    public boolean isCorrected() {
-        return corrected;
-    }
-
-    public void setCorrected(boolean corrected) {
-        this.corrected = corrected;
-    }
-
-    public int getNumberOfUnit() {
-        return numberOfUnit;
-    }
-
-    public void setNumberOfUnit(int numberOfUnit) {
-        this.numberOfUnit = numberOfUnit;
-    }
-
-    public String getUnitOfMeasurement() {
-        return unitOfMeasurement;
-    }
-
-    public void setUnitOfMeasurement(String unitOfMeasurement) {
-        this.unitOfMeasurement = unitOfMeasurement;
-    }
-
-    public long getSaleId() {
-        return saleId;
-    }
-
-    public void setSaleId(long saleId) {
-        this.saleId = saleId;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getDiscountId() {
-        return discountId;
-    }
-
-    public void setDiscountId(int discountId) {
-        this.discountId = discountId;
-    }
-
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public double getSum() {
-        return sum;
-    }
-
-    public void setSum(double sum) {
-        this.sum = sum;
-    }
-
-    public boolean isLoaded() {
-        return loaded;
-    }
-
-    public void setLoaded(boolean loaded) {
-        this.loaded = loaded;
-    }
-
-    public static void addSaleProductsToLocalDB(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) throws SQLException {
-        Connection con = getConnection(Database.LOCAL_DB);
+    public static void addSaleProductsToLocalDB(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) {
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
-            insertToSql(con, "local_database", "sale_product", "sale_id, "
+            insertToSql(DataBaseEnum.LOCAL_DB, "sale_product", "sale_id, "
                     + "product_id, "
                     + "discount_id, "
                     + "price, "
@@ -165,8 +67,6 @@ public class SaleProduct {
                     + currentSaleProduct.getAmount() + "', '"
                     + currentSaleProduct.getSum() + "', '"
                     + 0 + "'");
-
         }
-        con.close();
     }
 }

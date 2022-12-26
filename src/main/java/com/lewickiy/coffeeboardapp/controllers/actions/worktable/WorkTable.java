@@ -1,11 +1,9 @@
-package com.lewickiy.coffeeboardapp.controllers.login.actions.worktable;
+package com.lewickiy.coffeeboardapp.controllers.actions.worktable;
 
 import com.lewickiy.coffeeboardapp.CoffeeBoardApp;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -13,16 +11,9 @@ import java.io.IOException;
 
 public class WorkTable {
     public static void enterToWorkTable(WorkTableChoice workTableChoice, Button button) {
-        Rectangle2D bounds = Screen.getPrimary().getBounds();
-        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-        System.out.println("Разрешение экрана: " + bounds.getWidth() + "х" + bounds.getHeight());
-        System.out.println("Рабочее пространство: " + visualBounds.getWidth() + "х" + visualBounds.getHeight());
         String fxml = "";
         boolean setMaximized = false;
-        if (workTableChoice.equals(WorkTableChoice.ADMINISTRATOR)) {
-            fxml = "administrator.fxml";
-            setMaximized = true;
-        } else if (workTableChoice.equals(WorkTableChoice.LOGIN)) {
+        if (workTableChoice.equals(WorkTableChoice.LOGIN)) {
             fxml = "login.fxml";
         } else if (workTableChoice.equals(WorkTableChoice.SELLER)) {
             setMaximized = true;
