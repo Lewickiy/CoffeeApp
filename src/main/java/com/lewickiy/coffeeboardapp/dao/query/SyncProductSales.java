@@ -13,8 +13,6 @@ import static com.lewickiy.coffeeboardapp.dao.query.Query.insertToSql;
 
 public class SyncProductSales {
     public static void syncSalesProduct() {
-        LOGGER.log(Level.INFO, "Start syncSalesProduct");
-
         String selectNotLoaded = "SELECT sale_id, product_id, discount_id, price, amount, sum, loaded, corrected FROM sale_product WHERE loaded = 0;";
 
         Connection conLocal = getConnectionLDB();

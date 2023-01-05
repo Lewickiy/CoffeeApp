@@ -32,11 +32,11 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
@@ -72,6 +72,7 @@ import static com.lewickiy.coffeeboardapp.dao.todaySales.TodaySalesSumCard.sumCa
 import static com.lewickiy.coffeeboardapp.dao.todaySales.TodaySalesSumCash.sumCash;
 import static com.lewickiy.coffeeboardapp.entities.currentsale.CurrentSale.addToLocalDB;
 import static com.lewickiy.coffeeboardapp.entities.discount.DiscountList.discounts;
+import static com.lewickiy.coffeeboardapp.entities.info.Info.isNewMessage;
 import static com.lewickiy.coffeeboardapp.entities.outlet.Outlet.currentOutlet;
 import static com.lewickiy.coffeeboardapp.entities.product.ProductList.products;
 import static com.lewickiy.coffeeboardapp.entities.product.ProductsInCategory.countingProductsInCategory;
@@ -91,16 +92,61 @@ public class SellerController {
     private final SaleProduct DELETE_PRODUCT = new SaleProduct();
     private User selectedUser;
 
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-    String time = simpleDateFormat.format(new java.util.Date());
-
-    private final ArrayList<Button> NUMBER_BUTTONS = new ArrayList<>();
-    private final ArrayList<Button> PRODUCT_BUTTONS = new ArrayList<>();
-    private final ArrayList<Button> DISCOUNT_BUTTONS = new ArrayList<>();
+    private final List<Button> NUMBER_BUTTONS = new ArrayList<>();
+    private final List<Button> PRODUCT_BUTTONS = new ArrayList<>();
+    private final List<Button> DISCOUNT_BUTTONS = new ArrayList<>();
 
     private final ObservableList<User> USERS_OBSERVABLE_LIST = FXCollections.observableList(users);
     private final ObservableList<SaleProduct> SALE_PRODUCT_OBSERVABLE_LIST = FXCollections.observableList(currentSaleProducts);
     private final ObservableList<SaleProduct> TODAY_SALES_OBSERVABLE_LIST = FXCollections.observableList(todaySalesArrayList);
+
+    @FXML
+    private AnchorPane discountPane;
+    @FXML
+    private AnchorPane paymentTypePane;
+    @FXML
+    private AnchorPane allSalesPane;
+    @FXML
+    private AnchorPane correctionPane;
+    @FXML
+    private AnchorPane usersPane;
+
+    @FXML
+    private ImageView productCategoryIco;
+
+    @FXML
+    private Circle networkIndicator;
+
+    @FXML
+    private CheckBox activeStaffACheckBox;
+    @FXML
+    private CheckBox administratorACheckBox;
+
+    @FXML
+    private GridPane discountGridPane;
+    @FXML
+    private GridPane mainGridPane;
+    @FXML
+    private GridPane numbersGridPane;
+
+    @FXML
+    private Pane workAdminPane;
+    @FXML
+    private Pane productsAdminPane;
+    @FXML
+    private Pane infoAdminPane;
+    @FXML
+    private Pane openShiftPane;
+    @FXML
+    private Pane closeShiftPane;
+    @FXML
+    private Pane mainReceiptPane;
+    @FXML
+    private Pane changePane;
+    @FXML
+    private Pane withChangePane;
+    @FXML
+    private AnchorPane mainAdminPane;
 
     @FXML
     private Label allCashLabel;
@@ -117,6 +163,8 @@ public class SellerController {
     @FXML
     private Label changeLabel;
     @FXML
+    private Label clockLabel;
+    @FXML
     private Label productNameLabel;
     @FXML
     private Label priceLabel;
@@ -131,19 +179,47 @@ public class SellerController {
     @FXML
     private Label xLabel;
     @FXML
-    void regularCustomerButtonOnAction() {
-        //TODO
-    }
+    private Label networkIndicatorLabel;
+
+    @FXML
+    private final Button[] PAYMENT_TYPE_BUTTONS = new Button[2];
     @FXML
     private Button adminButton;
     @FXML
-    private CheckBox activeStaffACheckBox;
-    @FXML
-    private CheckBox administratorACheckBox;
-    @FXML
-    private DatePicker birthdayADatePicker;
-    @FXML
     private Button edtUserButton;
+    @FXML
+    private Button showActiveUsersButton;
+    @FXML
+    private Button botButton;
+    @FXML
+    private Button closeShiftButton;
+    @FXML
+    private Button openShiftButton;
+    @FXML
+    private Button allSales;
+    @FXML
+    private Button editButton;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button okOpenShiftButton;
+    @FXML
+    private Button cancelOpenShiftButton;
+    @FXML
+    private Button okCloseShiftButton;
+    @FXML
+    private Button addProduct;
+    @FXML
+    private Button discountButtonActivate;
+    @FXML
+    private Button cashReceiptButton;
+    @FXML
+    private Button cButton;
+    @FXML
+    private Button paymentType1;
+    @FXML
+    private Button paymentType2;
+
     @FXML
     private TextField firstNameATextField;
     @FXML
@@ -151,14 +227,26 @@ public class SellerController {
     @FXML
     private TextField loginATextField;
     @FXML
-    private PasswordField passwordAPasswordField;
+    private TextField correctionTextField;
     @FXML
     private TextField patronymicATextField;
     @FXML
     private TextField phoneATextField;
     @FXML
-    private Button showActiveUsersButton;
+    private TextField sumChangeTextField;
+    @FXML
+    private TextField cashDepositTextField;
 
+    @FXML
+    private PasswordField passwordAPasswordField;
+
+    @FXML
+    private DatePicker birthdayADatePicker;
+
+    @FXML
+    void regularCustomerButtonOnAction() {
+        //TODO
+    }
     @FXML
     void addUserButtonOnAction() {
         edtUserButton.setDisable(true);
@@ -185,8 +273,6 @@ public class SellerController {
         //TODO
     }
     @FXML
-    private AnchorPane mainAdminPane;
-    @FXML
     private TableView<User> usersTable;
     @FXML
     private TableColumn<User, Boolean> userActiveStuffColumn = new TableColumn<>("activeStuff");
@@ -206,19 +292,12 @@ public class SellerController {
     private TableColumn<User, String> userPatronymicColumn;
     @FXML
     private TableColumn<User, String> userPhoneColumn;
-    @FXML
-    private Pane workAdminPane;
-    @FXML
-    private AnchorPane usersPane;
-    @FXML
-    private Pane infoAdminPane;
 
     @FXML
     void referenceBooksButtonOnAction() {
         productsAdminPane.setVisible(!productsAdminPane.isVisible());
     }
-    @FXML
-    private Pane productsAdminPane;
+
     @FXML
     void usersButtonOnAction() {
         usersPane.setVisible(!usersPane.isVisible());
@@ -258,34 +337,15 @@ public class SellerController {
         }
     }
     @FXML
-    private Button botButton;
-    @FXML
     void botButtonOnAction() {
-        //TODO
         botButton.setStyle("-fx-background-color: LightGREEN;");
+        //TODO
     }
-    @FXML
-    private Label clockLabel;
-    @FXML
-    private Circle networkIndicator;
-    @FXML
-    private Label networkIndicatorLabel;
-    @FXML
-    private Button closeShiftButton;
-    @FXML
-    private Button openShiftButton;
-    @FXML
-    private Button allSales;
-    @FXML
-    private Button editButton;
-
     @FXML
     void editButtonOnAction() {
         saveButton.setDisable(false);
         editButton.setDisable(true);
     }
-    @FXML
-    private Button saveButton;
     @FXML
     void saveButtonOnAction() {
         deleteSaleProduct(DELETE_PRODUCT);
@@ -315,14 +375,6 @@ public class SellerController {
     void openShiftButtonOnAction() {
         openShiftPane.setVisible(true);
     }
-    @FXML
-    private Pane openShiftPane;
-    @FXML
-    private Button okOpenShiftButton;
-    @FXML
-    private Button cancelOpenShiftButton;
-    @FXML
-    private TextField cashDepositTextField;
     @FXML
     void okOpenShiftButtonOnAction() {
         cashDepositTextField.setDisable(true);
@@ -376,11 +428,6 @@ public class SellerController {
         }
     }
     @FXML
-    private Pane closeShiftPane;
-    @FXML
-    private Button okCloseShiftButton;
-
-    @FXML
     void cancelCloseShiftButtonOnAction() {
         startSync = true;
         closeShiftPane.setVisible(false);
@@ -405,8 +452,6 @@ public class SellerController {
         }
     }
     @FXML
-    private AnchorPane allSalesPane;
-    @FXML
     private TableView<SaleProduct> allSalesTable;
     @FXML
     private TableColumn<TodaySales, Time> timeSalesColumn;
@@ -427,8 +472,6 @@ public class SellerController {
     @FXML
     private TableColumn<TodaySales, String> paymentTypeColumn;
 
-    @FXML
-    private GridPane mainGridPane;
     EventHandler<ActionEvent> eventProductButtons = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -475,8 +518,6 @@ public class SellerController {
                     , product.getPrice());
         }
     };
-    @FXML
-    private GridPane numbersGridPane;
 
     EventHandler<ActionEvent> eventNumberButtons = new EventHandler<>() {
         @Override
@@ -504,6 +545,7 @@ public class SellerController {
             }
         }
     };
+
     @FXML
     private TableView<SaleProduct> saleTable;
     @FXML
@@ -516,18 +558,6 @@ public class SellerController {
     private TableColumn<SaleProduct, Integer> discountColumn;
     @FXML
     private TableColumn<SaleProduct, Double> sumColumn;
-    @FXML
-    private Pane mainReceiptPane;
-    @FXML
-    private ImageView productCategoryIco;
-    @FXML
-    private Button addProduct;
-    @FXML
-    private Button discountButtonActivate;
-    @FXML
-    private Button cashReceiptButton;
-    @FXML
-    private Button cButton;
 
     @FXML
     void discountButtonActivateOnAction() {
@@ -602,12 +632,6 @@ public class SellerController {
         saleTable.refresh();
         sumLabel.setText(String.valueOf(currentSaleSum()));
     }
-
-    @FXML
-    private AnchorPane discountPane;
-    @FXML
-    private GridPane discountGridPane;
-
     EventHandler<ActionEvent> eventDiscountButtons = new EventHandler<>() {
         @Override
         public void handle(ActionEvent event) {
@@ -619,20 +643,10 @@ public class SellerController {
             sumLabel.setText(String.valueOf(currentSaleSum()));
         }
     };
-
-    @FXML
-    private AnchorPane paymentTypePane;
-    @FXML
-    private final Button[] PAYMENT_TYPE_BUTTONS = new Button[2];
-    @FXML
-    private Button paymentType1;
-    @FXML
-    private Button paymentType2;
     @FXML
     void oupsOnAction() {
         correctionPane.setVisible(true);
     }
-
     @FXML
     void paymentTypeOnAction(ActionEvent event) {
         Button button = (Button) event.getSource();
@@ -653,14 +667,10 @@ public class SellerController {
             endSaleOperation();
         }
     }
-
-    @FXML
-    private Pane changePane;
     @FXML
     void noChangeOnAction() {
         endSaleOperation();
     }
-
     private void endSaleOperation() {
         mainReceiptPane.setVisible(true);
         startSync = true;
@@ -686,12 +696,6 @@ public class SellerController {
         changePane.setVisible(false);
         withChangePane.setVisible(true);
     }
-
-    @FXML
-    private Pane withChangePane;
-    @FXML
-    private TextField sumChangeTextField;
-
     @FXML
     void okWithChangeOnAction() {
         endSaleOperation();
@@ -701,11 +705,6 @@ public class SellerController {
         changeLabel.setText("0.00"); //в cButton
         buttonsIsDisable(PRODUCT_BUTTONS, false);
     }
-
-    @FXML
-    private AnchorPane correctionPane;
-    @FXML
-    private TextField correctionTextField;
 
     @FXML
     void correctionButtonOnAction() {
@@ -720,14 +719,15 @@ public class SellerController {
     }
 
     @FXML
-    void initialize() throws SQLException {
-        networkIndicatorLabel.setText("не в сети  ");
+    void initialize() {
         isOnline(networkIndicatorLabel, networkIndicator);
         syncBusinessData();
 
         if (currentUser.isAdministrator()) {
             adminButton.setVisible(true);
         }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        String time = simpleDateFormat.format(new java.util.Date());
         clockLabel.setText(time);
 
         usersTable.setEditable(true);
@@ -766,8 +766,7 @@ public class SellerController {
             activeStaffACheckBox.setSelected(selectedUser.isActiveStuff());
 
             birthdayADatePicker.setOnAction(e -> {
-                LocalDate date = birthdayADatePicker.getValue();
-                System.out.println("Selected date: " + date);
+//                LocalDate date = birthdayADatePicker.getValue();
             });
         });
         usernameAllSalesLabel.setText(currentUser.getFirstName() + "!");
@@ -777,11 +776,17 @@ public class SellerController {
         Timeline syncTimeLine = new Timeline(
                 new KeyFrame(Duration.seconds(60),
                         event -> {
-                            clockLabel.setText(time);
+                            SimpleDateFormat simpleDateFormatSync = new SimpleDateFormat("HH:mm");
+                            String timeSync = simpleDateFormatSync.format(new java.util.Date());
+                            clockLabel.setText(timeSync);
                             if (startSync && syncCount.get() % 5 == 0) {
-                                    syncShiftData();
+                                if (isNewMessage()) {
+                                    enterToWorkTable(WorkTableChoice.INFO);
+                                }
+                                syncShiftData();
                             }
                             syncCount.getAndIncrement();
+
                         }));
         syncTimeLine.setCycleCount(Timeline.INDEFINITE);
         syncTimeLine.play();

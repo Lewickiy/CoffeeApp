@@ -16,4 +16,15 @@ public class Product {
     private int category;
     private double price;
     private boolean fixPrice;
+
+    @Override
+    public String toString() {
+        return productId + " - product id, "
+                + product + " - product, "
+                + numberOfUnit + " - number of unit, "
+                + unitOfMeasurement + " - unit of measurement, "
+                + category + " - category id, "
+                + price + " - price, "
+                + fixPrice + " - fix price.";
+    }
 }

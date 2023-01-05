@@ -35,7 +35,7 @@ public class Query {
             try {
                 statement = con.createStatement();
                 statement.executeUpdate(query);
-                LOGGER.log(Level.INFO,tableName + " cleared");
+                LOGGER.log(Level.FINE,tableName + " cleared");
                 statement.close();
                 con.close();
             } catch (SQLException e) {
@@ -55,6 +55,7 @@ public class Query {
                 statement.executeUpdate("INSERT " + tableName + "(" + sql + ")");
                 statement.close();
                 con.close();
+                LOGGER.log(Level.FINE, "Objects added to " + tableName);
             } catch (SQLException sqlEx) {
                 LOGGER.log(Level.WARNING,"Insert to " + tableName + "(" + dbEnum.getDbName() + ") failed. Connection or statement error");
             }

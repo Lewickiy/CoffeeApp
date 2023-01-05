@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ButtonsOnGridPane {
     /**
@@ -17,7 +17,7 @@ public class ButtonsOnGridPane {
      * @param buttons - ArrayList Buttons которых необходимо разместить в GridPane
      * @param event - присваиваемое кнопкам мероприятие.
      */
-    public static void buttonsOnGridPane(Direction var, GridPane gridPane, ArrayList<Button> buttons, double size, EventHandler<ActionEvent> event) {
+    public static void buttonsOnGridPane(Direction var, GridPane gridPane, List<Button> buttons, double size, EventHandler<ActionEvent> event) {
         //TODO более универсальную систему, которая принимает значения horizontal или vertical,
         // в зависимости от этого выстраивает модель размещения. Сейчас не подходит для горизонтального размещения
         // NUMBER_BUTTONS, например.

@@ -101,7 +101,7 @@
                   </Button>
                </children>
             </AnchorPane>
-            <Label fx:id="networkIndicatorLabel" alignment="CENTER_RIGHT" layoutX="228.0" layoutY="15.0" prefHeight="17.0" prefWidth="80.0" text="status" textAlignment="RIGHT" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="15.0">
+            <Label fx:id="networkIndicatorLabel" alignment="CENTER_RIGHT" layoutX="228.0" layoutY="15.0" prefHeight="17.0" prefWidth="80.0" text="не в сети  " textAlignment="RIGHT" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="15.0">
                <font>
                   <Font name="Monospaced Regular" size="12.0" />
                </font></Label>

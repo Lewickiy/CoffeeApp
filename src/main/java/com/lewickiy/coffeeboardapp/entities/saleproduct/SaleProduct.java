@@ -6,14 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static com.lewickiy.coffeeboardapp.dao.query.Query.insertToSql;
 @Getter
 @Setter
 @NoArgsConstructor
 public class SaleProduct {
-
     private long id;
     private int productId;
     private String product;
@@ -51,7 +50,7 @@ public class SaleProduct {
         this.price = priceProdSale;
     }
 
-    public static void addSaleProductsToLocalDB(ArrayList<SaleProduct> currentSaleProducts, CurrentSale currentSale) {
+    public static void addSaleProductsToLocalDB(List<SaleProduct> currentSaleProducts, CurrentSale currentSale) {
         for (SaleProduct currentSaleProduct : currentSaleProducts) {
             insertToSql(DataBaseEnum.LOCAL_DB, "sale_product", "sale_id, "
                     + "product_id, "

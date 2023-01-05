@@ -15,6 +15,7 @@ public class CheckShift {
      * @return - boolean значение ответа на вопрос "Закрыта ли смена?"
      */
     public static boolean checkShift() {
+
         int outletId = currentOutlet.getOutletId();
         String sqlSearchOutlet = "SELECT outlet_id FROM shift WHERE outlet_id = " + outletId + ";";
         boolean isClosed = true;
@@ -45,7 +46,6 @@ public class CheckShift {
                     rs.close();
                     statement.close();
                     con.close();
-
                     return isClosed;
                 }
             } else {

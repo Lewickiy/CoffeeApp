@@ -2,7 +2,7 @@ package com.lewickiy.coffeeboardapp.controllers.seller.actions;
 
 import javafx.scene.control.Button;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static com.lewickiy.coffeeboardapp.dao.query.OpenCloseShift.updateShiftSql;
 import static com.lewickiy.coffeeboardapp.dao.query.Query.deleteFromLocalSql;
@@ -21,7 +21,7 @@ import static com.lewickiy.coffeeboardapp.entities.saleproduct.SaleProductList.c
 import static com.lewickiy.coffeeboardapp.entities.user.UserList.users;
 
 public class ShiftCloser {
-    public static void closeShift(ArrayList<Button> PRODUCT_BUTTONS, ArrayList<Button> NUMBER_BUTTONS) {
+    public static void closeShift(List<Button> PRODUCT_BUTTONS, List<Button> NUMBER_BUTTONS) {
         todaySalesArrayList.clear();
         updateShiftSql(true, 0.00);
         shiftLog(true);

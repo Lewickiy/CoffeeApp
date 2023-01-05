@@ -3,12 +3,12 @@ package com.lewickiy.coffeeboardapp.controllers.actions;
 import com.lewickiy.coffeeboardapp.entities.discount.Discount;
 import javafx.scene.control.Button;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static com.lewickiy.coffeeboardapp.entities.discount.DiscountList.discounts;
 
 public class DiscountNameButton {
-    public static void discountNameButtons(ArrayList<Button> discountButtons) {
+    public static void discountNameButtons(List<Button> discountButtons) {
         int count = 0;
         for (Discount discount : discounts) {
             if (discount.isActive()) {

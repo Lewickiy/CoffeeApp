@@ -13,9 +13,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-
 import static com.lewickiy.coffeeboardapp.controllers.actions.worktable.WorkTable.enterToWorkTable;
 import static com.lewickiy.coffeeboardapp.dao.connector.NetworkIndicator.isOnline;
 import static com.lewickiy.coffeeboardapp.dao.sync.StartData.syncStartData;
@@ -43,8 +40,7 @@ public class LoginController {
     private Circle networkIndicator;
 
     @FXML
-    void initialize() throws SQLException, ParseException {
-        networkIndicatorLabel.setText("не в сети  ");
+    void initialize() {
         isOnline(networkIndicatorLabel, networkIndicator);
         syncStartData();
 

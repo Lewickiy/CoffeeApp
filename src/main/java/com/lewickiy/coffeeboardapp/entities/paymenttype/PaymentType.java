@@ -10,4 +10,9 @@ import lombok.Setter;
 public class PaymentType {
     private int paymentTypeId;
     private String paymentType;
+
+    @Override
+    public String toString() {
+        return paymentTypeId + " - payment type id, " + paymentType + " - payment type";
+    }
 }

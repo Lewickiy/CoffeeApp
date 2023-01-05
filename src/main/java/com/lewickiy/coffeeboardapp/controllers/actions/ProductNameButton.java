@@ -4,7 +4,7 @@ import com.lewickiy.coffeeboardapp.entities.product.Product;
 import com.lewickiy.coffeeboardapp.entities.productcategory.ProductCategory;
 import javafx.scene.control.Button;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static com.lewickiy.coffeeboardapp.entities.productcategory.ProductCategoryList.productCategories;
 import static com.lewickiy.coffeeboardapp.entities.product.ProductList.products;
@@ -24,7 +24,7 @@ public class ProductNameButton {
      * Также данный метод делает кнопки доступными (productButtons[].setDisable())<br>
      * @param productButtons - это массив кнопок, созданных в SellerController.
      */
-    public static void productNameButton(ArrayList<Button> productButtons) {
+    public static void productNameButton(List<Button> productButtons) {
         int count = 0;
         int temp = 0;
         for (ProductCategory productCategory : productCategories) {

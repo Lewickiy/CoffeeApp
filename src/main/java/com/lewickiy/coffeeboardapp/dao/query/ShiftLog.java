@@ -65,16 +65,16 @@ public class ShiftLog {
      * после чего в сетевую базу данных эти строки повторно не выгружаются.<br>
      */
     public static void syncShiftLog() {
-        LOGGER.log(Level.INFO, "Start syncShiftLog");
 
         String selectNotLoaded = "SELECT outlet_id, user_id, date, time, is_closed FROM shift_log WHERE loaded = 0 AND outlet_id = " + currentOutlet.getOutletId() + ";";
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+        Statement statement;
 
         Connection conNetwork = getConnectionNDB();
         Connection conLocal = getConnectionLDB();
         if (conNetwork != null && conLocal != null) {
-            Statement statement;
+
             try {
                 statement = conLocal.createStatement();
                 ResultSet resultSelectNotLoaded  = statement.executeQuery(selectNotLoaded);

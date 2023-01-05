@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.sql.Time;
 
 import static com.lewickiy.coffeeboardapp.dao.query.Query.insertToSql;
@@ -44,5 +43,15 @@ public class CurrentSale {
                 + currentSale.getPaymentTypeId() + "', '"
                 + currentSale.getClientId()  + "', '"
                 + 0 + "'");
+    }
+    @Override
+    public String toString() {
+        return saleId + " - sale id, "
+                + userId + " - user id, "
+                + currentDate + " - date of sale, "
+                + currentTime + " - time of sale, "
+                + paymentTypeId + " - payment type id, "
+                + clientId + " - client id, "
+                + loaded + " - loaded";
     }
 }

@@ -19,7 +19,6 @@ public class SyncSales {
     public static void syncSales() {
         String selectNotLoaded = "SELECT sale_id, user_id, outlet_id, date, time, paymenttype_id, client_id, loaded FROM sale WHERE loaded = 0 AND outlet_id = " + currentOutlet.getOutletId() + ";";
 
-        LOGGER.log(Level.INFO, "Start syncSales");
         Connection conNetwork = getConnectionNDB();
         Connection conLocal = getConnectionLDB();
         if (conNetwork != null && conLocal != null) {

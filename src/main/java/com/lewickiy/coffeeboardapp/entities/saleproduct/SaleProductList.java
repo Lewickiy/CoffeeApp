@@ -1,9 +1,10 @@
 package com.lewickiy.coffeeboardapp.entities.saleproduct;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SaleProductList {
-    public static ArrayList<SaleProduct> currentSaleProducts = new ArrayList<>();
+    public static List<SaleProduct> currentSaleProducts = new ArrayList<>();
     public static void addSaleProductsList(long saleProdId
             , int prodSaleId
             , String prodName

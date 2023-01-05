@@ -14,4 +14,9 @@ public class ProductCategory {
     @NonNull
     private String productCategory;
     private int amountProducts;
+
+    @Override
+    public String toString() {
+        return productCategoryId + " - product category id, " + productCategory + " - product category.";
+    }
 }

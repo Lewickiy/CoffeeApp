@@ -695,7 +695,7 @@
                               <ToolBar focusTraversable="false" maxHeight="37.0" minHeight="37.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="37.0" style="-fx-background-color: WHITE;" HBox.hgrow="ALWAYS">
                                 <items>
                                     <Circle fx:id="networkIndicator" fill="YELLOW" radius="7.5" stroke="#c9c9c9" strokeType="OUTSIDE" strokeWidth="0.5" translateX="2.0" />
-                                    <Label fx:id="networkIndicatorLabel" focusTraversable="false" prefHeight="27.0" prefWidth="117.0" text="status  " textAlignment="RIGHT">
+                                    <Label fx:id="networkIndicatorLabel" focusTraversable="false" prefHeight="27.0" prefWidth="117.0" text="не в сети  " textAlignment="RIGHT">
                                        <font>
                                           <Font name="Monospaced Regular" size="12.0" />
                                        </font>
@@ -906,12 +906,12 @@
                               </AnchorPane>
                               <AnchorPane fx:id="changePane" layoutX="10.0" layoutY="10.0" style="-fx-background-color: WHITE; -fx-background-radius: 5; -fx-border-color: GREY; -fx-border-width: 1;" visible="false" AnchorPane.bottomAnchor="7.5" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
                                  <children>
-                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="67.0" layoutY="99.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#noChangeOnAction" prefHeight="75.0" text="Без сдачи" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="90.0">
+                                    <Button alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="99.0" maxHeight="75.0" maxWidth="242.0" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#noChangeOnAction" prefHeight="75.0" text="Без сдачи" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="90.0">
                                        <font>
                                           <Font name="Courier New" size="22.0" />
                                        </font>
                                     </Button>
-                                    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="68.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#withChangeOnAction" prefHeight="75.0" text="Сдача нужна" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
+                                    <Button alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="75.0" minWidth="136.0" mnemonicParsing="false" onAction="#withChangeOnAction" prefHeight="75.0" text="Сдача нужна" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="7.5" AnchorPane.rightAnchor="7.5" AnchorPane.topAnchor="7.5">
                                        <font>
                                           <Font name="Courier New" size="22.0" />
                                        </font>
